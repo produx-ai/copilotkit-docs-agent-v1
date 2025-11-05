@@ -72,17 +72,7 @@ function SignInComponent({
   onSignInComplete,
 }: {
   onSignInComplete: (authState: AuthState) => void;
-}) {
-  const handleAuth = async () => {
-    // Your auth logic (e.g., OAuth, custom auth)
-    const authState = {
-      status: "authenticated",
-      authHeaders: {
-        Authorization: "Bearer your_token",
-        // Add any other headers needed by your backend
-      },
-      userId: "user_123",
-      metadata: {
+    onSignInComplete(authState);
         email: "user@example.com",
         // Any other user context needed by tools
       },

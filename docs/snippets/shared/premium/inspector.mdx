@@ -17,15 +17,19 @@ The Copilot Inspector is a debugging aid, accessible from a copilotkit button ov
 - Agent Status: Coagent states and running/completion info
 - Messages: Conversation history
 - Context: Document context fed into the model
-
 ## Requirements
 
-- Provide `publicLicenseKey` to `<CopilotKit />` to enable premium features:
+- Provide `publicApiKey` (for Copilot Cloud) or `publicLicenseKey` (for self-hosted) to `<CopilotKit />` to enable premium features:
 
 ```tsx
-<CopilotKit publicLicenseKey={process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY}>
+<CopilotKit 
+  publicApiKey={process.env.NEXT_PUBLIC_COPILOTKIT_API_KEY} // Use publicApiKey for Copilot Cloud
+  // OR
+  publicLicenseKey={process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY} // Use publicLicenseKey for self-hosted
+>
   {children}
 </CopilotKit>
+```
 ```
 
 ## How to open
