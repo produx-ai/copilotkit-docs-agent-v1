@@ -64,10 +64,6 @@ In order to use CopilotKit, we'll need to configure the `CopilotKit` provider.
 
 ### CopilotKit Chat Popup
 
-We provide several plug-and-play components for you to interact with your copilot. Some of these are `<CopilotPopup/>`, `<CopilotSidebar/>`, and `<CopilotChat/>`. You can of course use CopilotKit in headless mode and provide your own fully custom UI via [`useCopilotChat`](/reference/hooks/useCopilotChat).
-
-In this tutorial, we'll use the `<CopilotPopup/>` component to display the chat popup.
-
 ```tsx title="app/page.tsx" showLineNumbers {6-7,15}
 "use client";
 
@@ -79,14 +75,15 @@ import "@copilotkit/react-ui/styles.css"; // [!code highlight]
 
 export default function Home() {
   return (
-    <>
+    <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}> // [!code ++]
       <TasksProvider>
         <TasksList />
       </TasksProvider>
       <CopilotPopup /> // [!code highlight]
-    </>
+    </CopilotKit> // [!code ++]
   );
 }
+```
 ```
 
 Here's what we did:

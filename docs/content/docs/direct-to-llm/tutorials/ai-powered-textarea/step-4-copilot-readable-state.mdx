@@ -1,5 +1,6 @@
 ---
-title: "Step 3: Copilot Readable State"
+title: "Step 4: Copilot Readable State"
+---
 ---
 
 At this point, we have set up our CopilotKit provider and `<CopilotTextarea />`, and we already benefit from a great AI assistant. However, there is one last problem - the copilot assistant is not aware of the email thread. Let's fix that.
@@ -15,7 +16,7 @@ At a glance, we can see that the file exposes a provider (`EmailsProvider`) whic
 Our goal is to make our copilot aware of this state, so that it can provide more accurate and helpful responses. We can easily achieve this by using the [`useCopilotReadable`](/reference/hooks/useCopilotReadable) hook.
 
 ```tsx title="libs/hooks/use-emails.tsx"
-// ... the rest of the file
+```tsx title="lib/hooks/use-emails.tsx"
 
 import { useCopilotReadable } from "@copilotkit/react-core"; // [!code highlight]
 

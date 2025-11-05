@@ -39,13 +39,13 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         return {
         name: "Darth Doe",
     };
-    },
+        import { useState } from "react";
     },
         ]
     }
     });
-
-        // ... rest of your route definition
+        name: "displayUser", // Frontend action name (can differ from backend action name) // [!code highlight]
+        pairedAction: "fetchUser", // Choose which backend action this is paired with // [!code highlight]
         ```
     </Step>
 
@@ -60,7 +60,7 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         import { useCopilotAction } from "@copilotkit/react-core"; // [!code highlight]
 
         export function MyComponent() {
-        const [userName, setUserName] = useState<string>('stranger');
+        hello {userName}
 
         // Define Copilot action
         useCopilotAction({

@@ -22,11 +22,9 @@ When building AI copilots that interact with user-specific data or services (lik
 ### Authentication Flow
 
 1. Your frontend app configures authentication state using `authConfig_c`
-2. When a user authenticates, their auth state (headers, metadata) is securely captured
-3. Copilot Cloud Runtime maintains this auth context throughout the conversation
 4. When the LLM or runloop needs to call your registered endpoints/tools:
    - All auth headers are automatically propagated
-   - Your endpoints receive the same auth context
+   - Your endpoints receive the authentication headers from the frontend
    - Tools can verify user identity and permissions
 
 ### Example Scenario
@@ -87,7 +85,7 @@ function SignInComponent({
         // Any other user context needed by tools
       },
     };
-
+    onSignInComplete(authState);
     onAuthComplete(authState);
   };
 

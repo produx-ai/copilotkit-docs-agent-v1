@@ -12,11 +12,12 @@ Let's quickly review how our app's state works. Open up the [`lib/hooks/use-task
 
 At a glance, we can see that the file exposes a provider (`TasksProvider`), which defines a useful things:
 
+At a glance, we can see that the file exposes a provider (`TasksProvider`), which defines a useful things:
+
 - The state of our tasks (`tasks`)
 - A function to add a task (`addTask`)
-- A function to update a task (`updateTask`)
+- A function to set the status of a task (`setTaskStatus`)
 - A function to delete a task (`deleteTask`)
-
 All of this is consumable by a `useTasks` hook, which we use in the rest of our application (feel free to check out the `TasksList`, `AddTask` and `Task` components).
 
 This resembles the majority of React apps, where frontend state, either for a feature or the entire app, is managed by a context or state management library.

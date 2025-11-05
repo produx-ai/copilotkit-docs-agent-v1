@@ -19,11 +19,13 @@ We will be adding a chip component. Similar to the one available with ChatGPT wh
 First, let's create a chip component
 ```tsx
 import { CopilotKit } from "@copilotkit/react-core";
+```tsx
+import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotSidebar, ComponentsMap } from "@copilotkit/react-ui";
+import { LinkIcon } from "lucide-react";
 import "@copilotkit/react-ui/styles.css";
 // We will include the styles in a separate css file, for convenience
 import "./styles.css";
-
 function YourComponent() {
     const customMarkdownTagRenderers: ComponentsMap<{ "reference-chip": { href: string } }> = {
         // You can make up your own tags, or use existing, valid HTML ones!
