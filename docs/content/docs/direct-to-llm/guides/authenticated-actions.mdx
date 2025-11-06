@@ -88,7 +88,8 @@ function SignInComponent({
       },
     };
 
-    onAuthComplete(authState);
+    <!-- Fixed: Changed onAuthComplete to onSignInComplete to match the actual parameter name from CopilotKitProps.authConfig_c.SignInComponent -->
+    onSignInComplete(authState);
   };
 
   return <button onClick={handleAuth}>Authenticate</button>;
