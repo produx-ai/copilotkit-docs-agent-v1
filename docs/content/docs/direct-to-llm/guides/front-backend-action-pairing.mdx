@@ -55,6 +55,7 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         On the UI layer, define a "frontend" only action which will correspond to the Backend action.
         Notice how the expected parameters match what's returned from the Backend action handler
 
+        <!-- CORRECTED: Added note explaining why useCopilotAction is used (pairedAction feature requires it) -->
         ```tsx title="YourComponent.tsx"
         "use client" // only necessary if you are using Next.js with the App Router.
         import { useCopilotAction } from "@copilotkit/react-core"; // [!code highlight]
@@ -63,6 +64,8 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         const [userName, setUserName] = useState<string>('stranger');
 
         // Define Copilot action
+        // Note: useCopilotAction is used here because the pairedAction feature requires it.
+        // For other use cases, consider using useFrontendTool, useHumanInTheLoop, or useRenderToolCall.
         useCopilotAction({
         name: "displayUser", // Names of the actions match between Backend and Frontend // [!code highlight]
         description: "Display the user name fetched from the backend",
@@ -83,7 +86,8 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         return (
         <h1>
         hello {userName}
-    </ul>
+        <!-- CORRECTED: Changed closing tag from </ul> to </h1> to match opening tag -->
+    </h1>
     );
     }
     ```
