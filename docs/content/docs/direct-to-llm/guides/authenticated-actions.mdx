@@ -88,7 +88,7 @@ function SignInComponent({
       },
     };
 
-    onAuthComplete(authState);
+    onSignInComplete(authState); {/* CORRECTED: Changed onAuthComplete to onSignInComplete to match the parameter name defined in the component props */}
   };
 
   return <button onClick={handleAuth}>Authenticate</button>;

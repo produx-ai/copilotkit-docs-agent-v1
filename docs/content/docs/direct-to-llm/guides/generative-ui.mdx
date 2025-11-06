@@ -217,8 +217,8 @@ option to render your custom component through the `render` property.
     In this case, the render method will receive an additional `name` parameter. This is particularly useful when working with agents that may call arbitrary tools - see more in our [Tool-based Generative UI](/crewai-crews/generative-ui/tool-based) guide.
 
     ```tsx
-    import { useDefaultTool, CatchAllToolRenderProps } from "@copilotkit/react-core";
-
+    import { useDefaultTool, CatchAllActionRenderProps } from "@copilotkit/react-core";
+    {/* CORRECTED: Changed import from CatchAllToolRenderProps to CatchAllActionRenderProps to match actual type name in source code */}
     useDefaultTool({
       render: ({ name, args, status, result }: CatchAllActionRenderProps<[]>) => {
         return <div>Rendering tool: {name}</div>;
