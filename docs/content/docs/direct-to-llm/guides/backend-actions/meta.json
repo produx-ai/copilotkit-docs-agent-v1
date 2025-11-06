@@ -1,10 +1,10 @@
 {
+  "_comment": "Removed 'rendering-backend-actions' as the corresponding .mdx file does not exist in the directory.",
   "title": "Backend Actions & Agents",
   "pages": [
     "typescript-backend-actions",
     "langchain-js-backend-actions",
     "langserve-backend-actions",
-    "rendering-backend-actions",
     "remote-backend-endpoint",
     "langgraph-platform-endpoint"
   ]

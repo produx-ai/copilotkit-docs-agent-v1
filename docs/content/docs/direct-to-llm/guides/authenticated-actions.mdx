@@ -43,20 +43,6 @@ sequenceDiagram
     Note over CloudRuntime: Maintains auth context
     CloudRuntime->>YourAPI: Calls with propagated headers
     YourAPI->>YourAPI: Verifies auth
-    YourAPI->>CloudRuntime: Authenticated response
-```
-
-This means your backend tools and APIs:
-
-- Receive the same authentication headers as your frontend
-- Can verify user identity and permissions
-- Maintain security context throughout the AI interaction
-- Don't need additional auth handling specific to CopilotKit
-
-## Frontend Implementation
-
-### Configure Authentication State
-
 ```tsx
 import { CopilotKit } from "@copilotkit/react-core";
 
@@ -65,6 +51,36 @@ interface AuthState {
   authHeaders: Record<string, string>;
   userId?: string;
   metadata?: Record<string, any>;
+}
+
+// Your SignInComponent component
+function SignInComponent({
+  onSignInComplete,
+}: {
+  onSignInComplete: (authState: AuthState) => void;
+}) {
+  const handleAuth = async () => {
+    // Your auth logic (e.g., OAuth, custom auth)
+    const authState = {
+      status: "authenticated",
+      authHeaders: {
+        Authorization: "Bearer your_token",
+        "x-user-id": "user_123",
+        // Add any other headers needed by your backend
+      },
+      userId: "user_123",
+      metadata: {
+        email: "user@example.com",
+        // Any other user context needed by tools
+      },
+    };
+
+    onSignInComplete(authState);
+  };
+
+  return <button onClick={handleAuth}>Authenticate</button>;
+}
+```
 }
 
 // Your SignInComponent component
