@@ -28,6 +28,7 @@ option to render your custom component through the `render` property.
 
     ```tsx
     "use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
+    import React from "react"; // [!code highlight]
     import { useRenderToolCall } from "@copilotkit/react-core"; // [!code highlight]
 
     export function YourComponent() {
@@ -92,6 +93,7 @@ option to render your custom component through the `render` property.
 
     ```tsx
     "use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
+    import React from "react"; // [!code highlight]
     import { useFrontendTool } from "@copilotkit/react-core"; // [!code highlight]
 
     useFrontendTool({ // [!code highlight]
@@ -135,6 +137,7 @@ option to render your custom component through the `render` property.
 
     ```tsx
     "use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
+    import React from "react"; // [!code highlight]
     import { useHumanInTheLoop } from "@copilotkit/react-core"; // [!code highlight]
 
     useHumanInTheLoop({ // [!code highlight]
@@ -187,6 +190,7 @@ option to render your custom component through the `render` property.
 
     ```tsx
     "use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
+    import React from "react"; // [!code highlight]
     import { useFrontendTool } from "@copilotkit/react-core"; // [!code highlight]
 
     useFrontendTool({ // [!code highlight]
@@ -217,10 +221,11 @@ option to render your custom component through the `render` property.
     In this case, the render method will receive an additional `name` parameter. This is particularly useful when working with agents that may call arbitrary tools - see more in our [Tool-based Generative UI](/crewai-crews/generative-ui/tool-based) guide.
 
     ```tsx
+    import React from "react"; // [!code highlight]
     import { useDefaultTool, CatchAllToolRenderProps } from "@copilotkit/react-core";
 
     useDefaultTool({
-      render: ({ name, args, status, result }: CatchAllActionRenderProps<[]>) => {
+      render: ({ name, args, status, result }: CatchAllToolRenderProps<[]>) => { // [!code highlight]
         return <div>Rendering tool: {name}</div>;
       },
     });

@@ -58,6 +58,7 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         ```tsx title="YourComponent.tsx"
         "use client" // only necessary if you are using Next.js with the App Router.
         import { useCopilotAction } from "@copilotkit/react-core"; // [!code highlight]
+        import { useState } from "react"; // [!code highlight]
 
         export function MyComponent() {
         const [userName, setUserName] = useState<string>('stranger');
@@ -83,7 +84,7 @@ In order to "render UI from the Backend", it is possible to pair a Frontend only
         return (
         <h1>
         hello {userName}
-    </ul>
+    </h1>
     );
     }
     ```

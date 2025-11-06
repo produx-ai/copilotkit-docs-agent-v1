@@ -18,6 +18,7 @@ In addition to understanding state, you can empower the copilot to execute tools
 ```tsx title="YourComponent.tsx"
 "use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
 import { useFrontendTool } from "@copilotkit/react-core"; // [!code highlight]
+import { useState } from "react"; // [!code highlight]
 
 export function MyComponent() {
   const [todos, setTodos] = useState<string[]>([]);

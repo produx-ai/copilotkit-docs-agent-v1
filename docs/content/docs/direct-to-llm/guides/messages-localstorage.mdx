@@ -16,6 +16,7 @@ into the agent.
 The following example shows how to save and restore your message history using `localStorage`:
 
 ```typescript
+import React, { useEffect } from "react"; // [!code highlight]
 import { useCopilotMessagesContext } from "@copilotkit/react-core";
 import { ActionExecutionMessage, ResultMessage, TextMessage } from "@copilotkit/runtime-client-gql";
 
