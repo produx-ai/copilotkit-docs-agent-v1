@@ -123,7 +123,7 @@ Import the CopilotKit SDK and define your backend actions. For example:
 ```python title="/my_copilotkit_remote_endpoint/server.py"
 from fastapi import FastAPI
 from copilotkit.integrations.fastapi import add_fastapi_endpoint
-from copilotkit import CopilotKitRemoteEndpoint, Action as CopilotAction
+from copilotkit import CopilotKitRemoteEndpoint, Action
 
 app = FastAPI()
 
@@ -133,7 +133,7 @@ async def fetch_name_for_user_id(userId: str):
     return {"name": "User_" + userId}
 
 # this is a dummy action for demonstration purposes
-action = CopilotAction(
+action = Action(
     name="fetchNameForUserId",
     description="Fetches user name from the database for a given ID.",
     parameters=[

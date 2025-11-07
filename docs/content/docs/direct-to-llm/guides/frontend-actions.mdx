@@ -16,7 +16,9 @@ import UseClientCalloutSnippet from "@/snippets/use-client-callout.mdx";
 In addition to understanding state, you can empower the copilot to execute tools. Use the [`useFrontendTool`](/reference/hooks/useFrontendTool) hook to define specific tools that the copilot can execute based on user input.
 
 ```tsx title="YourComponent.tsx"
-"use client" // only necessary if you are using Next.js with the App Router. // [!code highlight]
+```tsx title="YourComponent.tsx"
+
+import { useState } from "react"; // [!code highlight]
 import { useFrontendTool } from "@copilotkit/react-core"; // [!code highlight]
 
 export function MyComponent() {
@@ -58,7 +60,6 @@ export function MyComponent() {
     Choose the right hook based on your specific use case.
   </Accordion>
 </Accordions>
-</Step>
 
 <Step>
   <UseClientCalloutSnippet components={props.components} />

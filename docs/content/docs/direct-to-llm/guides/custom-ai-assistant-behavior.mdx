@@ -101,6 +101,11 @@ It can be customized for **Copilot UI** as well as **programmatically**:
 
 For cases requiring complete control over the system message, you can use the `makeSystemMessage` function. We highly recommend reading CopilotKit's default system message before deciding to overwrite it, which can be found [here](https://github.com/CopilotKit/CopilotKit/blob/e48a34a66bb4dfd210e93dc41eee7d0f22d1a0c4/CopilotKit/packages/react-core/src/hooks/use-copilot-chat.ts#L240-L258).
 
+### Overwriting the default system message
+
+For cases requiring complete control over the system message, you can use the `makeSystemMessage` function. We highly recommend reading CopilotKit's default system message before deciding to overwrite it, which can be found [here](https://github.com/CopilotKit/CopilotKit/blob/main/CopilotKit/packages/react-core/src/hooks/use-copilot-chat_internal.ts#L521-L540).
+<!-- Updated GitHub link to point to the correct file (use-copilot-chat_internal.ts instead of use-copilot-chat.ts) and use main branch instead of specific commit hash for better maintainability -->
+
 <Callout type="warn">
 This approach is **not recommended** as it may interfere with more advanced optimizations made by CopilotKit. **Only use this approach if the other options are not enough.**
 </Callout>
@@ -143,4 +148,3 @@ This approach is **not recommended** as it may interfere with more advanced opti
     ```
   </Tab>
 </Tabs>
-

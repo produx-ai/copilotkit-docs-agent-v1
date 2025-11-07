@@ -12,7 +12,7 @@
     "---Actions & Integration---",
     "frontend-actions",
     "backend-actions",
-    "frontend-backend-action-pairing",
+    "front-backend-action-pairing",
     "generative-ui",
     "connect-your-data",
     "authenticated-actions",
@@ -22,6 +22,11 @@
     "bring-your-own-llm",
     "model-context-protocol",
     "guardrails",
+    "messages-localstorage",
+    "---Legacy Features---",
+    "copilot-textarea"
+  ]
+}
     "messages-localstorage",
     "---Legacy Features---",
     "copilot-textarea"

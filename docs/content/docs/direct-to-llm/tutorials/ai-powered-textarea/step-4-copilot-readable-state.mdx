@@ -1,5 +1,5 @@
 ---
-title: "Step 3: Copilot Readable State"
+title: "Step 4: Copilot Readable State"
 ---
 
 At this point, we have set up our CopilotKit provider and `<CopilotTextarea />`, and we already benefit from a great AI assistant. However, there is one last problem - the copilot assistant is not aware of the email thread. Let's fix that.
@@ -14,7 +14,7 @@ At a glance, we can see that the file exposes a provider (`EmailsProvider`) whic
 
 Our goal is to make our copilot aware of this state, so that it can provide more accurate and helpful responses. We can easily achieve this by using the [`useCopilotReadable`](/reference/hooks/useCopilotReadable) hook.
 
-```tsx title="libs/hooks/use-emails.tsx"
+```tsx title="lib/hooks/use-emails.tsx"
 // ... the rest of the file
 
 import { useCopilotReadable } from "@copilotkit/react-core"; // [!code highlight]
@@ -35,7 +35,7 @@ export const EmailsProvider = ({ children }: { children: ReactNode }) => {
 In this example, we use the `useCopilotReadable` hook to provide the copilot with the state of our email thread.
 
 - For the `description` property, we provide a concise description that tells the copilot what this piece of readable data means.
-- For the `value` property, we pass the entire state as a JSON string.
+- For the `value` property, we pass the entire state. The hook automatically serializes it to a string using JSON.stringify.
 
 In the next step, we'll set up our AI-powered textarea, which will use this readable state to provide accurate and helpful responses.
 

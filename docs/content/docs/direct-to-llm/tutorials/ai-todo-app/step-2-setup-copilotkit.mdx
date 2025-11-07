@@ -68,23 +68,23 @@ We provide several plug-and-play components for you to interact with your copilo
 
 In this tutorial, we'll use the `<CopilotPopup/>` component to display the chat popup.
 
-```tsx title="app/page.tsx" showLineNumbers {6-7,15}
+```tsx title="app/page.tsx" showLineNumbers {5-7,11,16}
 "use client";
 
 import { TasksList } from "@/components/TasksList";
 import { TasksProvider } from "@/lib/hooks/use-tasks";
-import { CopilotKit } from "@copilotkit/react-core";
+import { CopilotKit } from "@copilotkit/react-core"; // [!code highlight]
 import { CopilotPopup } from "@copilotkit/react-ui"; // [!code highlight]
 import "@copilotkit/react-ui/styles.css"; // [!code highlight]
 
 export default function Home() {
   return (
-    <>
+    <CopilotKit publicApiKey="YOUR_PUBLIC_API_KEY"> {/* [!code highlight] */}
       <TasksProvider>
         <TasksList />
       </TasksProvider>
-      <CopilotPopup /> // [!code highlight]
-    </>
+      <CopilotPopup /> {/* [!code highlight] */}
+    </CopilotKit> {/* [!code highlight] */}
   );
 }
 ```

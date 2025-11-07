@@ -13,7 +13,10 @@
     "---Troubleshooting---",
     "...troubleshooting",
     "---Other---",
-    "../shared/(other)/contributing",
+    "../../(root)/(other)/contributing",
+    "../../(root)/(other)/telemetry"
+  ]
+}
     "../shared/(other)/telemetry"
   ]
 }

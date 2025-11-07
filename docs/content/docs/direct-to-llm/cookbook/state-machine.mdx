@@ -57,6 +57,15 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
 
     // ...
 
+    ```tsx
+    import { 
+      useCopilotAdditionalInstructions, 
+      useCopilotAction, 
+      useCopilotReadable 
+    } from "@copilotkit/react-core";
+
+    // ...
+
     /*
      * Not required, but it is convenient to use a dedicated hook to define each 
      * stage of the state machine
@@ -78,21 +87,21 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
         instructions: "Ask for the user's name politely.",
         // [!code highlight:2]
         // Use "available" argument to enable this only when the stage is correct!
-        available: stage === "one" ? "available" : "disabled"
+        available: stage === "one" ? "enabled" : "disabled"
       })
 
       // Add context to the system prompt if this stage is active
       useCopilotReadable({
         description: "Other names",
         value: ["John", "Jane", "Jim"],
-        available: stage === "one" ? "available" : "disabled" // [!code highlight]
+        available: stage === "one" ? "enabled" : "disabled" // [!code highlight]
       })
 
       // Add an action to the assistant that transitions to the next stage if this stage is active
       useCopilotAction({
         name: "transitionToNextStage",
         description: "Moves to the next stage, only called when the user's name is not in the list of other names",
-        available: stage === "one" ? "available" : "disabled", // [!code highlight]
+        available: stage === "one" ? "enabled" : "disabled", // [!code highlight]
         parameters: [
           { name: "name", type: "string", description: "The name of the user", required: true },
         ],
@@ -123,15 +132,8 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
       // Add stage-specific instructions - only available in stage "two"
       useCopilotAdditionalInstructions({
         instructions: "Talk to the user about their name and refer to them like a pirate would.",
-        available: stage === "two" ? "available" : "disabled"
+        available: stage === "two" ? "enabled" : "disabled"
       })
-
-      // ...
-    }
-
-    // Any additional stages you want to add...
-    ```
-  </Step>
 
   <Step>
     ### Put it all together
@@ -201,21 +203,21 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
           useCopilotAdditionalInstructions({
             instructions: "Ask for the user's name politely.",
             // Use "available" argument to enable this only when the stage is correct!
-            available: stage === "one" ? "available" : "disabled"
+            available: stage === "one" ? "enabled" : "disabled"
           })
         
           // Add context to the system prompt if this stage is active
           useCopilotReadable({
             description: "Other names",
             value: ["John", "Jane", "Jim"],
-            available: stage === "one" ? "available" : "disabled"
+            available: stage === "one" ? "enabled" : "disabled"
           })
         
           // Add an action to the assistant that transitions to the next stage if this stage is active
           useCopilotAction({
             name: "transitionToNextStage",
             description: "Moves to the next stage, only call is the user's name is not in the list of other names",
-            available: stage === "one" ? "available" : "disabled",
+            available: stage === "one" ? "enabled" : "disabled",
             parameters: [
               { name: "name", type: "string", description: "The name of the user", required: true },
             ],
@@ -229,11 +231,11 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
           });
         }
         
-        function useStageTwo(stage: string) => void) {
+        function useStageTwo(stage: string): void {
           // Add stage-specific instructions - only available in stage "two"
           useCopilotAdditionalInstructions({
             instructions: "Talk to the user about their name and refer to them like a pirate would.",
-            available: stage === "two" ? "available" : "disabled"
+            available: stage === "two" ? "enabled" : "disabled"
           })
         
           // ...
@@ -249,14 +251,106 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
           useCopilotReadable({
             description: "User's name",
             value: name,
-            available: stage === "one" ? "available" : "disabled"
+            available: stage === "one" ? "enabled" : "disabled"
           }, [name])
 
-          useStageOne(stage, setName);
+          useStageOne(stage, setStage, setName);
           useStageTwo(stage);
           // any other stages you want to add ...
 
           return (
+            <CopilotKit>
+              <CopilotChat/>
+            </CopilotKit>
+          )
+        }
+        ```
+      </Accordion>
+    </Accordions>
+  </Step>
+  <Step>
+    ### 🎉 You've implemented a state machine!
+    To recap, each stage hook uses the `available` prop to control when its instructions, context, and actions are accessible to the assistant. This ensures that the assistant only uses the correct tools and context for the current stage.
+
+    Next, let's see some advanced patterns you can implement with these fundamentals.
+  </Step>
+</Steps>
+          // ...
+        }
+        
+        // Any additional stages you want to add...
+
+        function StateMachineChat() {
+          const [stage, setStage] = useState<string>("one");
+          const [ name, setName ] = useState<string>("");
+
+          // Context available across all stages
+          useCopilotReadable({
+            description: "User's name",
+            value: name,
+            available: stage === "one" ? "enabled" : "disabled"
+          }, [name])
+
+          useStageOne(stage, setStage, setName);
+          useStageTwo(stage);
+          // any other stages you want to add ...
+
+          return (
+            <CopilotKit>
+              <CopilotChat/>
+            </CopilotKit>
+          )
+        }
+        ```
+      </Accordion>
+    </Accordions>
+  </Step>
+  <Step>
+    ### 🎉 You've implemented a state machine!
+    To recap, each stage hook uses the `available` prop to control when its instructions, context, and actions are accessible to the assistant. This ensures that the assistant only uses the correct tools and context for the current stage.
+
+    Next, let's see some advanced patterns you can implement with these fundamentals.
+  </Step>
+</Steps>
+            instructions: "Ask for the user's name politely.",
+            // Use "available" argument to enable this only when the stage is correct!
+            available: stage === "one" ? "enabled" : "disabled"
+          })
+        
+          // Add context to the system prompt if this stage is active
+          useCopilotReadable({
+            description: "Other names",
+            value: ["John", "Jane", "Jim"],
+            available: stage === "one" ? "enabled" : "disabled"
+          })
+        
+          // Add an action to the assistant that transitions to the next stage if this stage is active
+          useCopilotAction({
+            name: "transitionToNextStage",
+            description: "Moves to the next stage, only call is the user's name is not in the list of other names",
+            available: stage === "one" ? "enabled" : "disabled",
+            parameters: [
+              { name: "name", type: "string", description: "The name of the user", required: true },
+            ],
+            handler: ({ name }) => {
+              // Perform any state updates given the user's input
+              setName(name);
+        
+              // Transition to the next stage
+              setStage("two"); 
+            }
+          });
+        }
+        
+        function useStageTwo(stage: string): void {
+  </Step>
+  <Step>
+    ### 🎉 You've implemented a state machine!
+    To recap, each stage hook uses the `available` prop to control when its instructions, context, and actions are accessible to the assistant. This ensures that the assistant only uses the correct tools and context for the current stage.
+
+    Next, let's see some advanced patterns you can implement with these fundamentals.
+  </Step>
+</Steps>
             <CopilotKit>
               <CopilotChat/>
             </CopilotKit>

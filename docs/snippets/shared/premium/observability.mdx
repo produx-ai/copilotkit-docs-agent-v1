@@ -24,6 +24,11 @@ import { CopilotChat } from "@copilotkit/react-ui";
 import { CopilotKit } from "@copilotkit/react-core";
 
 export default function App() {
+```tsx
+import { CopilotChat } from "@copilotkit/react-ui";
+import { CopilotKit } from "@copilotkit/react-core";
+
+export default function App() {
   return (
     <CopilotKit
       publicApiKey="ck_pub_your_key" // [!code highlight] - Use publicApiKey for Copilot Cloud
@@ -41,20 +46,22 @@ export default function App() {
           onChatExpanded: () => {
             // [!code highlight]
             console.log("Chat opened");
-            analytics.track("chat_expanded");
-          }, // [!code highlight]
-          onChatMinimized: () => {
-            // [!code highlight]
-            console.log("Chat closed");
-            analytics.track("chat_minimized");
-          }, // [!code highlight]
-          onFeedbackGiven: (messageId, type) => {
+
             // [!code highlight]
             console.log("Feedback:", type, messageId);
             analytics.track("chat_feedback", { messageId, type });
           }, // [!code highlight]
         }} // [!code highlight]
       />
+    </CopilotKit>
+  );
+}
+```
+    </CopilotKit>
+  );
+}
+```
+
     </CopilotKit>
   );
 }
