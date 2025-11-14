@@ -14,47 +14,66 @@ Essentially, we want our copilot to be able to call the `addTask`, `setTaskStatu
 
 The [`useFrontendTool`](/reference/hooks/useFrontendTool) hook makes tools available to our copilot. Let's implement it in the [`lib/hooks/use-tasks.tsx`](https://github.com/CopilotKit/example-todos-app/blob/base-start-here/lib/hooks/use-tasks.tsx) file.
 
-```tsx filename="lib/hooks/use-tasks.tsx" showLineNumbers {3-3,8-22,24-38,40-61}
+```tsx filename="lib/hooks/use-tasks.tsx" showLineNumbers {3-3,8-28,30-46,48-73}
 // ... the rest of the file
 
 import { useCopilotReadable, useFrontendTool } from "@copilotkit/react-core"; // [!code highlight]
-import { z } from "zod"; // [!code highlight]
 
 export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>(defaultTasks);
 
-  // [!code highlight:10]
+  // [!code highlight:16]
   useFrontendTool({
     name: "addTask",
     description: "Adds a task to the todo list",
-    parameters: z.object({
-      title: z.string().describe("The title of the task"),
-    }),
+    parameters: [
+      {
+        name: "title",
+        type: "string",
+        description: "The title of the task",
+        required: true,
+      },
+    ],
     handler: ({ title }) => {
       addTask(title);
     },
   });
 
-  // [!code highlight:10]
+  // [!code highlight:16]
   useFrontendTool({
     name: "deleteTask",
     description: "Deletes a task from the todo list",
-    parameters: z.object({
-      id: z.number().describe("The id of the task"),
-    }),
+    parameters: [
+      {
+        name: "id",
+        type: "number",
+        description: "The id of the task",
+        required: true,
+      },
+    ],
     handler: ({ id }) => {
       deleteTask(id);
     },
   });
 
-  // [!code highlight:11]
+  // [!code highlight:21]
   useFrontendTool({
     name: "setTaskStatus",
     description: "Sets the status of a task",
-    parameters: z.object({
-      id: z.number().describe("The id of the task"),
-      status: z.enum(Object.values(TaskStatus) as [string, ...string[]]).describe("The status of the task"),
-    }),
+    parameters: [
+      {
+        name: "id",
+        type: "number",
+        description: "The id of the task",
+        required: true,
+      },
+      {
+        name: "status",
+        type: "string",
+        description: "The status of the task",
+        required: true,
+      },
+    ],
     handler: ({ id, status }) => {
       setTaskStatus(id, status);
     },
@@ -68,8 +87,8 @@ The `useFrontendTool` hook is a powerful hook that allows us to register tools w
 
 - `name` is the name of the tool.
 - `description` is a description of the tool. It's important to choose a good description so that our copilot can choose the right tool.
-- `parameters` is a Zod schema that defines the parameters the tool accepts. This provides runtime validation and TypeScript type inference.
-- `handler` is a function that will be called when the tool is triggered. It's type safe thanks to Zod!
+- `parameters` is an array of parameter definitions that specify what inputs the tool accepts. Each parameter has a `name`, `type`, `description`, and `required` field.
+- `handler` is a function that will be called when the tool is triggered. The parameters are automatically type-checked!
 
 You can check out the full reference for the `useFrontendTool` hook [here](https://docs.copilotkit.ai/reference/hooks/useFrontendTool).
 
