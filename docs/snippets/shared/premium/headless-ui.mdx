@@ -278,8 +278,9 @@ Headless UI, you have full control over the lifecycle of these suggestions.
 
 You can generate suggestions by calling the `generateSuggestions` function.
 ```tsx title="src/app/components/chat.tsx"
-import { useCopilotChatHeadless_c, useCopilotChatSuggestions } from "@copilotkit/react-core"; // [!code highlight]
-
+import { useCopilotChatHeadless_c } from "@copilotkit/react-core"; // [!code highlight]
+import { useCopilotChatSuggestions } from "@copilotkit/react-ui"; // [!code highlight]
+{/* CORRECTED: useCopilotChatSuggestions is exported from @copilotkit/react-ui, not @copilotkit/react-core */}
 export const Chat = () => {
   // Specify what suggestions should be generated
   // [!code highlight:5]

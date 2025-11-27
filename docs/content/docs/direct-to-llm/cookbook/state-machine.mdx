@@ -229,7 +229,8 @@ standard deterministic update (button clicks), and sometimes through LLM-driven 
           });
         }
         
-        function useStageTwo(stage: string) => void) {
+        function useStageTwo(stage: string): void {
+        {/* CORRECTED: Fixed function signature - was `function useStageTwo(stage: string) => void)` which is invalid syntax */}
           // Add stage-specific instructions - only available in stage "two"
           useCopilotAdditionalInstructions({
             instructions: "Talk to the user about their name and refer to them like a pirate would.",
