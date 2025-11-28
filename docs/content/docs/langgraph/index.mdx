@@ -8,22 +8,31 @@ import { SiLangchain } from "react-icons/si";
 import { FrameworkOverview } from "@/components/content/landing-pages/framework-overview";
 
 <FrameworkOverview
-  frameworkName="LangGraph"
+  initCommand="npx copilotkit@latest create -f langgraph-py"
   frameworkIcon={<SiLangchain className="h-14 w-14" />}
   header="Bring your LangGraph agents to your users"
   subheader="Give your LangGraph agents real user-interactivity using CopilotKit and AG-UI. Build rich, interactive, agent-powered applications."
   bannerVideo="https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/overview.mp4"
   guideLink="/langgraph/quickstart"
   initCommand="npx copilotkit@latest init"
-  featuresLink="https://feature-viewer.copilotkit.ai/langgraph/feature/agentic_chat"
-  supportedFeatures={[
     {
       title: "Generative UI",
       description: "Render your agent's state, progress, outputs, and tool calls with custom UI components in real-time. Bridges the gap between AI agents and user interfaces.",
-      documentationLink: "/coagents/generative-ui",
+      documentationLink: "/langgraph/generative-ui",
       demoLink: "https://feature-viewer.copilotkit.ai/langgraph/feature/tool_based_generative_ui",
       videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/haiku.mp4"
     },
+    {
+      title: "Human in the Loop",
+      demoLink: "https://feature-viewer.copilotkit.ai/langgraph/feature/shared_state",
+      documentationLink: "/langgraph/human-in-the-loop",
+      demoLink: "https://examples-coagents-ai-travel-app.vercel.app/",
+      videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/human-in-the-loop-example.mp4"
+    },
+    {
+      title: "Shared State",
+      description: "Keep your agent and your app in sync. Your agent can see everything in your app, and your app can react to your agent in real-time.",
+      documentationLink: "/langgraph/shared-state",
     {
       title: "Human in the Loop",
       description: "Empower users to guide agents at key checkpoints. Combine the best of AI and human judgment for more reliable and controllable agent behavior.",

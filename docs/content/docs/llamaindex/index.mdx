@@ -3,12 +3,15 @@ title: Introduction
 icon: "custom/llamaindex"
 description: Bring your LlamaIndex agents to your users with CopilotKit via AG-UI.
 hideHeader: true
----
-import { customIcons } from "@/lib/icons/custom-icons";
-import { FrameworkOverview } from "@/components/content/landing-pages/framework-overview";
-
 <FrameworkOverview
-  frameworkName="LlamaIndex"
+  initCommand="npx copilotkit@latest create -f llamaindex"
+  frameworkIcon={<customIcons.llamaindex className="h-10 w-10 text-foreground" />}
+  header="Bring your LlamaIndex agents to your users"
+  subheader="Give your LlamaIndex agents real user-interactivity using CopilotKit and AG-UI. Build rich, interactive, agent-powered applications."
+  bannerVideo="https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/overview.mp4"
+  guideLink="/llamaindex/quickstart"
+<FrameworkOverview
+  initCommand="npx copilotkit@latest create -f llamaindex"
   frameworkIcon={<customIcons.llamaindex className="h-10 w-10 text-foreground" />}
   header="Bring your LlamaIndex agents to your users"
   subheader="Give your LlamaIndex agents real user-interactivity using CopilotKit and AG-UI. Build rich, interactive, agent-powered applications."
