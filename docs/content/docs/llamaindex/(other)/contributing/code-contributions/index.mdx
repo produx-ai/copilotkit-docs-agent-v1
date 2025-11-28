@@ -15,11 +15,11 @@ This guide will help you get started as smoothly as possible.
 ## Step 2: Repository Setup
 
 <Steps>
-  <Step>
-  ### Fork The Repository
-  First, head over to the [CopilotKit repository](https://github.com/CopilotKit/CopilotKit) and create a fork.
-
   Then, clone your fork to your local machine:
+  ```bash
+  git clone https://github.com/<your-username>/CopilotKit
+  cd CopilotKit
+  ```
   ```bash
   git clone https://github.com/<your-username>/CopilotKit
   cd CopilotKit/CopilotKit
@@ -74,27 +74,25 @@ For this tutorial, we'll use the `next-openai` example, specifically the Present
 In a separate terminal, run the following command to start the example:
 
 ```bash
-cd examples/next-openai
-export OPENAI_API_KEY=<your-openai-api-key>
-pnpm run example-dev
+In most cases, you want to seamlessly be able to test your changes in real-time as you develop.
+
+The easiest way to get a hot-reload development environment is to use the ready-made development script with one of the CoAgent examples. This allows you to work on CopilotKit internals while seeing your changes applied in real-time.
+
+As a prerequisite, ensure you have GNU parallel and langgraph CLI installed.
+
+From the root `CopilotKit/` directory, run the following command in a separate terminal:
+
+```bash
+./scripts/develop/example.sh coagents-starter
 ```
 
-<Callout type="info">
-We use the `pnpm run example-dev` command to run examples, which is different from the `turbo run dev` command we use to work on the individual packages.
-</Callout>
+This will start a development environment with hot reload. You can also run the example with the LangGraph platform backend:
 
-Now navigate to http://localhost:3000/presentation and you should see the example running. Any changes you make to the CopilotKit packages will immediately be reflected here.
-
-## Step 5: Formatting and Linting
-
-Before committing your changes, ensure your files are formatted properly by running the following at the root of the monorepo:
 ```bash
-turbo run format
+./scripts/develop/example.sh coagents-starter langgraph-platform
 ```
 
-Additionally, ensure you have no linting errors:
-```bash
-turbo run lint
+Any changes you make to the CopilotKit packages will immediately be reflected in the running example.
 ```
 
 ## Step 6: Submit a Pull Request
