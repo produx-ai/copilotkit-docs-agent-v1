@@ -119,14 +119,14 @@ when your agent is calling tools. CopilotKit allows you to fully customize how t
 ## Advanced Usage
 
 ### Re-run the agent with a hint about what's changed
-
-The new agent state will be used next time the agent runs.
-If you want to re-run it manually, use the `run` argument on the `useCoAgent` hook.
-
-The agent will be re-run, and it will get not only the latest updated state, but also a **hint** that can depend on the data delta between the previous and the current state.
-
-```tsx title="ui/app/page.tsx"
-import { useCoAgent } from "@copilotkit/react-core";
+    // [!code highlight:7]
+    // re-run the agent and provide a hint about what's changed
+    run(({ previousState, currentState }) => {
+      return new TextMessage({
+        role: MessageRole.user,
+        content: `the language has been updated to ${currentState.language}`,
+      });
+    });
 import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";  // [!code highlight]
 
 // ...
@@ -138,12 +138,13 @@ function YourMainContent() {
     initialState: { language: "spanish" }  // optionally provide an initial state
   });
 
-  // setup to be called when some event in the app occurs
-  const toggleLanguage = () => {
-    const newLanguage = state.language === "english" ? "spanish" : "english";
-    setState({ language: newLanguage });
+### Intermediately Stream and Render Agent State
+By default, the LangGraph agent state will only update *between* LangGraph node transitions --
+which means state updates will be discontinuous and delayed.
 
-    // [!code highlight:7]
+You likely want to render the agent state as it updates **continuously.**
+
+See **[predictive state updates](/langgraph/shared-state/predictive-state-updates).**
     // re-run the agent and provide a hint about what's changed
     run(({ previousState, currentState }) => {
       return new TextMessage({

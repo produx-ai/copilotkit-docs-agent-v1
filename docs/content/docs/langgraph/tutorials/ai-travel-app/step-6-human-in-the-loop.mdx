@@ -21,7 +21,7 @@ All together, this process will look like this:
     <img src="https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/coagents-hitl-infographic.png" alt="Human in the loop" />
 </Frame>
 
-If you'd like to learn even more about human in the loop before proceeding, checkout our [Human in the Loop concept guide](/coagents/human-in-the-loop).
+If you'd like to learn even more about human in the loop before proceeding, checkout our [Human in the Loop concept guide](/langgraph/human-in-the-loop).
 
 Otherwise, let's get started!
 
@@ -114,20 +114,10 @@ async def chat_node(state: AgentState, config: RunnableConfig):
         emit_tool_calls=["add_trips", "update_trips", "delete_trips"],
     )
     # ...
-```
-<Callout>
-We don't want to just set True here because doing so will emit all tool calls. By specifying these, we hand are handing off tool
-handling to CopilotKit. If, for example, `search_for_places` was called here then it would break the state of tool calls.
-</Callout>
-With that, our work on the agent is complete and we are ready to update the front-end to properly take and communicate the user's decision.
-
-</Step>
-<Step>
-
 ## Rendering the tool calls and taking the user's decision
 
 Now we need to update the front-end to render the tool calls and emit the user's decision back to the agent. To do this, 
-we'll be adding `useCopilotAction` hooks for each tool call with the `renderAndWait` option.
+we'll be adding `useCopilotAction` hooks for each tool call with the `renderAndWaitForResponse` option.
 
 ```typescript title="ui/lib/hooks/use-trips.tsx"
 // ...
@@ -158,7 +148,7 @@ export const TripsProvider = ({ children }: { children: ReactNode }) => {
         required: true,
       },
     ],
-    renderAndWait: AddTrips,
+    renderAndWaitForResponse: AddTrips,
   });
 
   useCopilotAction({
@@ -170,6 +160,32 @@ export const TripsProvider = ({ children }: { children: ReactNode }) => {
         type: "object[]",
         description: "The trips to update",
         required: true,
+      },
+    ],
+    renderAndWaitForResponse: EditTrips,
+  });
+
+  useCopilotAction({
+    name: "delete_trips",
+    description: "Delete some trips",
+    parameters: [
+      {
+        name: "trip_ids",
+        type: "string[]",
+        description: "The ids of the trips to delete",
+        required: true,
+      },
+    ],
+    renderAndWaitForResponse: (props) => DeleteTrips({ ...props, trips: state.trips }),
+  });
+
+export type DeleteTripsProps = {
+  args: any;
+  status: RenderFunctionStatus;
+  respond: any;
+  trips: Trip[];
+        description: "The trips to update",
+export const DeleteTrips = ({ args, status, respond, trips }: DeleteTripsProps) => {
       },
     ],
     renderAndWait: EditTrips,
@@ -190,13 +206,14 @@ export const TripsProvider = ({ children }: { children: ReactNode }) => {
   });
 
   // ...
-```
-
-With that, our front-end is now ready to render the tool calls and take the user's decision. One thing we glossed over
-are all of the imported `humanInTheLoop` components. They're provided for the convenience of this tutorial, but we should
-note one very important thing - how they send the user's decision back to the agent.
-
-</Step>
+      { status !== "complete" && (
+        // [!code highlight:6]
+        <ActionButtons
+          status={status} 
+          respond={respond} 
+          approve={<><Trash className="w-4 h-4 mr-2" /> Delete</>} 
+          reject={<><X className="w-4 h-4 mr-2" /> Cancel</>} 
+        />
 <Step>
 ## (optional) Understanding the `humanInTheLoop` components
 
@@ -208,34 +225,37 @@ import { PlaceCard } from "@/components/PlaceCard";
 import { X, Trash } from "lucide-react";
 import { ActionButtons } from "./ActionButtons"; // [!code highlight]
 import { RenderFunctionStatus } from "@copilotkit/react-core";
-
-export type DeleteTripsProps = {
+export type ActionButtonsProps = {
+    status: RenderFunctionStatus;
+    respond: any;
   args: any;
   status: RenderFunctionStatus;
-  handler: any;
+export const ActionButtons = ({ status, respond, approve, reject }: ActionButtonsProps) => (
   trips: Trip[];
 };
 
 export const DeleteTrips = ({ args, status, handler, trips }: DeleteTripsProps) => {
-  const tripsToDelete = trips.filter((trip: Trip) => args?.trip_ids?.includes(trip.id));
+      onClick={() => respond?.("CANCEL")} // [!code highlight]
 
   return (
     <div className="space-y-4 w-full bg-secondary p-6 rounded-lg">
     <h1 className="text-sm">The following trips will be deleted:</h1>
       {status !== "complete" && tripsToDelete?.map((trip: Trip) => (
         <div key={trip.id} className="flex flex-col gap-4">
-          <>
+      onClick={() => respond?.("SEND")} // [!code highlight]
             <hr className="my-2" />
             <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold">{trip.name}</h2>
             {trip.places?.map((place) => (
               <PlaceCard key={place.id} place={place} />
             ))}
-            </div>
-          </>
-        </div>
-      ))}
-      { status !== "complete" && (
+The important piece here is that the `onClick` handlers emit the user's decision back to the agent. If the user clicks the `Delete` button
+then the `respond?.("SEND")` is called. If the user clicks the `Cancel` button then the `respond?.("CANCEL")` is called. This is how the 
+agent recieves the user's decision. 
+
+<Callout>
+If you wanted to implement a more complex UI that allows for the human to edit the tool call arguments before sending them back to the agent,
+you could do so by adding additional logic to the `onClick` handlers and the agent's handling of the tool call.
         // [!code highlight:6]
         <ActionButtons
           status={status} 

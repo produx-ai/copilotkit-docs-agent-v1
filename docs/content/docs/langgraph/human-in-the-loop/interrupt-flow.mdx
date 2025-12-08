@@ -100,9 +100,10 @@ We're going to have the agent ask us to name it, so we'll need a state property 
     </Callout>
 
     <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
+    <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
         <Tab value="Python">
             ```python title="agent/sample_agent/agent.py"
-            from langgraph.types import interrupt # [!code highlight]
+            from copilotkit.langgraph import copilotkit_interrupt # [!code highlight]
             from langchain_core.messages import SystemMessage
             from langchain_openai import ChatOpenAI
             from copilotkit import CopilotKitState
@@ -114,7 +115,9 @@ We're going to have the agent ask us to name it, so we'll need a state property 
             def chat_node(state: AgentState, config: RunnableConfig):
                 if not state.get("agent_name"):
                     # Interrupt and wait for the user to respond with a name
-                    state["agent_name"] = interrupt("Before we start, what would you like to call me?") # [!code highlight]
+                    agent_name, new_messages = copilotkit_interrupt(message='Before we start, what would you like to call me?') # [!code highlight]
+                    state["agent_name"] = agent_name # [!code highlight]
+                    state["messages"] = state["messages"] + new_messages # [!code highlight]
 
                 # Tell the agent its name
                 system_message = SystemMessage(
@@ -131,9 +134,6 @@ We're going to have the agent ask us to name it, so we'll need a state property 
                     "messages": response,
                 }
             ```
-        </Tab>
-        <Tab value="TypeScript">
-            ```typescript title="agent-js/src/agent.ts"
             import { interrupt } from "@langchain/langgraph"; // [!code highlight]
             import { SystemMessage } from "@langchain/core/messages";
             import { ChatOpenAI } from "@langchain/openai";
@@ -217,16 +217,9 @@ Try talking to your agent, you'll see that it now pauses execution and waits for
 ### Condition UI executions
 
 When rendering multiple `interrupt` events in the agent, there could be conflicts between multiple `useLangGraphInterrupt` hooks calls in the UI.
-For this reason, the hook can take an `enabled` argument which will apply it conditionally:
-
-<Steps>
-    <Step>
-        ### Define multiple interrupts
-        First, let's define two different interrupts. We will include a "type" property to differentiate them.
-        <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
             <Tab value="Python">
                 ```python title="agent/sample_agent/agent.py"
-                from langgraph.types import interrupt # [!code highlight]
+                from copilotkit.langgraph import copilotkit_interrupt # [!code highlight]
                 from langchain_core.messages import SystemMessage
                 from langchain_openai import ChatOpenAI
 
@@ -234,11 +227,15 @@ For this reason, the hook can take an `enabled` argument which will apply it con
 
                 def chat_node(state: AgentState, config: RunnableConfig):
 
-                  state["approval"] = interrupt({ "type": "approval", "content": "please approve" }) # [!code highlight]
+                  approval, approval_messages = copilotkit_interrupt(message={ "type": "approval", "content": "please approve" }) # [!code highlight]
+                  state["approval"] = approval # [!code highlight]
+                  state["messages"] = state["messages"] + approval_messages # [!code highlight]
 
                   if not state.get("agent_name"):
                     # Interrupt and wait for the user to respond with a name
-                    state["agent_name"] = interrupt({ "type": "ask", "content": "Before we start, what would you like to call me?" }) # [!code highlight]
+                    agent_name, name_messages = copilotkit_interrupt(message={ "type": "ask", "content": "Before we start, what would you like to call me?" }) # [!code highlight]
+                    state["agent_name"] = agent_name # [!code highlight]
+                    state["messages"] = state["messages"] + name_messages # [!code highlight]
 
                   # Tell the agent its name
                   system_message = SystemMessage(
@@ -252,6 +249,9 @@ For this reason, the hook can take an `enabled` argument which will apply it con
 
                   return {
                     **state,
+                    "messages": response,
+                  }
+                ```
                     "messages": response,
                   }
                 ```

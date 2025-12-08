@@ -32,18 +32,20 @@ In our `page.tsx` file, add the following code.
 ```tsx title="frontend/src/app/page.tsx"
 // ...
 import { useLangGraphInterrupt } from "@copilotkit/react-core"; // [!code ++]
-// ...
-
-export default function HomePage() {
-    // ...
-    const { state: researchState, setResearchState } = useResearch()
-
-    const streamingSection = useStreamingContent(researchState);
-
     // [!code ++:12]
     useLangGraphInterrupt<Proposal>({
-      render: ({ resolve, event }) => {
+      render: ({ resolve, event, result }) => {
         return <ProposalViewer
+          proposal={event.value}
+          onSubmit={(approved, proposal) => resolve(
+            JSON.stringify({
+              ...proposal,
+              approved,
+            })
+          )}
+        />
+      }
+    })
           proposal={event.value}
           onSubmit={(approved, proposal) => resolve(
             JSON.stringify({

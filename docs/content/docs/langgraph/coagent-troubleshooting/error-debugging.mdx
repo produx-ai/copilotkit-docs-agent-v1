@@ -135,34 +135,6 @@ import { CopilotErrorEvent } from "@copilotkit/shared";
         logToService("Agent state change", errorEvent);
         break;
     }
-  }}
->
-  {/* Your app */}
-</CopilotKit>;
-```
-
-**Features:**
-
-- ✅ **Rich error context** - detailed information about what went wrong
-- ✅ **Request/response tracking** - monitor the full conversation flow
-- ✅ **Agent state monitoring** - track agent interactions and state changes
-- ✅ **Production-ready** - structured data perfect for monitoring services
-
-**Requirements:**
-
-- Requires `publicApiKey` from [Copilot Cloud](https://cloud.copilotkit.ai)
-- Part of CopilotKit's enterprise observability offering
-
-<Callout type="info">
-  **Note:** Basic error handling works without Cloud. The `onError` hook is
-  specifically for **error observability** - sending error data to monitoring
-  services like Sentry, DataDog, etc.
-</Callout>
-
-## Error Event Structure
-
-The `onError` handler receives detailed error events with rich context:
-
 ```typescript
 interface CopilotErrorEvent {
   type:
@@ -172,6 +144,57 @@ interface CopilotErrorEvent {
     | "agent_state"
     | "action"
     | "message"
+    | "performance";
+  timestamp: number;
+  context: {
+    source: "runtime" | "ui" | "agent" | "network";
+    threadId?: string;
+    runId?: string;
+    request?: {
+      operation: string;
+      method?: string;
+      url?: string;
+      path?: string;
+      headers?: Record<string, string>;
+      body?: any;
+      startTime: number;
+    };
+    response?: {
+      endTime: number;
+      latency: number;
+      status?: number;
+      statusText?: string;
+      headers?: Record<string, string>;
+      body?: any;
+    };
+    agent?: {
+      name: string;
+      nodeName?: string;
+      state?: any;
+    };
+    messages?: {
+      input: any[];
+      output?: any[];
+      messageCount: number;
+    };
+    technical?: {
+      environment: string;
+      userAgent?: string;
+      host?: string;
+      version?: string;
+      stackTrace?: string;
+    };
+    performance?: {
+      requestDuration?: number;
+      streamingDuration?: number;
+      actionExecutionTime?: number;
+      memoryUsage?: number;
+    };
+    metadata?: Record<string, any>;
+  };
+  error?: any; // Present for error events
+}
+```
     | "performance";
   timestamp: number;
   context: {

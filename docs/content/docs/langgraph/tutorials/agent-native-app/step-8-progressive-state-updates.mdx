@@ -22,8 +22,8 @@ setup the `emit_intermediate_state` property. We define a list of objects which 
 tool calls.
 
 ```python title="agent/section_writer.py"
-from copilotkit.langchain import copilotkit_customize_config, copilotkit_emit_state // [!code ++]
-
+```python title="agent/section_writer.py"
+from copilotkit.langgraph import copilotkit_customize_config, copilotkit_emit_state // [!code ++]
 # ...
 @tool("section_writer", args_schema=SectionWriterInput, return_direct=True)
 async def section_writer(research_query, section_title, idx, state):

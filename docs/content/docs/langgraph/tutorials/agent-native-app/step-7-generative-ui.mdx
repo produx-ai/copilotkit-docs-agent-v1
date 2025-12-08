@@ -47,8 +47,9 @@ look at them:
 - `agent/tools/tavily_extract.py`
 - `agent/tools/tavily_search.py`
 
-Each of these files will write their progress to the `logs` field of the agent's state. Directly after that, we call `copilotkit_emit_state` to emit the state to the frontend.
-
+```python title="agent/graph.py"
+# ...
+from copilotkit.langgraph import copilotkit_emit_state # [!code ++]
 For example, in the `tool_node` we update some state based on the tool result and then use `copilotkit_emit_state` to emit the state to the frontend.
 
 ```python title="agent/graph.py"

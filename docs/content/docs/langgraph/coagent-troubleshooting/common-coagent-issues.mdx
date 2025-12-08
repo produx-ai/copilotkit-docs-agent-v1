@@ -15,18 +15,12 @@ Welcome to the CoAgents Troubleshooting Guide! If you're having trouble getting 
     We also highly encourage any open source contributors that want to add their own troubleshooting issues to [Github as a pull request](https://github.com/CopilotKit/CopilotKit/blob/main/CONTRIBUTING.md).
 
 </Callout>
-
-## My tool calls are not being streamed
-
+First, we strongly recommend checking out our [Human In the Loop](/langgraph/human-in-the-loop) guide to follow a more in depth example of how to stream tool calls
+in your LangGraph agents. You can also check out our [travel tutorial](/langgraph/tutorials/ai-travel-app/step-6-human-in-the-loop) which talks about how to stream
+tool calls in a more complex example.
 This could be due to a few different reasons.
 
 First, we strongly recommend checking out our [Human In the Loop](/coagents/human-in-the-loop) guide to follow a more in depth example of how to stream tool calls
-in your LangGraph agents. You can also check out our [travel tutorial](/coagents/tutorials/ai-travel-app/step-6-human-in-the-loop) which talks about how to stream
-tool calls in a more complex example.
-
-If you have already done that, you can check the following:
-
-<Accordions>
     <Accordion title="You're using llm.invoke() instead of llm.ainvoke()">
         <p>
             When you invoke your LangGraph agent, you can invoke it synchronously or asynchronously. If you invoke it synchronously,
@@ -34,7 +28,13 @@ If you have already done that, you can check the following:
             the tool calls will be streamed progressively.
 
             ```python
-            config = copilotkit_customize_config(config, emit_tool_calls=["say_hello_to"])
+            response = await llm_with_tools.ainvoke(
+                [ SystemMessage(content=system_message), *state["messages"] ],
+                config=config
+            )
+            ```
+        </p>
+    </Accordion>
             response = await llm_with_tools.ainvoke(
                 [ SystemMessage(content=system_message), *state["messages"] ],
                 config=config
@@ -198,35 +198,38 @@ If you're seeing this error, it means the LangGraph platform client cannot conne
     </Accordion>
     <Accordion title="Verify the remote endpoint matches the endpoint definition type">
         If you are running your remote endpoint using FastAPI, even if it uses LangGraph for the agent, it is not considered a LangGraph platform endpoint.
-        You may need to change your `remoteEndpoints` definition for this endpoint to match the expected format.
-
-        Change the endpoint definition, from:
-        ```
-        new CopilotRuntime({
-          remoteEndpoints: [
-            langGraphPlatformEndpoint({
-            deploymentUrl: "https://your-fastapi-endpoint:port",
-            langsmithApiKey: '<langsmith API key>' // optional
-            agents: [], // Your previous agents definition
-          ],
-        });
-
-        // or
-
-        new CopilotRuntime({
-          agents: {
-            'agent-name': new LangGraphAgent({
-              deploymentUrl: "https://your-fastapi-endpoint:port",
-              langsmithApiKey: '<langsmith API key>', // optional
-              graphId: 'langgraph.json graph id', // Your previous graphId definition
-            }),
-          }
-        });
+                ```python
+                from copilotkit.langgraph import copilotkit_customize_config
+ 
+                async def chat_node(state: AgentState, config: RunnableConfig):
+                    # 1) Call the model with CopilotKit's modified config
+                    model = ChatOpenAI(model="gpt-4o")
+                    response = await model.ainvoke(state["messages"], config) 
+                
+                    # 2) Make sure to return the new messages
+                    return {
+                        "messages": response,
+                    }
+                ```
+            </Tab>
+            <Tab value="TypeScript">
+                ```typescript
+                import { copilotkitCustomizeConfig } from '@copilotkit/sdk-js/langgraph';
+ 
+                async function chatNode(state: AgentState, config: RunnableConfig): Promise<AgentState> {
+                    const model = new ChatOpenAI({ temperature: 0, model: "gpt-4o" });
+                    const response = await model.invoke(state.messages, config);
+                
+                    // 2) Make sure to return the new messages
+                    return {
+                        messages: response,
+                    }
+                }
         ```
 
         To:
-        ```
-        new CopilotRuntime({
+        In this case, you can reference our document on [disabling streaming](/langgraph/advanced/disabling-state-streaming). More specifically,
+        you can use the copilotkit config to disable emitting messages anywhere you'd like a message to not be streamed.
             agents: {
                 'agent-name': new LangGraphHttpAgent({
                     url: 'https://your-fastapi-endpoint:port/your-agent-uri'

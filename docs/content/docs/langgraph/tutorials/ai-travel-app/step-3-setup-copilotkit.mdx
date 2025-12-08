@@ -151,33 +151,42 @@ And we're done! Here's what we did:
 </Step>
 
 </Step>
-</Steps>
-</TailoredContentOption>
-<TailoredContentOption 
-  id="self-hosted"
-  title="Self-hosted"
-  icon={<GoServer />}
-  description="I want to learn how to self-host CopilotKit and will own the extra complexity."
->
-<Steps>
-<Step>
-### Set up Copilot Runtime Endpoint
-<SelfHostingCopilotRuntimeCreateEndpoint components={props.components} />
-</Step>
-<Step>
+### CopilotKit Chat Popup
 
-### Configure the CopilotKit Provider
-```tsx title="app/page.tsx" showLineNumbers
+We provide several plug-and-play components for you to interact with your copilot. Some of these are `<CopilotPopup/>`, `<CopilotSidebar/>`, and `<CopilotChat/>`. You can of course use CopilotKit in headless mode and provide your own fully custom UI via [`useCopilotChat`](/reference/hooks/useCopilotChat).
+
+In this tutorial, we'll use the `<CopilotSidebar/>` component to display the chat sidebar.
+
+```tsx title="ui/app/page.tsx" showLineNumbers {6-7,15}
 "use client";
 
 import { TasksList } from "@/components/TasksList";
 import { TasksProvider } from "@/lib/hooks/use-tasks";
-import { CopilotKit } from "@copilotkit/react-core"; // [!code ++]
+import { CopilotKit } from "@copilotkit/react-core";
+import { CopilotSidebar } from "@copilotkit/react-ui"; // [!code ++]
+import "@copilotkit/react-ui/styles.css"; // [!code ++]
 
 export default function Home() {
   return (
-    <CopilotKit runtimeUrl="/api/copilotkit"> // [!code ++]
-      <TasksProvider>
+    <CopilotKit runtimeUrl="/api/copilotkit">
+      /* [!code ++:9] */
+      <CopilotSidebar
+        defaultOpen={true}
+        clickOutsideToClose={false}
+        labels={{
+          title: "Travel Planner",
+          initial: "Hi! 👋 I'm here to plan your trips. I can help you manage your trips, add places to them, or just generally work with you to plan a new one.",
+        }}
+      />
+      <TooltipProvider>
+        <TripsProvider>
+          <main className="h-screen w-screen">
+            <MapCanvas />
+          </main>
+        </TripsProvider>
+      </TooltipProvider>
+    </CopilotKit>
+  );
         <TasksList />
       </TasksProvider>
     </CopilotKit> // [!code ++]

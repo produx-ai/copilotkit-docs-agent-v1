@@ -121,24 +121,24 @@ Use frontend tools when you need your agent to interact with client-side primiti
         </Tabs>
 
         By doing this, your agent's state will include the `copilotkit` property, which contains the frontend tools that can be accessed and invoked.
-    </Step>
-    <Step>
-        ### Accessing Frontend Tools
-
-        Once your agent's state includes the `copilotkit` property, you can access the frontend tools and utilize them within your agent's logic.
-
-        Here's how you can call a frontend tool from your agent:
-
-        <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
-            <Tab value="Python">
                 ```python title="agent-py/sample_agent/agent.py"
                 async def agent_node(state: YourAgentState, config: RunnableConfig):
                     # Access the tools from the copilotkit property
 
-                    tools = state.get("copilotkit", {}).get("actions", []) # [!code highlight]
+                    tools = state["copilotkit"]["actions"] # [!code highlight]
                     model = ChatOpenAI(model="gpt-4o").bind_tools(tools)
 
                     # ...
+        <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
+            <Tab value="TypeScript">
+                ```typescript title="agent-js/src/agent.ts"
+                import { convertActionsToDynamicStructuredTools } from "@copilotkit/sdk-js"; // [!code highlight]
+
+                async function agentNode(state: YourAgentState, config: RunnableConfig): Promise<YourAgentState> {
+                    // Access the tools from the copilotkit property
+
+                    const tools = convertActionsToDynamicStructuredTools(state.copilotkit.actions); // [!code highlight]
+                    const model = ChatOpenAI({ model: 'gpt-4o' }).bindTools(tools);
                 ```
             </Tab>
             <Tab value="TypeScript">
