@@ -371,7 +371,7 @@ const YourMainContent = () => {
     // styles omitted for brevity
     // [!code highlight:28]
     useLangGraphInterrupt({
-        handler: async ({ result, event, resolve }) => {
+        handler: async ({ event, resolve }) => {
             const { department } = await getUserByEmail(userEmail)
             if (event.value.accessDepartment === department || department === 'admin') {
                 // Following the resolution of the event, we will not proceed to the render method

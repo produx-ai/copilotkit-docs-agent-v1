@@ -103,28 +103,14 @@ Use frontend tools when you need your agent to interact with client-side primiti
 
                 export const YourAgentStateAnnotation = Annotation.Root({
                     yourAdditionalProperty: Annotation<string>,
-                async def agent_node(state: YourAgentState, config: RunnableConfig):
-                    # Access the tools from the copilotkit property
-
-                    tools = state["copilotkit"]["actions"] # [!code highlight]
-                    model = ChatOpenAI(model="gpt-4o").bind_tools(tools)
-
-                    # ...
-
-            <Tab value="TypeScript">
-                ```typescript title="agent-js/src/agent.ts"
-                import { convertActionsToDynamicStructuredTools } from "@copilotkit/sdk-js/langgraph"; // [!code highlight]
-
-                async function agentNode(state: YourAgentState, config: RunnableConfig): Promise<YourAgentState> {
-                    // Convert actions to dynamic structured tools
-
-                    const tools = convertActionsToDynamicStructuredTools(state.copilotkit.actions); // [!code highlight]
-                    const model = ChatOpenAI({ model: 'gpt-4o' }).bindTools(tools);
-
-                    // ...
-                }
+                    ...CopilotKitStateAnnotation.spec, // [!code highlight]
+                });
                 ```
             </Tab>
+        </Tabs>
+    </Step>
+    <Step>
+        ### Use the tools in your agent
         Here's how you can call a frontend tool from your agent:
 
         <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
@@ -139,10 +125,17 @@ Use frontend tools when you need your agent to interact with client-side primiti
                     # ...
                 ```
             </Tab>
-            <Tab value="TypeScript">
-                ```typescript title="agent-js/src/agent.ts"
-                async function agentNode(state: YourAgentState, config: RunnableConfig): Promise<YourAgentState> {
-                    // Access the tools from the copilotkit property
+        </Tabs>
+
+        These tools are automatically populated by CopilotKit and are compatible with LangChain's tool call definitions, making it straightforward to integrate them into your agent's workflow.
+    </Step>
+    <Step>
+        ### Give it a try!
+        You've now given your agent the ability to directly call any frontend tools you've defined. These tools will be available to the agent where they can be used as needed.
+
+        <video src="https://cdn.copilotkit.ai/docs/copilotkit/images/frontend-actions-demo.mp4" className="rounded-lg shadow-xl" loop playsInline controls autoPlay muted />
+    </Step>
+</Steps>
 
                     const tools = state.copilotkit?.actions; // [!code highlight]
                     const model = ChatOpenAI({ model: 'gpt-4o' }).bindTools(tools);

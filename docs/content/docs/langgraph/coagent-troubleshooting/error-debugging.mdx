@@ -115,11 +115,12 @@ The dev console provides immediate visual feedback during development:
 The error observability hooks provide programmatic access to detailed error information for monitoring and analytics:
 
 ```tsx
-import { CopilotErrorEvent } from "@copilotkit/shared";
+```tsx
+import { ErrorEvent } from "@copilotkit/shared";
 
 <CopilotKit
   publicApiKey="ck_pub_your_key"
-  onError={(errorEvent: CopilotErrorEvent) => {
+  onError={(errorEvent: ErrorEvent) => {
     // Send error data to monitoring services
     switch (errorEvent.type) {
       case "error":
@@ -147,7 +148,7 @@ interface CopilotErrorEvent {
     | "performance";
   timestamp: number;
   context: {
-    source: "runtime" | "ui" | "agent" | "network";
+    source: "ui" | "runtime" | "agent" | "network";
     threadId?: string;
     runId?: string;
     request?: {
@@ -198,7 +199,7 @@ interface CopilotErrorEvent {
     | "performance";
   timestamp: number;
   context: {
-    source: "ui" | "runtime" | "agent";
+    source: "ui" | "runtime" | "agent" | "network";
     request?: {
       operation: string;
       method?: string;

@@ -178,42 +178,9 @@ export const TripsProvider = ({ children }: { children: ReactNode }) => {
     ],
     renderAndWaitForResponse: (props) => DeleteTrips({ ...props, trips: state.trips }),
   });
+```
 
-export type DeleteTripsProps = {
-  args: any;
-  status: RenderFunctionStatus;
-  respond: any;
-  trips: Trip[];
-        description: "The trips to update",
-export const DeleteTrips = ({ args, status, respond, trips }: DeleteTripsProps) => {
-      },
-    ],
-    renderAndWait: EditTrips,
-  });
-
-  useCopilotAction({
-    name: "delete_trips",
-    description: "Delete some trips",
-    parameters: [
-      {
-        name: "trip_ids",
-        type: "string[]",
-        description: "The ids of the trips to delete",
-        required: true,
-      },
-    ],
-    renderAndWait: (props) => DeleteTrips({ ...props, trips: state.trips }),
-  });
-
-  // ...
-      { status !== "complete" && (
-        // [!code highlight:6]
-        <ActionButtons
-          status={status} 
-          respond={respond} 
-          approve={<><Trash className="w-4 h-4 mr-2" /> Delete</>} 
-          reject={<><X className="w-4 h-4 mr-2" /> Cancel</>} 
-        />
+</Step>
 <Step>
 ## (optional) Understanding the `humanInTheLoop` components
 
@@ -225,41 +192,36 @@ import { PlaceCard } from "@/components/PlaceCard";
 import { X, Trash } from "lucide-react";
 import { ActionButtons } from "./ActionButtons"; // [!code highlight]
 import { RenderFunctionStatus } from "@copilotkit/react-core";
-export type ActionButtonsProps = {
-    status: RenderFunctionStatus;
-    respond: any;
+
+export type DeleteTripsProps = {
   args: any;
   status: RenderFunctionStatus;
-export const ActionButtons = ({ status, respond, approve, reject }: ActionButtonsProps) => (
+  respond: any;
   trips: Trip[];
 };
 
-export const DeleteTrips = ({ args, status, handler, trips }: DeleteTripsProps) => {
-      onClick={() => respond?.("CANCEL")} // [!code highlight]
+export const DeleteTrips = ({ args, status, respond, trips }: DeleteTripsProps) => {
+  const tripsToDelete = trips.filter(trip => args.trip_ids.includes(trip.id));
 
   return (
     <div className="space-y-4 w-full bg-secondary p-6 rounded-lg">
-    <h1 className="text-sm">The following trips will be deleted:</h1>
+      <h1 className="text-sm">The following trips will be deleted:</h1>
       {status !== "complete" && tripsToDelete?.map((trip: Trip) => (
         <div key={trip.id} className="flex flex-col gap-4">
-      onClick={() => respond?.("SEND")} // [!code highlight]
-            <hr className="my-2" />
-            <div className="flex flex-col gap-4">
+          <hr className="my-2" />
+          <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold">{trip.name}</h2>
             {trip.places?.map((place) => (
               <PlaceCard key={place.id} place={place} />
             ))}
-The important piece here is that the `onClick` handlers emit the user's decision back to the agent. If the user clicks the `Delete` button
-then the `respond?.("SEND")` is called. If the user clicks the `Cancel` button then the `respond?.("CANCEL")` is called. This is how the 
-agent recieves the user's decision. 
-
-<Callout>
-If you wanted to implement a more complex UI that allows for the human to edit the tool call arguments before sending them back to the agent,
-you could do so by adding additional logic to the `onClick` handlers and the agent's handling of the tool call.
+          </div>
+        </div>
+      ))}
+      {status !== "complete" && (
         // [!code highlight:6]
         <ActionButtons
           status={status} 
-          handler={handler} 
+          respond={respond} 
           approve={<><Trash className="w-4 h-4 mr-2" /> Delete</>} 
           reject={<><X className="w-4 h-4 mr-2" /> Cancel</>} 
         />
@@ -278,25 +240,25 @@ import { Button } from "../ui/button";
 
 export type ActionButtonsProps = {
     status: RenderFunctionStatus;
-    handler: any;
+    respond: any;
     approve: React.ReactNode;
     reject: React.ReactNode;
 }
 
-export const ActionButtons = ({ status, handler, approve, reject }: ActionButtonsProps) => (
+export const ActionButtons = ({ status, respond, approve, reject }: ActionButtonsProps) => (
   <div className="flex gap-4 justify-between">
     <Button 
       className="w-full"
       variant="outline"
       disabled={status === "complete" || status === "inProgress"} 
-      onClick={() => handler?.("CANCEL")} // [!code highlight]
+      onClick={() => respond?.("CANCEL")} // [!code highlight]
     >
       {reject}
     </Button>
     <Button 
       className="w-full"
       disabled={status === "complete" || status === "inProgress"} 
-      onClick={() => handler?.("SEND")} // [!code highlight]
+      onClick={() => respond?.("SEND")} // [!code highlight]
     >
       {approve}
     </Button>
@@ -305,13 +267,9 @@ export const ActionButtons = ({ status, handler, approve, reject }: ActionButton
 ```
 
 The important piece here is that the `onClick` handlers emit the user's decision back to the agent. If the user clicks the `Delete` button
-then the `handler?.("SEND")` is called. If the user clicks the `Cancel` button then the `handler?.("CANCEL")` is called. This is how the 
+then the `respond?.("SEND")` is called. If the user clicks the `Cancel` button then the `respond?.("CANCEL")` is called. This is how the 
 agent recieves the user's decision. 
 
-<Callout>
-If you wanted to implement a more complex UI that allows for the human to edit the tool call arguments before sending them back to the agent,
-you could do so by adding additional logic to the `onClick` handlers and the agent's handling of the tool call.
-</Callout>
 
 </Step>
 </Steps>

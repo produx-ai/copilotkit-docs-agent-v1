@@ -40,12 +40,14 @@ In addition, some state properties contain a lot of information. Syncing them ba
         import { Annotation } from "@langchain/langgraph";
         import { CopilotKitStateAnnotation } from "@copilotkit/sdk-js/langgraph";
 
-        const AgentState = Annotation.Root({
+        export const AgentStateAnnotation = Annotation.Root({
           ...CopilotKitStateAnnotation.spec,
           question: Annotation<string>,
           answer: Annotation<string>,
           resources: Annotation<string[]>,
         })
+
+        export type AgentState = typeof AgentStateAnnotation.State;
         ```
         </Tab>
     </Tabs>
