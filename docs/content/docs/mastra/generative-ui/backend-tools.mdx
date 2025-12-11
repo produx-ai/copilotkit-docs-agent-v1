@@ -79,7 +79,7 @@ export const weatherAgent = new Agent({
 <Step>
 ### Render the tool call in your frontend
 At this point, your agent will be able to call the `weatherInfo` tool. Now
-we just need to add a `useCopilotAction` hook to render the tool call in
+we just need to add a `useRenderToolCall` hook to render the tool call in
 the UI.
 
 <Callout type="info" title="Important">
@@ -88,13 +88,13 @@ the UI.
 </Callout>
 
 ```tsx title="app/page.tsx"
-import { useCopilotAction } from "@copilotkit/react-core"; // [!code highlight]
+import { useRenderToolCall } from "@copilotkit/react-core"; // [!code highlight]
 // ...
 
 const YourMainContent = () => {
   // ...
   // [!code highlight:13]
-  useCopilotAction({
+  useRenderToolCall({
     name: "weatherInfo",
     available: "disabled", // Don't allow the agent or UI to call this tool as its only for rendering
     render: ({ status, args }) => {
@@ -110,6 +110,7 @@ const YourMainContent = () => {
   // ...
 };
 ```
+
 
 </Step>
 <Step>

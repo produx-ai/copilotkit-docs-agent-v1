@@ -204,8 +204,7 @@ import "@copilotkit/react-ui/styles.css"; // [!code ++]
 
 export default function Home() {
   return (
-    <CopilotKit
-      publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}
+    <CopilotKit runtimeUrl="/api/copilotkit">
     >
       /* [!code ++:9] */
       <CopilotSidebar

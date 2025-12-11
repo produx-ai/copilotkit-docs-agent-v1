@@ -88,7 +88,7 @@ Exits the current agent after the run completes. Calling copilotkit_exit() will
     ```python
     from copilotkit.langgraph import copilotkit_exit
 
-    def my_node(state: Any):
+    async def my_node(state: Any):
         await copilotkit_exit(config)
         return state
     ```

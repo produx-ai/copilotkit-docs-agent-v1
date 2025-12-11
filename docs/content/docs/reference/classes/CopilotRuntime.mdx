@@ -33,16 +33,18 @@ Middleware to be used by the runtime.
     runId?: string;
     inputMessages: Message[];
     properties: any;
+    url?: string;
   }) => void | Promise<void>;
   ```
  
   ```ts
   onAfterRequest: (options: {
-    threadId?: string;
+    threadId: string;
     runId?: string;
     inputMessages: Message[];
     outputMessages: Message[];
     properties: any;
+    url?: string;
   }) => void | Promise<void>;
   ```
 </PropertyReference>
