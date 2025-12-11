@@ -40,7 +40,7 @@ you can ensure that the agent is always making the right decisions and ultimatel
 
 Interrupt-based flows are a very intuitive way to implement HITL. Instead of having a node await user input before or after its execution,
 nodes can be interrupted in the middle of their execution to allow for user input. The trade-off is that the agent is not aware of the
-interaction, however [CopilotKit's SDKs provide helpers to alleviate this](#make-your-agent-aware-of-interruptions).
+interaction, however CopilotKit's SDKs provide helpers to alleviate this.
 
 ## Implementation
 
@@ -95,8 +95,6 @@ We're going to have the agent ask us to name it, so we'll need a state property 
 
     <Callout type="info">
         Your agent will not be aware of the `interrupt` interaction by default in LangGraph.
-
-        If you want this behavior, see the [section on it below](#make-your-agent-aware-of-interruptions).
     </Callout>
 
     <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
@@ -372,8 +370,8 @@ const YourMainContent = () => {
     // [!code highlight:28]
     useLangGraphInterrupt({
         handler: async ({ result, event, resolve }) => {
-            const { department } = await getUserByEmail(userEmail)
-            if (event.value.accessDepartment === department || department === 'admin') {
+    useLangGraphInterrupt({
+        handler: async ({ event, resolve }) => {
                 // Following the resolution of the event, we will not proceed to the render method
                 resolve({ code: 'AUTH_BY_DEPARTMENT' })
                 return;
