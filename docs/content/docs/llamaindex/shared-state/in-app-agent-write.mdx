@@ -152,7 +152,9 @@ The agent will be re-run, and it will get not only the latest updated state, but
 
 ```tsx title="ui/app/page.tsx"
 import { useCoAgent } from "@copilotkit/react-core";
-import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";  // [!code highlight]
+
+// NOTE: `run` takes a HintFunction that returns an @copilotkit/shared `Message` (a plain object),
+// not a runtime-client-gql `TextMessage` class.
 
 // ...
 
@@ -169,12 +171,13 @@ function YourMainContent() {
     setState({ language: newLanguage });
 
     // re-run the agent and provide a hint about what's changed
-    // [!code highlight:6]
+    // [!code highlight:9]
     run(({ previousState, currentState }) => {
-      return new TextMessage({
-        role: MessageRole.User,
+      return {
+        id: crypto.randomUUID(),
+        role: "user" as const,
         content: `the language has been updated to ${currentState.language}`,
-      });
+      };
     });
   };
 

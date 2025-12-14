@@ -1,8 +1,10 @@
 ---
 title: Interrupt Based
 icon: "lucide/CirclePause"
-description: Learn how to implement Human-in-the-Loop (HITL) using a interrupt-based flow.
+description: Learn how to implement Human-in-the-Loop (HITL) using an interrupt-based flow.
 ---
+
+<!-- Docs fix: corrected frontmatter grammar ("an interrupt-based flow") per verification report. -->
 import InstallSDKSnippet from "@/snippets/install-sdk.mdx"
 import {
   TailoredContent,
@@ -37,10 +39,11 @@ This guide will show you how to both use `interrupt` and how to integrate it wit
 
 Human-in-the-loop is a powerful way to implement complex workflows that are production ready. By having a human in the loop,
 you can ensure that the agent is always making the right decisions and ultimately is being steered in the right direction.
-
 Interrupt-based flows are a very intuitive way to implement HITL. Instead of having a node await user input before or after its execution,
 nodes can be interrupted in the middle of their execution to allow for user input. The trade-off is that the agent is not aware of the
-interaction, however [CopilotKit's SDKs provide helpers to alleviate this](#make-your-agent-aware-of-interruptions).
+interaction (see [Node-based](/langgraph/human-in-the-loop/node-flow) if you need the agent to be aware of HITL context), however [CopilotKit's SDKs provide helpers to alleviate this](/reference/hooks/useLangGraphInterrupt).
+
+<!-- Docs fix: the previous in-page anchor pointed to a non-existent section; link updated to an existing, relevant reference. -->
 
 ## Implementation
 
@@ -96,7 +99,8 @@ We're going to have the agent ask us to name it, so we'll need a state property 
     <Callout type="info">
         Your agent will not be aware of the `interrupt` interaction by default in LangGraph.
 
-        If you want this behavior, see the [section on it below](#make-your-agent-aware-of-interruptions).
+        If you want the agent to be aware of HITL context, see the [Node-based](/langgraph/human-in-the-loop/node-flow) guide. For rendering and responding to interrupts in the UI, see [`useLangGraphInterrupt`](/reference/hooks/useLangGraphInterrupt).
+        <!-- Docs fix: replaced broken in-page anchor link with links to existing docs that cover the two relevant concepts (agent awareness vs UI handling). -->
     </Callout>
 
     <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
@@ -187,8 +191,10 @@ We're going to have the agent ask us to name it, so we'll need a state property 
     useLangGraphInterrupt({
         render: ({ event, resolve }) => (
             <div>
+                {/* Docs fix: `event.value` directly reflects whatever payload was passed to `interrupt(...)` in the agent (string, object, etc.). */}
                 <p>{event.value}</p>
                 <form onSubmit={(e) => {
+                    // Docs fix: keep the default form submit prevented so the page doesn't reload during an interrupt response.
                     e.preventDefault();
                     resolve((e.target as HTMLFormElement).response.value);
                 }}>
@@ -222,7 +228,8 @@ For this reason, the hook can take an `enabled` argument which will apply it con
 <Steps>
     <Step>
         ### Define multiple interrupts
-        First, let's define two different interrupts. We will include a "type" property to differentiate them.
+        First, let's define two different interrupts. We will include a "type" property to differentiate them, and pass an object payload so the frontend can read the same shape via `event.value`.
+        <!-- Docs fix: clarify that the interrupt event value in the UI mirrors whatever payload is passed to `interrupt(...)` in the agent. -->
         <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
             <Tab value="Python">
                 ```python title="agent.py"

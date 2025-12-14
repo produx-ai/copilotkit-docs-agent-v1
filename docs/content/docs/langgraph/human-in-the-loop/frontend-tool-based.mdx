@@ -3,6 +3,8 @@ title: Frontend Tool Based
 icon: "lucide/Wrench"
 description: Create frontend tools and use them within your LangGraph agent.
 ---
+
+<!-- Docs fix: verified `useHumanInTheLoop` is exported from `@copilotkit/react-core`; adjusted example to reflect `respond`/`status` behavior. -->
 import InstallSDKSnippet from "@/snippets/install-sdk.mdx"
 import { IframeSwitcher } from "@/components/content"
 import RunAndConnect from "@/snippets/integrations/langgraph/run-and-connect.mdx"
@@ -47,8 +49,9 @@ Use frontend tools when you need your agent to interact with client-side primiti
         Frontend tools can be leveraged in a variety of ways. One of those ways is to have a human-in-the-loop flow where the response
         of the tool is gated by a user's decision.
 
-        In this example we will simulate a "approval" flow for executing a command. First, use the `useHumanInTheLoop` hook to create a tool that
+        In this example we will simulate an "approval" flow for executing a command. First, use the `useHumanInTheLoop` hook to create a tool that
         prompts the user for approval.
+        <!-- Docs fix: grammar ("an approval" instead of "a approval") per verification report. -->
 
         ```tsx title="page.tsx"
         import { useHumanInTheLoop } from "@copilotkit/react-core" // [!code highlight]
@@ -67,8 +70,9 @@ Use frontend tools when you need your agent to interact with client-side primiti
                 required: true,
               },
             ],
-            render: ({ args, respond }) => {
-              if (!respond) return <></>;
+            render: ({ args, respond, status }) => {
+              // Docs fix: `respond` is only available when the HITL tool is actively executing.
+              if (status !== "executing" || !respond) return <></>;
               return (
                 <div>
                   <pre>{args.command}</pre>

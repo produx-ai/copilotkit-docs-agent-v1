@@ -20,9 +20,9 @@ Welcome to the CoAgents Troubleshooting Guide! If you're having trouble getting 
 
 This could be due to a few different reasons.
 
-First, we strongly recommend checking out our [Human In the Loop](/coagents/human-in-the-loop) guide to follow a more in depth example of how to stream tool calls
-in your LangGraph agents. You can also check out our [travel tutorial](/coagents/tutorials/ai-travel-app/step-6-human-in-the-loop) which talks about how to stream
-tool calls in a more complex example.
+First, we strongly recommend checking out our [Human In the Loop](/langgraph/human-in-the-loop) guide to follow a more in depth example of how to stream tool calls
+in your LangGraph agents. You can also check out our [travel tutorial](/langgraph/tutorials/ai-travel-app/step-6-human-in-the-loop) which talks about how to stream
+tool calls in a more complex example. {/* docs-fix: these docs live under the `/langgraph/...` routes (the old `/coagents/...` links were stale). */}
 
 If you have already done that, you can check the following:
 
@@ -201,29 +201,30 @@ If you're seeing this error, it means the LangGraph platform client cannot conne
         If you are running your remote endpoint using FastAPI, even if it uses LangGraph for the agent, it is not considered a LangGraph platform endpoint.
         You may need to change your `remoteEndpoints` definition for this endpoint to match the expected format.
 
-        Change the endpoint definition, from:
-        ```
-        new CopilotRuntime({
-          remoteEndpoints: [
-            langGraphPlatformEndpoint({
-            deploymentUrl: "https://your-fastapi-endpoint:port",
-            langsmithApiKey: '<langsmith API key>' // optional
-            agents: [], // Your previous agents definition
-          ],
-        });
+Change the endpoint definition, from:
+```
+new CopilotRuntime({
+  remoteEndpoints: [
+    langGraphPlatformEndpoint({
+      deploymentUrl: "https://your-fastapi-endpoint:port",
+      langsmithApiKey: "<langsmith API key>", // optional
+      agents: [], // Your previous agents definition
+    }),
+  ],
+});
 
-        // or
+// or
 
-        new CopilotRuntime({
-          agents: {
-            'agent-name': new LangGraphAgent({
-              deploymentUrl: "https://your-fastapi-endpoint:port",
-              langsmithApiKey: '<langsmith API key>', // optional
-              graphId: 'langgraph.json graph id', // Your previous graphId definition
-            }),
-          }
-        });
-        ```
+new CopilotRuntime({
+  agents: {
+    "agent-name": new LangGraphAgent({
+      deploymentUrl: "https://your-fastapi-endpoint:port",
+      langsmithApiKey: "<langsmith API key>", // optional
+      graphId: "langgraph.json graph id", // Your previous graphId definition
+    }),
+  },
+});
+```
 
         To:
         ```
@@ -278,7 +279,7 @@ persisted at the end of a node.
             </Tab>
             <Tab value="TypeScript">
                 ```typescript
-                import { copilotkitCustomizeConfig } from '@copilotkit/sdk-js/langgraph';
+                import { copilotkitCustomizeConfig } from '@copilotkit/sdk-js/langgraph'; // docs-fix: `copilotkitCustomizeConfig` is exported from the `@copilotkit/sdk-js` package via its `/langgraph` entrypoint.
 
                 async function chatNode(state: AgentState, config: RunnableConfig): Promise<AgentState> {
                     // 1) Call the model with CopilotKit's modified config
@@ -295,9 +296,8 @@ persisted at the end of a node.
         </Tabs>
     </Accordion>
     <Accordion title="I don't want these messages to streamed at all">
-        In this case, you can reference our document on [disabling streaming](/coagents/advanced/disabling-state-streaming). More specifically,
-        you can use the copilotkit config to disable emitting messages anywhere you'd like a message to not be streamed.
-
+        In this case, you can reference our document on [disabling streaming](/langgraph/advanced/disabling-state-streaming). More specifically,
+        you can use the copilotkit config to disable emitting messages anywhere you'd like a message to not be streamed. {/* docs-fix: this page is under `/langgraph/advanced/...` (the old `/coagents/advanced/...` link was stale). */}
         <Tabs groupId="language_langgraph_agent" items={["Python", "TypeScript"]} persist>
             <Tab value="Python">
                 ```python

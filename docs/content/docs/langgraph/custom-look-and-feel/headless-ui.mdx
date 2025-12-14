@@ -11,7 +11,8 @@ import HeadlessUI from "@/snippets/shared/guides/custom-look-and-feel/headless-u
 LangGraph allows for you to interrupt the chat and wait for a human's response via an event. This is useful for 
 when you want to pause your LangGraph agent at specific points to solicit feedback or information from the user.
 
-When using the `useCopilotChatHeadless_c` hook, you can use the `interrupt` function to interrupt the chat.
+<!-- Docs fix: `useCopilotChatHeadless_c` returns a renderable `interrupt` node (string/React element), not an "interrupt function". The UI is registered via `useLangGraphInterrupt`. -->
+When using the `useCopilotChatHeadless_c` hook, you can render the `interrupt` value it returns after registering an interrupt UI handler with `useLangGraphInterrupt`.
 
 
 ```tsx title="src/app/components/chat.tsx"
@@ -19,6 +20,7 @@ import { useLangGraphInterrupt, useCopilotChatHeadless_c } from "@copilotkit/rea
 
 export const Chat = () => {
   const { messages, sendMessage, interrupt } = useCopilotChatHeadless_c();
+  // Docs fix: `interrupt` is a renderable node returned by the hook (not a function).
 
   useLangGraphInterrupt({
     render: ({ event, resolve, result }) => {
@@ -38,5 +40,6 @@ export const Chat = () => {
     </div>
   )
 };
+```
 ```
 

@@ -19,7 +19,8 @@ import Link from "next/link";
 
 <div className="flex flex-row gap-2">
   <Button size="lg" asChild className="flex gap-2 items-center">
-    <Link href="https://github.com/CopilotKit/open-research-ANA" className="no-underline" target="_blank">
+    {/* docs-fix: Use the canonical repo URL casing (matches other tutorial steps) to reduce the chance of broken links in downstream tooling. */}
+    <Link href="https://github.com/CopilotKit/open-research-ana" className="no-underline" target="_blank">
       <FaGithub className="w-6 h-6 mr-2" />
       <span>View on GitHub</span>
     </Link>

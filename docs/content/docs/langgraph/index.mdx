@@ -20,25 +20,25 @@ import { FrameworkOverview } from "@/components/content/landing-pages/framework-
     {
       title: "Generative UI",
       description: "Render your agent's state, progress, outputs, and tool calls with custom UI components in real-time. Bridges the gap between AI agents and user interfaces.",
-      documentationLink: "/coagents/generative-ui",
+      documentationLink: "/langgraph/generative-ui", // docs-fix: LangGraph docs live under /langgraph (the previous /coagents path was inconsistent with this section).
       demoLink: "https://feature-viewer.copilotkit.ai/langgraph/feature/tool_based_generative_ui",
       videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/haiku.mp4"
     },
     {
       title: "Human in the Loop",
       description: "Empower users to guide agents at key checkpoints. Combine the best of AI and human judgment for more reliable and controllable agent behavior.",
-      documentationLink: "/coagents/human-in-the-loop",
+      documentationLink: "/langgraph/human-in-the-loop", // docs-fix: update to the LangGraph section route.
       demoLink: "https://examples-coagents-ai-travel-app.vercel.app/",
       videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/human-in-the-loop-example.mp4"
     },
     {
       title: "Shared State",
       description: "Keep your agent and your app in sync. Your agent can see everything in your app, and your app can react to your agent in real-time.",
-      documentationLink: "/coagents/shared-state",
+      documentationLink: "/langgraph/shared-state", // docs-fix: update to the LangGraph section route.
       demoLink: "https://feature-viewer.copilotkit.ai/langgraph/feature/shared_state",
       videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/shared-state.mp4"
     }
-  ]}
+  ]} // docs-fix: updated supportedFeatures documentation links to use the /langgraph routes.
   architectureImage="https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/coagents-highlevel-overview.png"
   liveDemos={[
     {
@@ -54,5 +54,6 @@ import { FrameworkOverview } from "@/components/content/landing-pages/framework-
       iframeUrl: "https://examples-coagents-research-canvas-ui.vercel.app/"
     }
   ]}
-  tutorialLink="/coagents/tutorials/ai-travel-app"
+  {/* docs-fix: tutorial lives under /langgraph/tutorials/ai-travel-app in this docs tree (docs/content/docs/langgraph/tutorials/ai-travel-app). */}
+  tutorialLink="/langgraph/tutorials/ai-travel-app"
 />

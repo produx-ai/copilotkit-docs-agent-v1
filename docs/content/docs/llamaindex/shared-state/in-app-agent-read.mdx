@@ -151,15 +151,15 @@ type AgentState = {
 
 function YourMainContent() {
   // ...
-  // [!code highlight:7]
+  // [!code highlight:8]
   useCoAgentStateRender({
     name: "my_agent", // MUST match the agent name in CopilotRuntime
-    render: ({ state }) => {
+    render: ({ state, status }) => {
+      // NOTE: `useCoAgentStateRender` passes both `state` and a `status` flag.
       if (!state.language) return null;
       return <div>Language: {state.language}</div>;
     },
   });
-  // ...
 }
 ```
 

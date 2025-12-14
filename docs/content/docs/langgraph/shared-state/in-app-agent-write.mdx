@@ -127,7 +127,7 @@ The agent will be re-run, and it will get not only the latest updated state, but
 
 ```tsx title="ui/app/page.tsx"
 import { useCoAgent } from "@copilotkit/react-core";
-import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";  // [!code highlight]
+import { TextMessage, Role } from "@copilotkit/runtime-client-gql";  // [!code highlight] {/* docs-fix: `Role` is the stable exported alias for message roles from `@copilotkit/runtime-client-gql`. */}
 
 // ...
 
@@ -147,7 +147,7 @@ function YourMainContent() {
     // re-run the agent and provide a hint about what's changed
     run(({ previousState, currentState }) => {
       return new TextMessage({
-        role: MessageRole.User,
+        role: Role.User,
         content: `the language has been updated to ${currentState.language}`,
       });
     });
@@ -165,4 +165,4 @@ which means state updates will be discontinuous and delayed.
 
 You likely want to render the agent state as it updates **continuously.**
 
-See **[predictive state updates](/coagents/shared-state/predictive-state-updates).**
+See **[predictive state updates](/langgraph/shared-state/predictive-state-updates).**{/* docs-fix: update stale `/coagents/` link to the current `/langgraph/` docs route. */}

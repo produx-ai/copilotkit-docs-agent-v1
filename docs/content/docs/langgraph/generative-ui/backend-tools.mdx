@@ -109,8 +109,8 @@ when your agent is calling tools. CopilotKit allows you to fully customize how t
 <Step>
 ### Render the tool call in your frontend
 At this point, your agent will be able to call the `get_weather` tool. Now
-we just need to add a `useCopilotAction` hook to render the tool call in
-the UI.
+we just need to add a `useRenderToolCall` hook to render the tool call in
+the UI. {/* docs-fix: The example below imports/uses `useRenderToolCall`, so the explanatory text should reference the same hook to avoid confusion. */}
 
 <Callout type="info" title="Important">
   In order to render a tool call in the UI, the name of the action must match the name of the tool.

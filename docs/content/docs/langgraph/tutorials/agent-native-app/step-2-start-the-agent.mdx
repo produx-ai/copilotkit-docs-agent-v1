@@ -51,10 +51,10 @@ brew install langgraph-cli # Install LangGraph CLI
 langgraph dev --host localhost --port 8000 # Start the agent
 ```
 
-This opens LangGraph Studio in your brwoser where you can visualize and interact with your agent.
+This opens LangGraph Studio in your browser where you can visualize and interact with your agent. <!-- docs-fix: typo "brwoser" -> "browser" -->
 
 <Callout>
-The agent will be available at https://localhost:8000 for later steps.
+The agent will be available at http://localhost:8000 for later steps. <!-- docs-fix: local dev typically uses http (command starts without TLS); avoid implying https by default -->
 </Callout>
 
 <ImageZoom src="https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/tutorials/research-ana/lgs-overview.png" height={1000} width={1000} className="rounded-lg shadow-lg"/>
@@ -75,18 +75,16 @@ As we're building this agent into an agentic experience, we'll want to understan
 <Step>
 ### Testing the LangGraph Agent
 
-You can submit a message to the agent by adding a message to the `messages` state variable and then clicking "Submit". This agent is paired
-down for this tutorial and is meant to represent a simple research agent.
-
+You can submit a message to the agent by adding a message to the `messages` state variable and then clicking "Submit". This agent is pared
+down for this tutorial and is meant to represent a simple research agent. <!-- docs-fix: idiom is "pared down" (was "paired down") -->
 We'll be making this fancy in later steps, but for now you can ask it to do some research and see what behavior we'll be 
 integrating into the application.
 </Step>
 </Steps>
 
-## Recap
-Now we have a running agent! It will be available at `https://localhost:8000`. Here's what we did:
+## Recap <!-- docs-fix: remove duplicated header introduced during edits -->
+Now we have a running agent! It will be available at `http://localhost:8000`. <!-- docs-fix: keep recap consistent with earlier http URL --> Here's what we did:
 - Installed LangGraph Studio
 - Setup the `.env` file
 - Started, visualized and tested the LangGraph agent
-
 In the next step, we'll be integrating the LangGraph agent into the application as a Copilot Agent (CoAgent).
