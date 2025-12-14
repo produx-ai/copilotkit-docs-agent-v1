@@ -298,17 +298,19 @@ import * as Sentry from "@sentry/react";
   onError={(errorEvent) => {
     // Production error observability
     if (errorEvent.type === "error") {
-      // Log critical errors
-      logger.error("CopilotKit Error", {
-        error: errorEvent.error,
-        context: errorEvent.context,
-        timestamp: errorEvent.timestamp,
-      });
+      // Replace the following with your own logger/monitoring implementation.
+      // Reason: these are placeholders; commenting them avoids copy-paste errors
+      // with undeclared variables like `logger` / `monitoring`.
 
-      // Send to monitoring service
-      monitoring.captureError(errorEvent.error, {
-        extra: errorEvent.context,
-      });
+      // logger.error("CopilotKit Error", {
+      //   error: errorEvent.error,
+      //   context: errorEvent.context,
+      //   timestamp: errorEvent.timestamp,
+      // });
+
+      // monitoring.captureError(errorEvent.error, {
+      //   extra: errorEvent.context,
+      // });
     }
   }}
 >

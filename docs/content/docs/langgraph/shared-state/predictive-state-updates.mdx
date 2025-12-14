@@ -120,7 +120,7 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
                             ]
                             
                             for step in steps:
-                                self.state["observed_steps"] = self.state.get("observed_steps", []) + [step]
+                                state["observed_steps"] = state.get("observed_steps", []) + [step]  # Fix: use the `state` argument; `self.state` is not available in this standalone node function
                                 await copilotkit_emit_state(config, state) # [!code highlight]
                                 await asyncio.sleep(1)
 
@@ -258,10 +258,12 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
 
                             if (response.tool_calls?.length) {
                                 return {
-                                    messages: response;
+                                    messages: response, // Fix: object literals use commas, not semicolons
                                     observed_steps: response.tool_calls[0].args.steps,
-                                }
+                                };
+                            }
 
+                            // Fix: ensure the `if` block is closed before returning the default response
                             return { messages: response };
                         }
                         ```

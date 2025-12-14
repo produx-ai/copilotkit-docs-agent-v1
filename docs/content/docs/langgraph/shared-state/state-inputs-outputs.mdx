@@ -158,7 +158,8 @@ In addition, some state properties contain a lot of information. Syncing them ba
                   content: `You are a helpful assistant. Answer the question: ${state.question}.`,
                 });
 
-                const response = await modelWithTools.invoke(
+                // Fix: `modelWithTools` is not defined in this snippet; use the `model` declared above.
+                const response = await model.invoke(
                   [systemMessage, ...state.messages],
                   config
                 );
