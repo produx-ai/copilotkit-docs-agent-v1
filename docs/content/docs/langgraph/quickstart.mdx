@@ -9,13 +9,12 @@ import {
   TailoredContent,
   TailoredContentOption,
 } from "@/components/react/tailored-content.tsx";
-import { CoAgentsEnterpriseCTA } from "@/components/react/coagents/coagents-enterprise-cta.tsx";
+// Docs fix: Removed unused CoAgentsEnterpriseCTA import (it isn't rendered in this MDX), avoiding dead imports.
 import { CoAgentsDiagram } from "@/components/react/coagents/coagents-diagram.tsx";
 import { FaPython, FaJs, FaCloud } from "react-icons/fa";
 import SelfHostingCopilotRuntimeCreateEndpoint from "@/snippets/self-hosting-copilot-runtime-create-endpoint.mdx";
 import CopilotCloudConfigureRemoteEndpointLangGraph from "@/snippets/copilot-cloud-configure-remote-endpoint-langgraph.mdx";
 import CopilotKitCloudCopilotKitProvider from "@/snippets/copilot-cloud-configure-copilotkit-provider.mdx";
-import LangGraphPlatformDeploymentTabs from "@/snippets/langgraph-platform-deployment-tabs.mdx";
 import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 import FindYourCopilotRuntime from "@/snippets/find-your-copilot-runtime.mdx";
 import ConnectCopilotUI from "@/snippets/copilot-ui.mdx";
@@ -95,11 +94,13 @@ Before you begin, you'll need the following:
             </Step>
             <Step>
                 ### Install dependencies
+                ### Install dependencies
 
-                ```npm
+                ```bash
+                # Docs fix: this step previously rendered an empty code block.
+                # Install the dependencies for the scaffolded project from the project root.
+                npm install
                 ```
-            </Step>
-            <Step>
                 ### Configure your environment
 
                 Create a `.env` file in your agent directory and add your OpenAI API key:

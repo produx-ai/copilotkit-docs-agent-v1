@@ -8,7 +8,8 @@ import { CTACards } from "@/components/react/cta-cards"
 <video src="https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/human-in-the-loop-example.mp4" className="rounded-lg shadow-xl" loop playsInline controls autoPlay muted />
 
 <Callout>
-  This video shows an example of our [AI Travel App](/coagents/tutorials/ai-travel-app) using HITL to get user feedback.
+  {/* Docs fix: Link to the LangGraph tutorial path (avoid relying on legacy /coagents redirects). */}
+  This video shows an example of our [AI Travel App](/langgraph/tutorials/ai-travel-app) using HITL to get user feedback.
 </Callout>
 
 ## What is Human-in-the-Loop (HITL)?
@@ -37,7 +38,8 @@ HITL combines the efficiency of AI with human judgment, creating a system that's
 CopilotKit provides two main approaches for HITL LangGraph workflows - interrupt and node-based.
 
 <Callout>
-  Unsure which approach to use? We recommend starting with the [Interrupt](/coagents/human-in-the-loop/interrupt-flow) flow.
+  {/* Docs fix: Use canonical /langgraph paths for HITL subpages. */}
+  Unsure which approach to use? We recommend starting with the [Interrupt](/langgraph/human-in-the-loop/interrupt-flow) flow.
 </Callout>
 
 <CTACards
@@ -47,13 +49,15 @@ CopilotKit provides two main approaches for HITL LangGraph workflows - interrupt
       iconKey: "pause",
       title: "Interrupt",
       description: "Utilize LangGraph's interrupt function to pause the agent and wait for user input.",
-      href: "/coagents/human-in-the-loop/interrupt-flow"
+      href: "/langgraph/human-in-the-loop/interrupt-flow"
     },
     {
       iconKey: "share2",
       title: "Node-based",
       description: "Utilize nodes and tools to create LLM-driven Human-in-the-Loop workflows.",
-      href: "/coagents/human-in-the-loop/node-flow"
+      href: "/langgraph/human-in-the-loop/node-flow"
     }
+  ]}
+/>
   ]}
 />

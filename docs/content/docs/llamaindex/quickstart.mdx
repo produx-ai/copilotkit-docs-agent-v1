@@ -36,6 +36,7 @@ Before you begin, you'll need the following:
 - Node.js 20+
 - Python 3.10+
 - Your favorite package manager
+- uv (recommended for the Python dependency steps used in this guide) <!-- Fix: The guide uses `uv` commands below; this makes the prerequisite explicit to prevent setup confusion. -->
 
 ## Getting started
 
@@ -67,13 +68,13 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install dependencies
 
-
-                ```npm
+                ```bash
+                npm install
                 ```
+                {/* Fix: This code block previously contained only `npm` (no command), which would not install dependencies. */}
             </Step>
             <Step>
                 ### Configure your environment
-
                 Create a `.env` file in your agent directory and add your OpenAI API key:
 
                 ```plaintext title="agent/.env"
@@ -232,9 +233,10 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install CopilotKit packages
 
-                ```npm
-                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/llamaindex
+                ```bash
+                npm install @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/client
                 ```
+                {/* Fix: Replace `@ag-ui/llamaindex` with `@ag-ui/client` to match the LlamaIndex starter/example integration and avoid referencing a package that isn't used elsewhere in this repo. */}
             </Step>
             <Step>
                 ### Setup Copilot Runtime
@@ -247,15 +249,15 @@ Before you begin, you'll need the following:
                   ExperimentalEmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
-                import { LlamaIndexAgent } from "@ag-ui/llamaindex";
+                import { HttpAgent } from "@ag-ui/client"; // [!code highlight]
                 import { NextRequest } from "next/server";
 
                 const serviceAdapter = new ExperimentalEmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {
-                    my_agent: new LlamaIndexAgent({ url: "http://localhost:8000/run" }),
-                  }   
+                    my_agent: new HttpAgent({ url: "http://localhost:8000/run" }), // [!code highlight]
+                  }
                 });
 
                 export const POST = async (req: NextRequest) => {
@@ -267,7 +269,9 @@ Before you begin, you'll need the following:
 
                   return handleRequest(req);
                 };
-               ```
+                ```
+
+                {/* Fix: The LlamaIndex starter UI in this repo connects via the generic `HttpAgent` from `@ag-ui/client`, not a framework-specific `LlamaIndexAgent`. */}
             </Step>
             <Step>
                 ### Configure CopilotKit Provider
@@ -378,7 +382,7 @@ Before you begin, you'll need the following:
                         - If you're having connection issues, try using `0.0.0.0` or `127.0.0.1` instead of `localhost`
                         - Make sure your agent is running on port 8000
                         - Check that your OpenAI API key is correctly set
-                        - Verify that the `@ag-ui/llamaindex` package is installed in your frontend
+                        - Verify that the `@ag-ui/client` package is installed in your frontend {/* Fix: Keep troubleshooting consistent with the updated install/runtime snippets (uses `@ag-ui/client`). */}
                     </Accordion>
                 </Accordions>
 

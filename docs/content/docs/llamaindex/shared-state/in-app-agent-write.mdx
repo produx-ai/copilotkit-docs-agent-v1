@@ -131,6 +131,8 @@ You can use this when you want to provide user input or control to your agent's 
 
     <Callout type="info">
       The `setState` function in `useCoAgent` will update the state and trigger a rerender when the state changes.
+
+      {/* NOTE: `useCoAgent` calls `agent.setState(...)` locally in the React hook; backend persistence depends on when/if the agent run is executed. */}
     </Callout>
 
   </Step>
@@ -148,14 +150,13 @@ You can use this when you want to provide user input or control to your agent's 
 The new agent state will be used next time the agent runs.
 If you want to re-run it manually, use the `run` argument on the `useCoAgent` hook.
 
-The agent will be re-run, and it will get not only the latest updated state, but also a **hint** that can depend on the data delta between the previous and the current state.
-
 ```tsx title="ui/app/page.tsx"
 import { useCoAgent } from "@copilotkit/react-core";
 import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";  // [!code highlight]
 
-// ...
+// NOTE: These are exported by @copilotkit/runtime-client-gql (see CopilotKit/packages/runtime-client-gql/src/index.ts).
 
+// ...
 function YourMainContent() {
   // [!code word:run:1]
   const { state, setState, run } = useCoAgent<AgentState>({

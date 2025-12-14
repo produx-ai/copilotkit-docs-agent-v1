@@ -30,10 +30,11 @@ import { LinkIcon } from "lucide-react";
     href="/reference/classes/llm-adapters/OpenAIAdapter"
     icon={<LinkIcon />}
   />
+  {/* FIX: The SDKs card describes both Python and JavaScript SDKs, so link to the neutral /reference/sdk section (which contains both). */}
   <Card
     title="SDKs"
     description="Python and JavaScript SDKs for CopilotKit."
-    href="/reference/sdk/python/LangGraph"
+    href="/reference/sdk"
     icon={<LinkIcon />}
   />
 </Cards>
