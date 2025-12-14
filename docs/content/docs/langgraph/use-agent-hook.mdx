@@ -76,7 +76,7 @@ If your LangGraph agent tracks which node it's in, you can show contextual UI:
 export function NodeStatus() {
   const { agent } = useAgent();
 
-  // [!code highlight:1]
+  // docs-fix: `currentNode` is not a guaranteed field on agent state; it's an example of a user-defined state key.
   const currentNode = agent.state.currentNode;
 
   return (

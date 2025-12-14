@@ -81,7 +81,7 @@ When your agent finishes executing, **its final state becomes the single source 
             description="Configure specific tool calls to automatically emit intermediate state updates."
             icon={<FaWrench />}
         >
-            For long-running tasks, you can create a tool that updates state and emits it to the frontend. In this example, we'll create a step progress tool that the LLM calls to report its progress.
+            For long-running tasks, you can create a tool that updates state and emits it to the frontend. In this example, we'll create a tool that the LLM calls to report its progress.
 
             ```python title="agent.py"
             import asyncio
@@ -191,7 +191,8 @@ When your agent finishes executing, **its final state becomes the single source 
             ```
 
             <Callout>
-              With this configuration, the agent emits state updates each time it calls the `stepProgress` tool, giving the frontend real-time visibility into progress.
+              {/* NOTE: Match callout text to the code snippet which uses `execute_task`. */}
+              With this configuration, the agent emits state updates each time it calls the `execute_task` tool, giving the frontend real-time visibility into progress.
             </Callout>
         </TailoredContentOption>
     </TailoredContent>
