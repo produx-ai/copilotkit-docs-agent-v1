@@ -244,13 +244,13 @@ Before you begin, you'll need the following:
                 ```tsx title="app/api/copilotkit/route.ts"
                 import {
                   CopilotRuntime,
-                  ExperimentalEmptyAdapter,
+                  EmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
                 import { LlamaIndexAgent } from "@ag-ui/llamaindex";
                 import { NextRequest } from "next/server";
 
-                const serviceAdapter = new ExperimentalEmptyAdapter();
+                const serviceAdapter = new EmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {
