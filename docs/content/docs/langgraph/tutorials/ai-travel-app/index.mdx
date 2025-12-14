@@ -38,7 +38,8 @@ In this tutorial, you will take a simple travel application and supercharge it w
 
 <div className="flex flex-row gap-2">
   <Button size="lg" asChild className="flex gap-2 items-center">
-    <Link href="https://github.com/CopilotKit/CopilotKit/tree/main/examples/coagents-travel?ref=travel-tutorial" className="no-underline" target="_blank">
+    {/* docs-fix: Remove the non-essential `ref` query param to keep the GitHub link stable and less likely to break due to marketing/branch ref changes. */}
+    <Link href="https://github.com/CopilotKit/CopilotKit/tree/main/examples/coagents-travel" className="no-underline" target="_blank">
       <FaGithub className="w-6 h-6 mr-2" />
       <span>View on GitHub</span>
     </Link>

@@ -35,9 +35,8 @@ Copilot Cloud includes free LLM credits for development.
 <Step>
 ### Get a Copilot Cloud API Key
 
-Once logged in, you'll see some on boarding steps. The main thing we'll need is a public API key. To do this,
+Once logged in, you'll see some onboarding steps. <!-- docs-fix: "on boarding" -> "onboarding" --> The main thing we'll need is a public API key. To do this,
 you'll need to create an OpenAI API key and provide it to Copilot Cloud.
-
 <ImageZoom src="https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/tutorials/ai-travel-app/cpkCloudSetup.png" alt="CopilotCloud API Key" height={1000} width={1000} />
 
 </Step>
@@ -94,10 +93,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 ### Adding a chat interface
 
 We provide several customizeable components for you to interact with your copilot. Some of these are [`<CopilotPopup/>`](/reference/components/chat/CopilotPopup), [`<CopilotSidebar/>`](/reference/components/chat/CopilotSidebar), and [`<CopilotChat/>`](/reference/components/chat/CopilotChat), and your own fully custom UI via [`useCopilotChat`](/reference/hooks/useCopilotChat).
+We provide several customizable components for you to interact with your copilot. <!-- docs-fix: "customizeable" -> "customizable" --> Some of these are [`<CopilotPopup/>`](/reference/components/chat/CopilotPopup), [`<CopilotSidebar/>`](/reference/components/chat/CopilotSidebar), and [`<CopilotChat/>`](/reference/components/chat/CopilotChat), and your own fully custom UI via [`useCopilotChat`](/reference/hooks/useCopilotChat).
 
 In this tutorial, we'll use the `<CopilotChat/>` component as we want to aim for a non-modal chat interface.
-
-<Callout>
   The `Chat` component will serve as a wrapper around the CopilotKit `CopilotChat` component. This is to help simplify
   what you'll need to write along the way.
 </Callout>

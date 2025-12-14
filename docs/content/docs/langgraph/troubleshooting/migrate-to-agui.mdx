@@ -44,7 +44,8 @@ This guide shows how to make the transition.
         ```
         To
         ```typescript
-        import { LangGraphAgent, CopilotRuntime } from "@copilotkit/runtime";
+        import { CopilotRuntime } from "@copilotkit/runtime"; // docs-fix: LangGraphAgent is no longer imported from "@copilotkit/runtime" (deprecated)
+        import { LangGraphAgent } from "@copilotkit/runtime/langgraph"; // docs-fix: use the dedicated langgraph entrypoint per runtime deprecation notice
 
         let runtime = new CopilotRuntime({
             agents: {
@@ -108,22 +109,24 @@ Everything else (mainly your graph) stays the same.
             path="/agent/sample_agent" # Agent will be served at this path. Use "/" to mount at root.
         )
         ```
-    </Step>
     <Step>
         ### Then, in your `CopilotRuntime` instantiation, use the new `LangGraphHttpAgent`
         ```typescript
+        import { CopilotRuntime } from "@copilotkit/runtime"; // docs-fix: make the snippet self-contained (CopilotRuntime is referenced below)
+        import { LangGraphHttpAgent } from "@copilotkit/runtime/langgraph"; // docs-fix: import from langgraph entrypoint (root export is deprecated)
+
         let runtime = new CopilotRuntime({
             agents: {
                 'sample_agent': new LangGraphHttpAgent({
                     url: "http://localhost:8000/agent/sample_agent",
                 }),
             }
-        })
-        ```
-    </Step>
-</Steps>
         <Accordions>
             <Accordion title="What about the old LangGraph config parameter which was used to configure the agent?">
+                The `langgraph_config` option doesn’t exist on the new agent.
+                Configure the agent via the [`useCoAgent`](/reference/hooks/useCoAgent) hook or with the new `config` parameter on the agent class. {/* docs-fix: link to the existing `useCoAgent` reference page for specific guidance */}
+            </Accordion>
+        </Accordions>
                 The `langgraph_config` option doesn’t exist on the new agent.
                 Configure the agent via the `useCoAgent` hook or with the new `config` parameter on the agent class.
             </Accordion>

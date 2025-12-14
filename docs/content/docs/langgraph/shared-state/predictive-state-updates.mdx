@@ -143,8 +143,8 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
                             ];
                             
                             for (const step of steps) {
-                                state.observed_steps = [...(state.observed_steps ?? []), step];
-                                copilotkitEmitState(config, state);
+                                const observed_steps = [...(state.observed_steps ?? []), step];
+                                await copilotkitEmitState(config, { ...state, observed_steps }); // docs-fix: `copilotkitEmitState` emits the provided state object; pass an explicit updated snapshot instead of relying on in-place mutation.
                                 await new Promise(resolve => setTimeout(resolve, 1000));
                             }
                         }
@@ -255,12 +255,16 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
                             const system_message = new SystemMessage("You are a task performer. Pretend doing tasks you are given, report the steps using StepProgressTool.")
                             const response = await model.invoke([system_message, ...state.messages], modifiedConfig);
 
-
                             if (response.tool_calls?.length) {
                                 return {
-                                    messages: response;
-                                    observed_steps: response.tool_calls[0].args.steps,
+                                    messages: response,
+                                    // docs-fix: tool call `args` may be returned as a JSON string depending on the model/provider; parse defensively before reading `steps`.
+                                    observed_steps: (typeof response.tool_calls[0].args === "string"
+                                      ? JSON.parse(response.tool_calls[0].args)
+                                      : response.tool_calls[0].args
+                                    ).steps,
                                 }
+                            }
 
                             return { messages: response };
                         }

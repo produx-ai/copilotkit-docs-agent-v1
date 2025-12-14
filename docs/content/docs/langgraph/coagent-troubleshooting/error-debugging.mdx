@@ -46,6 +46,9 @@ For production applications, use error observability hooks to send errors to mon
 import { CopilotKit } from "@copilotkit/react-core";
 
 export default function App() {
+  // docs-fix: define a minimal `analytics` placeholder so this snippet is copy-paste safe.
+  const analytics = { track: (..._args: any[]) => {} };
+
   return (
     <CopilotKit
       runtimeUrl="<your-runtime-url>"
@@ -115,7 +118,8 @@ The dev console provides immediate visual feedback during development:
 The error observability hooks provide programmatic access to detailed error information for monitoring and analytics:
 
 ```tsx
-import { CopilotErrorEvent } from "@copilotkit/shared";
+// docs-fix: `CopilotErrorEvent` is not exported from `@copilotkit/react-core`; import it from `@copilotkit/shared`.
+import type { CopilotErrorEvent } from "@copilotkit/shared";
 
 <CopilotKit
   publicApiKey="ck_pub_your_key"

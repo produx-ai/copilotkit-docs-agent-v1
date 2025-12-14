@@ -19,8 +19,8 @@ import RunAndConnect from "@/snippets/integrations/langgraph/run-and-connect.mdx
 
 ## What is this?
 
-All LangGraph agents are stateful. This means that as your agent progresses through nodes, a state object is passed between them perserving
-the overall state of a session. CopilotKit allows you to render this state in your application with custom UI components, which we call **Agentic Generative UI**.
+All LangGraph agents are stateful. This means that as your agent progresses through nodes, a state object is passed between them preserving
+the overall state of a session. CopilotKit allows you to render this state in your application with custom UI components, which we call **Agentic Generative UI**. {/* docs-fix: Correct typo (“perserving” -> “preserving”) for clarity and professionalism. */}
 
 ## When should I use this?
 
@@ -116,7 +116,8 @@ is a situation where a user and an agent are working together to solve a problem
                 SystemMessage(content="You are a helpful assistant."),
                 *state["messages"],
             ], config)
-        ```
+
+            return {"messages": response, "searches": state["searches"]}  # docs-fix: Ensure the node returns the final state update; emitted intermediate state does not persist unless returned when the node completes.
       </Tab>
       <Tab value="TypeScript">
         ```typescript title="agent-js/src/agent.ts"
@@ -135,9 +136,8 @@ is a situation where a user and an agent are working together to solve a problem
           searches: Annotation<Search[]>,
           ...CopilotKitStateAnnotation.spec,
         });
-
         async function chat_node(state: AgentState, config: RunnableConfig) {
-          state.searches = [
+          const searches = [
             { query: "Initial research", done: false },
             { query: "Retrieving sources", done: false },
             { query: "Forming an answer", done: false },
@@ -146,22 +146,25 @@ is a situation where a user and an agent are working together to solve a problem
           // [!code highlight:3]
           // We can call copilotkit_emit_state to emit updated state
           // before a node finishes
-          await copilotkitEmitState(config, state);
+          await copilotkitEmitState(config, { ...state, searches });
 
           // Simulate state updates
-          for (const search of state.searches) {
+          for (const search of searches) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             search.done = true;
 
             // [!code highlight:2]
             // We can also emit updates in a loop to simulate progress
-            await copilotkitEmitState(config, state);
+            await copilotkitEmitState(config, { ...state, searches });
           }
 
           const response = await new ChatOpenAI({ model: "gpt-4o" }).invoke([
             new SystemMessage({ content: "You are a helpful assistant."}),
             ...state.messages,
           ], config);
+
+          return { messages: response, searches }; // docs-fix: Avoid relying on in-place mutation; persist state by returning the final node update.
+        }
         ```
       </Tab>
     </Tabs>

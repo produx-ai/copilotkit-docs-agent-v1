@@ -15,13 +15,14 @@ We use anonymous telemetry (metadata-only) to learn how to improve CopilotKit.
 
 You can opt out of open-source telemetry in multiple ways.
 
-In CopilotRuntime, simply set `COPILOTKIT_TELEMETRY_DISABLED=true`. We also respect [Do Not Track (DNT)](https://consoledonottrack.com/).
+In CopilotRuntime, simply set `COPILOTKIT_TELEMETRY_DISABLED=true` (or `COPILOTKIT_TELEMETRY_DISABLED=1`). We also respect the `DO_NOT_TRACK` environment variable (`DO_NOT_TRACK=true` or `DO_NOT_TRACK=1`).
 
-Alternatively, you can directly set the `telemetryDisabled` flag to `true` when configuring your Copilot Runtime endpoint.
-
+{/* Doc fix: the codebase disables telemetry via COPILOTKIT_TELEMETRY_DISABLED / DO_NOT_TRACK env vars (see isTelemetryDisabled in @copilotkit/shared), and does not expose a supported `telemetryDisabled` flag on the Copilot Runtime endpoint config. */}
 ## How to adjust telemetry sample rate
 
-The default sample rate is `0.05` (5%). You can adjust it by setting the `COPILOTKIT_TELEMETRY_SAMPLE_RATE` to any value between 0 and 1.
+The default sample rate is `0.05` (5%). You can adjust it by setting `COPILOTKIT_TELEMETRY_SAMPLE_RATE` to any value between 0 and 1.
+
+{/* Doc fix: TelemetryClient reads COPILOTKIT_TELEMETRY_SAMPLE_RATE from process.env and enforces a 0..1 range, so we align wording to the actual implementation. */}
 
 ## Get in touch
 
