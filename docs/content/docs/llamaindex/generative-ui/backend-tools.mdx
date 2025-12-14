@@ -48,7 +48,7 @@ from fastapi import FastAPI
 from llama_index.llms.openai import OpenAI
 from llama_index.protocols.ag_ui.router import get_ag_ui_workflow_router
 
-def getWeather(location: str) -> str:
+def get_weather(location: str) -> str:  # NOTE: use snake_case so the exposed tool name matches the frontend renderer.
     """Get the weather for a given location."""
     return f"The weather in {location} is sunny and 70 degrees."
 
@@ -59,9 +59,10 @@ llm = OpenAI(model="gpt-4o")
 agentic_chat_router = get_ag_ui_workflow_router(
     llm=llm,
     # These are the tools that only have a render function in the frontend
-    backend_tools=[getWeather],
+    backend_tools=[get_weather],
     system_prompt="You are a helpful AI assistant with access to various tools and capabilities.",
 )
+```
 
 # Create FastAPI app
 app = FastAPI(
@@ -84,15 +85,14 @@ if __name__ == "__main__":
 ```
     
 </Step>
-<Step>
 ### Render the tool call in your frontend
 At this point, your agent will be able to call the `get_weather` tool. Now 
 we just need to add a `useRenderToolCall` hook to render the tool call in
 the UI.
 
 <Callout type="info" title="Important">
-  In order to render a tool call in the UI, the name of the action must match
-  the name of the tool.
+  In order to render a tool call in the UI, the `name` in `useRenderToolCall` must match
+  the tool name exactly (including casing).
 </Callout>
 
 ```tsx title="app/page.tsx"
@@ -103,8 +103,8 @@ const YourMainContent = () => {
   // ...
   // [!code highlight:12]
   useRenderToolCall({
-    name: "getWeather",
-    render: ({status, args}) => {
+    name: "get_weather",
+    render: ({ status, args, result }) => { // NOTE: `result` is also available for complete tool calls.
       return (
         <p className="text-gray-500 mt-2">
           {status !== "complete" && "Calling weather API..."}
@@ -113,7 +113,6 @@ const YourMainContent = () => {
       );
     },
   });
-  // ...
 };
 ```
 

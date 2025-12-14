@@ -67,9 +67,10 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install dependencies
 
-
-                ```npm
+                ```bash
+                npm install
                 ```
+                {/* PATCH: the code block was empty; the repo’s starter instructions use `npm install` for the UI dependencies. */}
             </Step>
             <Step>
                 ### Configure your environment
@@ -232,9 +233,10 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install CopilotKit packages
 
-                ```npm
-                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/llamaindex
+                ```bash
+                npm install @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/client
                 ```
+                {/* PATCH: replace the non-verified `@ag-ui/llamaindex` with `@ag-ui/client`, which is used by the repo’s LlamaIndex starter. */}
             </Step>
             <Step>
                 ### Setup Copilot Runtime
@@ -247,15 +249,15 @@ Before you begin, you'll need the following:
                   ExperimentalEmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
-                import { LlamaIndexAgent } from "@ag-ui/llamaindex";
+                import { HttpAgent } from "@ag-ui/client"; // [!code highlight]
                 import { NextRequest } from "next/server";
 
                 const serviceAdapter = new ExperimentalEmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {
-                    my_agent: new LlamaIndexAgent({ url: "http://localhost:8000/run" }),
-                  }   
+                    my_agent: new HttpAgent({ url: "http://localhost:8000/run" }), // [!code highlight]
+                  },
                 });
 
                 export const POST = async (req: NextRequest) => {
@@ -267,7 +269,9 @@ Before you begin, you'll need the following:
 
                   return handleRequest(req);
                 };
-               ```
+                ```
+
+                {/* PATCH: align this snippet with the repo’s LlamaIndex starter, which uses `HttpAgent` from `@ag-ui/client` to connect to the agent’s `/run` endpoint. */}
             </Step>
             <Step>
                 ### Configure CopilotKit Provider
@@ -293,6 +297,8 @@ Before you begin, you'll need the following:
                   );
                 }
                 ```
+
+                {/* PATCH: restore the missing step wrapper/header so this section renders correctly as its own step. */}
             </Step>
             <Step>
               ### Add the chat interface
@@ -313,6 +319,7 @@ Before you begin, you'll need the following:
               }
               ```
             </Step>
+            {/* PATCH: re-wrap “Add the chat interface” content in a <Step> so it renders correctly (it previously lost its opening <Step>). */}
             <Step>
                 ### Start your agent
 
@@ -378,7 +385,7 @@ Before you begin, you'll need the following:
                         - If you're having connection issues, try using `0.0.0.0` or `127.0.0.1` instead of `localhost`
                         - Make sure your agent is running on port 8000
                         - Check that your OpenAI API key is correctly set
-                        - Verify that the `@ag-ui/llamaindex` package is installed in your frontend
+                        - Verify that the `@ag-ui/client` package is installed in your frontend <!-- PATCH: the repo’s LlamaIndex starter connects via `HttpAgent` from `@ag-ui/client`, not `@ag-ui/llamaindex`. -->
                     </Accordion>
                 </Accordions>
 

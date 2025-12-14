@@ -44,15 +44,15 @@ is a situation where a user and an agent are working together to solve a problem
     from fastapi import FastAPI
     from llama_index.llms.openai import OpenAI
     from llama_index.core.workflow import Context
+    from llama_index.core.workflow import Context
     from llama_index.protocols.ag_ui.router import get_ag_ui_workflow_router
-    from llama_index.protocols.ag_ui.events import StateSnapshotWorkflowEvent
-
+    from llama_index.protocols.ag_ui.events import StateSnapshotWorkflowEvent  # NOTE: This import path is also used by the LlamaIndex starter example in this repo.
     async def addSearch(
         ctx: Context,
         query: Annotated[str, "The search query to add."]
     ) -> str:
         """Add a search to the agent's list of searches."""
-        async with ctx.store.edit_state() as global_state:
+        async with ctx.store.edit_state() as global_state:  # NOTE: This pattern is used in other LlamaIndex shared-state docs in this repo.
             state = global_state.get("state", {})
             if state is None:
                 state = {}
@@ -214,10 +214,10 @@ is a situation where a user and an agent are working together to solve a problem
       // ...
 
       // [!code highlight:3]
-      const { state } = useCoAgent<AgentState>({
+      // [!code highlight:3]
+      const { state } = useCoAgent<AgentState>({ // NOTE: `useCoAgent` returns an object with a top-level `state` property.
         name: "my_agent", // MUST match the agent name in CopilotRuntime
       })
-
       // ...
 
       return (
