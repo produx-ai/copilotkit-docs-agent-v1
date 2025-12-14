@@ -13,10 +13,9 @@ import {
 
 ## Overview
 
-The `useAgent` hook provides direct access to your Direct-to-LLM agent from any React component. It gives you real-time access to the agent's state, messages, execution status, and allows you to subscribe to custom events.
+The `useAgent` hook provides direct access to your Direct-to-LLM agent from any React component—these are lightweight agent instances that don't rely on LangGraph/CoAgents. It gives you real-time access to the agent's state, messages, execution status, and allows you to subscribe to custom events.
 
-This enables you to build custom agent dashboards, monitoring tools, and interactive features that respond to your agent's behavior.
-
+`useAgent` still requires a configured agent runtime (e.g., via `<CopilotKit>` and a backend endpoint) for state and event sync. For simple one-off LLM calls without shared agent state, simpler hooks may be sufficient.
 ## Navigation
 
 This page covers everything you need to know about using `useAgent` with Direct-to-LLM. Select where you'd like to get started below.

@@ -1,9 +1,39 @@
 ---
 title: "Error Debugging & Observability"
-description: "Learn how to debug errors in CopilotKit with dev console and set up error observability for monitoring services."
+description: "Learn how to debug errors in CrewAI Flows with CopilotKit's dev console and set up error observability for monitoring services."
 icon: "lucide/TriangleAlert"
 ---
 
 import ErrorDebugging from "@/snippets/shared/troubleshooting/error-debugging.mdx";
 
 <ErrorDebugging components={props.components} />
+
+## CrewAI Flows Specific Debugging
+
+CrewAI Flows run as Python classes with agents and tasks, requiring tailored debugging beyond CopilotKit's frontend guidance. Use these steps for errors not covered by the general dev console.
+
+- **Agent/Task Initialization Errors**: Check flow definitions for correct agent names, tools, and roles. Enable logging in your flow class to catch startup issues.
+- **Flow Execution Failures**: Use Python debugging tools like breakpoints in flow methods. Trace state changes by logging flow state before/after each step.
+- **Transition or State Issues**: Inspect flow interruptions or agent pauses. Add debug prints to verify task inputs/outputs.
+- **Observability Integration**: Leverage Inspector for agent status/context or Logging for detailed runtime traces, complementing CopilotKit monitoring.
+
+Example debugging setup in a CrewAI flow:
+
+```python
+from crewai.flow import Flow
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+class DebuggableCrewAIFlow(Flow):
+    def problematic_step(self):
+        logging.info("Entering debuggable step with inputs...")
+        # Add breakpoint for inspection
+        import pdb; pdb.set_trace()
+        # Continue with step logic
+        result = self.execute_logic()
+        logging.info(f"Step result: {result}")
+        return result
+```
+
+For advanced monitoring, refer to the Inspector for full debugging tools.

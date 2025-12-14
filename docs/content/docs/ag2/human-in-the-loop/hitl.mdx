@@ -355,6 +355,24 @@ pnpm run dev
 ```
 - Visit [http://localhost:3000](http://localhost:3000) to interact with your HITL-enabled travel agent!
 
+#### Update CopilotKitProvider Remote Endpoint (Self-Hosted Only)
+
+If you're running the AG2 backend on port 8008 without a proxy to your UI port, point your CopilotKit provider to the backend explicitly. In your UI layout file (for example, `ui/app/layout.tsx`), set the runtime URL to the AG2 backend:
+
+```tsx
+import { CopilotKit } from "@copilotkit/react-core";
+
+export default function RootLayout({ children }) {
+  return (
+    <CopilotKit runtimeUrl="http://localhost:8008" agent="hitl_workflow">
+      {children}
+    </CopilotKit>
+  );
+}
+```
+
+If your setup proxies `/api/copilotkit` to the backend (or uses CopilotKit Cloud), no change is needed.
+
 ## Example Interaction flow
 
 When you interact with your travel agent:

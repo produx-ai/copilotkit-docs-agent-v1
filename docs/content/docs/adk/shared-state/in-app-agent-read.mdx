@@ -24,13 +24,28 @@ import RunAndConnect from "@/snippets/integrations/adk/run-and-connect.mdx"
 
 You can easily use the realtime agent state not only in the chat UI, but also in the native application UX.
 
-## When should I use this?
+## Prerequisites
 
-You can use this when you want to provide the user with feedback about your agent's state. As your agent's
-state updates, you can reflect these updates natively in your application.
+This guide assumes you have Google's Assistant Development Kit (ADK) set up in your environment. If you haven't installed ADK yet, follow these steps:
+
+- Install the required Python packages:
+  ```
+  pip install ag-ui-adk google-adk  # These are Google-provided libraries, not part of CopilotKit core.
+  ```
+- Ensure access to Google's ADK services and a valid API key configured.
+- If you're not using ADK, refer to other CopilotKit integrations like [LangGraph](/docs/langgraph) or standalone runtime setup.
 
 ## Implementation
 
+<Steps>
+  <Step>
+    ### Run and connect your agent
+    <RunAndConnect components={props.components} />
+  </Step>
+  <Step>
+    ### Define the Agent State
+
+    Create your ADK agent with a stateful structure. Here's a complete example that tracks language:
 <Steps>
   <Step>
     ### Run and connect your agent

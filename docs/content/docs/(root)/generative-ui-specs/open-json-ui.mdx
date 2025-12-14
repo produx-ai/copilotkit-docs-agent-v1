@@ -32,6 +32,8 @@ Backed by OpenAI, this specification is becoming an industry standard for declar
 
 CopilotKit's AG-UI protocol natively supports Open-JSON-UI alongside other generative UI specifications.
 
+*Note: Parsing and rendering Open-JSON-UI specs is not yet implemented in the current CopilotKit SDK. The AG-UI protocol focuses on agent integrations today; check for updates before relying on this payload structure.*
+
 ```typescript
 // Example: Agent returns Open-JSON-UI specification
 {
@@ -79,13 +81,13 @@ Open-JSON-UI provides a well-defined schema for component definitions:
 
 ### 2. Type Safety
 Strong typing ensures that generated UI components are valid and can be properly rendered:
-
-```typescript
 interface OpenJsonUIComponent {
   id?: string;
-  type: ComponentType;
+  type: string;
   properties?: Record<string, any>;
   children?: OpenJsonUIComponent[];
+  style?: Record<string, any>;
+}
   style?: StyleProperties;
 }
 ```

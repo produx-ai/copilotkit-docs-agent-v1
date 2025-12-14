@@ -73,9 +73,9 @@ To use A2A agents with CopilotKit, you need to first install the CopilotKit midd
   </Step>
 
   <Step>
-    ### Configure the A2A middleware
     ```tsx title="app/api/copilotkit/route.ts"
     import { A2AMiddlewareAgent } from "@ag-ui/a2a-middleware"
+    import { HttpAgent } from "@ag-ui/client"
 
     ...
 
@@ -92,6 +92,9 @@ To use A2A agents with CopilotKit, you need to first install the CopilotKit midd
       url: orchestratorUrl,
     });
 
+    // A2A Middleware: Wraps orchestrator and injects send_message_to_a2a_agent tool
+    // This allows orchestrator to communicate with A2A agents transparently
+    const a2aMiddlewareAgent = new A2AMiddlewareAgent({
     // A2A Middleware: Wraps orchestrator and injects send_message_to_a2a_agent tool
     // This allows orchestrator to communicate with A2A agents transparently
     const a2aMiddlewareAgent = new A2AMiddlewareAgent({
@@ -186,10 +189,9 @@ To use A2A agents with CopilotKit, you need to first install the CopilotKit midd
 
 
       // ...
-    }
-    ```
-
     Now we define the rendering for a message sent from the orchestrator to the a2a agents.
+    Notice that the status can be `executing` or `complete`. When it's executing, the orchestrator has sent a message to the a2a agent,
+    but not received a response yet. When it's complete, the orchestrator has received a response from the a2a agent. In both cases, we render the message.
     Notice that the status can be `executing` or `complete`. When it's executing, the orchestrator has sent a message to the a2a agent,
     but not recieved a response yet. When it's complete, the orchestrator has received a response from the a2a agent. In both cases, we render the message.
     If status is "inProgress", we've been informed that a message will be sent, but it hasn't finished sending yet, so we don't render anything.

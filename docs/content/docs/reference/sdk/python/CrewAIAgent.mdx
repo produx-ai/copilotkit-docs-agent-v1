@@ -64,11 +64,11 @@ CrewAIAgent lets you define your agent for use with CopilotKit.
 The name of the agent.
 </PropertyReference>
 
-<PropertyReference name="crew" type="Crew" required> 
+<PropertyReference name="crew" type="Optional[Crew]" > 
 When using a Crew based agent, pass in a `Crew` object to the `crew` parameter.
 </PropertyReference>
 
-<PropertyReference name="flow" type="Flow" required> 
+<PropertyReference name="flow" type="Optional[Flow]" > 
 When using a Flow based agent, pass in a `Flow` object to the `flow` parameter.
 </PropertyReference>
 
@@ -102,7 +102,8 @@ CopilotKit config for CrewAIAgent
 
 ### Parameters
 
-<PropertyReference name="merge_state" type="Callable" required> 
+<PropertyReference name="merge_state" type="Callable" > 
 This function lets you customize how CopilotKit merges the agent state.
+</PropertyReference>
 </PropertyReference>
 

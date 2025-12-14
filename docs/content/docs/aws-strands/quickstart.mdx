@@ -184,8 +184,8 @@ Before you begin, you'll need the following:
                 if __name__ == "__main__":
                     import uvicorn
 
+                    # Instantiate inside the reload guard to avoid reload pickling issues
                     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-
                 ```
 
                 <Callout type="info" title="What is AG-UI?">
@@ -211,19 +211,16 @@ Before you begin, you'll need the following:
             </Step>
             <Step>
                 ### Setup Copilot Runtime
-
-                Create an API route to connect CopilotKit to your Strands agent:
-
                 ```tsx title="app/api/copilotkit/route.ts"
                 import {
                   CopilotRuntime,
-                  ExperimentalEmptyAdapter,
+                  EmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
                 import { HttpAgent } from "@ag-ui/client";
                 import { NextRequest } from "next/server";
 
-                const serviceAdapter = new ExperimentalEmptyAdapter();
+                const serviceAdapter = new EmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {

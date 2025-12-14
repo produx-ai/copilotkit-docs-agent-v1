@@ -5,4 +5,8 @@ icon: "lucide/Settings"
 ---
 import HeadlessUI from "@/snippets/shared/guides/custom-look-and-feel/headless-ui.mdx";
 
+<Callout type="info" title="How this applies to Mastra">
+  Mastra focuses on your agents and backend logic. To use the headless UI described below, first expose your Mastra agent through Copilot Runtime (e.g., `MastraAgent.getLocalAgents({ mastra })` in your `/mastra/quickstart` setup), then build your custom React UI with the headless hooks shown here. This page covers the frontend layer; backend wiring lives in the Mastra quickstart and shared state guides.
+</Callout>
+
 <HeadlessUI components={props.components} />

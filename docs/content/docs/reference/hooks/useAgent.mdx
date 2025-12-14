@@ -53,7 +53,7 @@ function useAgent(options?: UseAgentOptions): { agent: AbstractAgent }
     </PropertyReference>
 
     <PropertyReference name="threadId" type="string">
-      Unique identifier for the current conversation thread.
+      Unique identifier for the current conversation thread. Managed internally by CopilotKit; manual changes can desynchronize state and are not recommended.
     </PropertyReference>
 
     <PropertyReference name="messages" type="Message[]">

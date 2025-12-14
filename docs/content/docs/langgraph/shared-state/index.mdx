@@ -14,10 +14,8 @@ CoAgents maintain a shared state that seamlessly connects your UI with the agent
 
 - Display the agent's current progress and intermediate results
 - Update the agent's state through UI interactions
-- React to state changes in real-time across your application
-
 The foundation of this system is built on LangGraph's stateful architecture. Unlike traditional LangChains, LangGraphs maintain their
-internal state throughout execution, which you can access via the `useCoAgentState` hook.
+internal state throughout execution, which you can access via the `useCoAgent` hook's `state` property.
 
 ## When should I use this?
 

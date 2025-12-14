@@ -32,6 +32,8 @@ By extending the Model Context Protocol, MCP-UI leverages the growing MCP ecosys
 
 CopilotKit's AG-UI protocol natively supports MCP-UI alongside other generative UI specifications.
 
+*Note: The `{ type: "mcp-ui", spec: ... }` payload shape is not implemented in the current SDK. The AG-UI protocol presently focuses on agent integrations; verify support before using this structure.*
+
 ```typescript
 // Example: Agent returns MCP-UI specification
 {
@@ -64,16 +66,17 @@ MCP-UI enables complex, interactive components with full JavaScript support:
 
 ### 2. Iframe Sandboxing
 Components are rendered in isolated iframes for security:
-
-```typescript
 {
   type: "mcp-ui",
   spec: {
     html: "...",
     sandbox: {
-      allowScripts: true,
-      allowForms: false,
+      "allow-scripts": true,
+      "allow-forms": false,
       permissions: ["camera", "microphone"]
+    }
+  }
+}
     }
   }
 }

@@ -6,10 +6,8 @@ We are grateful for your interest in contributing to CopilotKit. We welcome new 
 
 This guide will help you get started as smoothly as possible.
 
-## Step 1: Install Prerequisites
-
-- [Node.js](https://nodejs.org/en/) 20.x or later
-- [pnpm](https://pnpm.io/) v9.x installed globally (`npm i -g pnpm@^9`)
+- [Node.js](https://nodejs.org/en/) 18.x or later (20.x recommended)
+- [pnpm](https://pnpm.io/) v9.x or later installed globally (`npm i -g pnpm`)
 - [Turborepo v2.x](https://turborepo.org/) installed globally (`npm i -g turbo@2`)
 
 ## Step 2: Repository Setup
@@ -103,10 +101,11 @@ Now that you've made your changes, commit and push them. Then, simply head over 
 
 {/* TODO: Add the MAF equivalent of this section. */}
 {/* ## Starting a dev environment with hot reload
+## Starting a dev environment with hot reload
 
 CopilotKit contains a ready-made script for starting a development environment based on one of the agent examples. It lets you work on CopilotKit internals in the core Typescript, Python, or .NET code, respectively, while seeing your changes applied to the chosen example.
 
-As a prerequisite, make sure you have GNU parallel and agent framework CLI installed.
+As a prerequisite, make sure you have GNU parallel and the agent framework CLI installed.
 
 Next, go to the `CopilotKit/` directory and run the `example.sh` script for the example you want to work on:
 
@@ -120,9 +119,7 @@ You can optionally run the same example on agent framework platform by running:
 
 ```bash
 ./scripts/develop/example.sh agents-starter agent framework-platform
-``` */}
-
-## Debugging
+```
 
 Every time you run CopilotKit on localhost, you will be able to see the **CopilotKit Dev Console** in the chat window. The Dev Console provides you with useful functionality to debug your copilot (e.g. see what state the copilot is aware of, actions it can perform, etc).
 

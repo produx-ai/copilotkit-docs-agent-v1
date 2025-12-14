@@ -17,20 +17,21 @@ import FindCopilotRuntimeSnippet from "@/snippets/find-your-copilot-runtime.mdx"
 Once you've located your `CopilotRuntime`, you can add TypeScript/Node.js actions by modifying its configuration. Here's how to implement native backend actions:
 
 <Callout>
-**Note** that `actions` is not merely an array of actions, but an array **generator**.
-This generator takes `properties` and `url` as input.
+**Note** that `actions` can be either an array of actions or a function that takes `{ properties, url }` and returns an array of actions.
 
-This means you can **customize which backend actions are made available** according to the current frontend URL, as well as custom properties you can pass from the frontend.
+This allows you to **customize which backend actions are made available** according to the current frontend URL, as well as custom properties you can pass from the frontend.
 </Callout>
 
 ```tsx title="/api/copilotkit/route.ts"
 const runtime = new CopilotRuntime({
   // ... existing configuration
   actions: ({properties, url}) => {
-    // Note that actions returns not an array, but an array **generator**.
-    // You can use the input parameters to the actions generator to expose different backend actions to the Copilot at different times: 
+    // `actions` here is a function receiving the current frontend url and custom properties,
+    // and should return an array of action definitions:
     // `url` is the current URL on the frontend application.
     // `properties` contains custom properties you can pass from the frontend application.
+    
+    return [
     
     return [
       {
@@ -63,8 +64,7 @@ const runtime = new CopilotRuntime({
 
 <Step>
 ### Test your implementation
-
-After adding the action, test it by asking the copilot to perform the task. Observe how it selects the correct task, executes it, and streams back relevant responses.
+After adding the action, test it by asking the copilot to perform the task. Observe how it selects the correct task, executes it, and returns a JSON-serializable result (e.g., `{ name: "Darth Doe" }`).
 </Step>
 
 </Steps>

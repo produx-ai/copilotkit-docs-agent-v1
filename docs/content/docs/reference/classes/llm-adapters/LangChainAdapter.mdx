@@ -15,16 +15,14 @@ Copilot Runtime adapter for LangChain.
 ## Example
  
 ```ts
-import { CopilotRuntime, LangChainAdapter } from "@copilotkit/runtime";
+import { LangChainAdapter } from "@copilotkit/runtime";
 import { ChatOpenAI } from "@langchain/openai";
- 
-const copilotKit = new CopilotRuntime();
- 
+
 const model = new ChatOpenAI({
   model: "gpt-4o",
   apiKey: "<your-api-key>",
 });
- 
+
 return new LangChainAdapter({
   chainFn: async ({ messages, tools }) => {
     return model.bindTools(tools).stream(messages);

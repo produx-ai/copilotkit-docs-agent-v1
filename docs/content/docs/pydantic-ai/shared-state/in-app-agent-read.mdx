@@ -175,3 +175,11 @@ function YourMainContent() {
 
 By default, the Pydantic AI Agent state will only update _between_ Pydantic AI Agent node transitions --
 which means state updates will be discontinuous and delayed.
+
+To achieve continuous, real-time updates during agent execution, use **predictive state updates**.
+See **[predictive state updates](/pydantic-ai/shared-state/predictive-state-updates)** for implementation details.
+
+<Callout type="info">
+  Predictive state updates enable streaming in-progress agent state to the frontend as it changes,
+  providing a smoother user experience without waiting for node transitions.
+</Callout>

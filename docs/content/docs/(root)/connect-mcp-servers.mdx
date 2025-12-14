@@ -124,27 +124,36 @@ For further reading, check out the [Model Context Protocol](https://modelcontext
         ```
       </Step>
       <Step>
+      <Step>
         #### Connect to MCP Servers
 
-        Create a component to manage MCP server connections:
+        <Callout type="info" title="MCP server management is coming soon">
+          The current `@copilotkit/react-core` release does not export `setMcpServers` yet. MCP server management will be added in an upcoming release. For now, follow runtime-level MCP configuration in your backend or check the release notes for updates.
+        </Callout>
+      </Step>
+      <Step>
+        #### Add the Chat Interface
+
+        Add the `CopilotChat` component to your page:
 
         ```tsx
         "use client";
 
-        import { useCopilotChat } from "@copilotkit/react-core";
-        import { useEffect } from "react";
+        import { CopilotChat } from "@copilotkit/react-ui";
 
-        function McpServerManager() {
-          const { setMcpServers } = useCopilotChat();
-
-          useEffect(() => {
-            setMcpServers([
-              {
-                // Try a sample MCP server at https://mcp.composio.dev/
-                endpoint: "your_mcp_sse_url",
-              },
-            ]);
-          }, [setMcpServers]);
+        export default function ChatInterface() {
+          return (
+            <div className="flex h-screen p-4">
+              <CopilotChat
+                instructions="You are a helpful assistant with access to MCP servers."
+                className="flex-grow rounded-lg w-full"
+              />
+            </div>
+          );
+        }
+        ```
+      </Step>
+        ```
 
           return null;
         }
@@ -324,14 +333,12 @@ export default function MCPToolCall({
       )}
     </div>
   );
-}
-```
-
-</details>
-
-### Self-Hosting Option
-
-<details>
+<Callout type="info" title="Self-Hosting vs Copilot Cloud">
+  The Copilot Runtime handles communication with LLMs, message history, and
+  state. You can self-host it or use{" "}
+  <LinkToCopilotCloud asButton={false}>Copilot Cloud</LinkToCopilotCloud>{" "}
+  (recommended). Learn more in our [Self-Hosting Guide](/direct-to-llm/guides/self-hosting).
+</Callout>
 <summary>Click here to learn how to use MCP with self-hosted runtime</summary>
 
 <Callout type="info" title="Self-Hosting vs Copilot Cloud">

@@ -135,7 +135,9 @@ included in the function's final returned state. Otherwise, they will be overwri
                 <Tabs groupId="language_crewai-flows_agent" items={['Python']} default="Python" persist>
                     <Tab value="Python">
                         ```python
-                        from copilotkit.crewai import copilotkit_predict_state
+                        ```python
+                        from copilotkit.crewai import copilotkit_predict_state, copilotkit_stream
+                        from litellm import completion
                         from crewai.flow.flow import Flow, start
 
                         class SampleAgentFlow(Flow):
@@ -184,6 +186,7 @@ included in the function's final returned state. Otherwise, they will be overwri
                                         stream=True
                                     )
                                 )
+                        ```
                         ```
                     </Tab>
                 </Tabs>

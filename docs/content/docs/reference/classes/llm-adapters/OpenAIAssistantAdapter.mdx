@@ -15,16 +15,14 @@ Copilot Runtime adapter for the OpenAI Assistant API.
 ## Example
  
 ```ts
-import { CopilotRuntime, OpenAIAssistantAdapter } from "@copilotkit/runtime";
+import { OpenAIAssistantAdapter } from "@copilotkit/runtime";
 import OpenAI from "openai";
- 
-const copilotKit = new CopilotRuntime();
- 
+
 const openai = new OpenAI({
   organization: "<your-organization-id>",
   apiKey: "<your-api-key>",
 });
- 
+
 return new OpenAIAssistantAdapter({
   openai,
   assistantId: "<your-assistant-id>",

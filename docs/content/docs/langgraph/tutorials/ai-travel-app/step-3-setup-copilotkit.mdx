@@ -19,6 +19,7 @@ Navigate back to the `ui` directory and install the CopilotKit dependencies:
 pnpm add @copilotkit/react-core @copilotkit/react-ui
 ```
 
+> Note: Ensure required peer dependencies are installed in your project (e.g., `react`, `react-dom`, and `zod`).
 ## Setup CopilotKit
 
 There are two ways of setting up CopilotKit, either by using Copilot Cloud or by self-hosting. Self-hosting will give you more control
@@ -111,18 +112,19 @@ In this tutorial, we'll use the `<CopilotSidebar/>` component to display the cha
 ```tsx title="ui/app/page.tsx" showLineNumbers {6-7,15}
 "use client";
 
-import { TasksList } from "@/components/TasksList";
-import { TasksProvider } from "@/lib/hooks/use-tasks";
 import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotSidebar } from "@copilotkit/react-ui"; // [!code ++]
 import "@copilotkit/react-ui/styles.css"; // [!code ++]
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { TripsProvider } from "@/lib/hooks/use-trips";
+import { MapCanvas } from "@/components/MapCanvas";
 
 export default function Home() {
   return (
     <CopilotKit
       publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}
-    >
-      /* [!code ++:9] */
+      // [!code ++:9]
+      // [!code ++:9]
       <CopilotSidebar
         defaultOpen={true}
         clickOutsideToClose={false}
@@ -141,6 +143,7 @@ export default function Home() {
     </CopilotKit>
   );
 }
+```
 ```
 
 And we're done! Here's what we did:
@@ -164,23 +167,28 @@ And we're done! Here's what we did:
 ### Set up Copilot Runtime Endpoint
 <SelfHostingCopilotRuntimeCreateEndpoint components={props.components} />
 </Step>
-<Step>
-
-### Configure the CopilotKit Provider
-```tsx title="app/page.tsx" showLineNumbers
+```tsx title="ui/app/page.tsx" showLineNumbers
 "use client";
 
-import { TasksList } from "@/components/TasksList";
-import { TasksProvider } from "@/lib/hooks/use-tasks";
 import { CopilotKit } from "@copilotkit/react-core"; // [!code ++]
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { TripsProvider } from "@/lib/hooks/use-trips";
+import { MapCanvas } from "@/components/MapCanvas";
 
 export default function Home() {
   return (
     <CopilotKit runtimeUrl="/api/copilotkit"> // [!code ++]
-      <TasksProvider>
-        <TasksList />
-      </TasksProvider>
+      <TooltipProvider>
+        <TripsProvider>
+          <main className="h-screen w-screen">
+            <MapCanvas />
+          </main>
+        </TripsProvider>
+      </TooltipProvider>
     </CopilotKit> // [!code ++]
+  );
+}
+```
   );
 }
 ```
@@ -200,7 +208,7 @@ import { TasksList } from "@/components/TasksList";
 import { TasksProvider } from "@/lib/hooks/use-tasks";
 import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotSidebar } from "@copilotkit/react-ui"; // [!code ++]
-import "@copilotkit/react-ui/styles.css"; // [!code ++]
+      // [!code ++:9]
 
 export default function Home() {
   return (

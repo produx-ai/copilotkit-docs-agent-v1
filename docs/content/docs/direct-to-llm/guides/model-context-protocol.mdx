@@ -162,27 +162,36 @@ For further reading, check out the [Model Context Protocol](https://modelcontext
 
         Create a component to display MCP tool calls in your UI:
 
-        ```tsx
-        "use client";
-
         import {
-          useCopilotAction,
-          CatchAllActionRenderProps,
-        } from "@copilotkit/react-core";
-        import McpToolCall from "./McpToolCall";
-
-        export function ToolRenderer() {
-          useCopilotAction({
-            /**
-             * The asterisk (*) matches all tool calls
-             */
-            name: "*",
-            render: ({ name, status, args, result }: CatchAllActionRenderProps<[]>) => (
-              <McpToolCall status={status} name={name} args={args} result={result} />
-            ),
-          });
-          return null;
-        }
+-          useCopilotAction,
+-          CatchAllActionRenderProps,
+-        } from "@copilotkit/react-core";
++          useDefaultTool,
++          CatchAllToolRenderProps,
++        } from "@copilotkit/react-core";
+         import McpToolCall from "./McpToolCall";
+ 
+         export function ToolRenderer() {
+-          useCopilotAction({
+-            /**
+-             * The asterisk (*) matches all tool calls
+-             */
+-            name: "*",
+-            render: ({ name, status, args, result }: CatchAllActionRenderProps<[]>) => (
+-              <McpToolCall status={status} name={name} args={args} result={result} />
+-            ),
+-          });
++          useDefaultTool({
++            /**
++             * The asterisk (*) matches all tool calls
++             */
++            name: "*",
++            render: ({ name, status, args, result }: CatchAllToolRenderProps<[]>) => (
++              <McpToolCall status={status} name={name} args={args} result={result} />
++            ),
++          });
+           return null;
+         }
         ```
       </Step>
       <Step>
@@ -318,8 +327,8 @@ export default function MCPToolCall({
 <Callout type="info" title="Self-Hosting vs Copilot Cloud">
   The Copilot Runtime handles communication with LLMs, message history, and
   state. You can self-host it or use{" "}
-  <LinkToCopilotCloud asButton={false}>Copilot Cloud</LinkToCopilotCloud>{" "}
-  (recommended). Learn more in our [Self-Hosting Guide](/guides/self-hosting).
+  <LinkToCopilotCloud asButton={false}>Copilot Cloud</LinkToCopilotCloud{" "}
+  (recommended). Learn more in our [Self-Hosting Guide](/direct-to-llm/guides/self-hosting).
 </Callout>
 
 To configure your self-hosted runtime with MCP servers, you'll need to implement the `createMCPClient` function that matches this interface:

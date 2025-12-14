@@ -22,7 +22,7 @@ This guide will help you get started as smoothly as possible.
   Then, clone your fork to your local machine:
   ```bash
   git clone https://github.com/<your-username>/CopilotKit
-  cd CopilotKit/CopilotKit
+  cd CopilotKit
   ```
   </Step>
   <Step>
@@ -69,22 +69,17 @@ In most cases, you want to seamlessly be able to test your changes in real-time 
 
 We have an `examples` folder in the monorepo with a few different examples using CopilotKit. You can run these examples to test your changes, as they are linked to the `@copilotkit/*` packages in the monorepo.
 
-For this tutorial, we'll use the `next-openai` example, specifically the Presentation Demo (`/presentation`).
+For this tutorial, we'll use the `coagents-starter` example.
 
-In a separate terminal, run the following command to start the example:
+In a separate terminal, run the following command to start the example UI:
 
 ```bash
-cd examples/next-openai
+cd examples/coagents-starter/ui
 export OPENAI_API_KEY=<your-openai-api-key>
-pnpm run example-dev
+pnpm run dev
 ```
 
-<Callout type="info">
-We use the `pnpm run example-dev` command to run examples, which is different from the `turbo run dev` command we use to work on the individual packages.
-</Callout>
-
-Now navigate to http://localhost:3000/presentation and you should see the example running. Any changes you make to the CopilotKit packages will immediately be reflected here.
-
+Now navigate to http://localhost:3000 and you should see the example running. Any changes you make to the CopilotKit packages will immediately be reflected here.
 ## Step 5: Formatting and Linting
 
 Before committing your changes, ensure your files are formatted properly by running the following at the root of the monorepo:
@@ -106,26 +101,6 @@ Now that you've made your changes, commit and push them. Then, simply head over 
 CopilotKit contains a ready-made script for starting a development environment based on one of the CoAgent examples. It lets you work on CopilotKit internals in the core Typescript and Python code while seeing your changes applied to the chosen example.
 
 As a prerequisite, make sure you have GNU parallel and langgraph CLI installed.
-
-Next, go to the `CopilotKit/` directory and run the `example.sh` script for the example you want to work on:
-
-```bash
-./scripts/develop/example.sh coagents-starter
-```
-
-This will start a development environment with hot reload.
-
-You can optionally run the same example on LangGraph platform by running:
-
-```bash
-./scripts/develop/example.sh coagents-starter langgraph-platform
-```
-
-## Debugging
-
-Every time you run CopilotKit on localhost, you will be able to see the **CopilotKit Dev Console** in the chat window. The Dev Console provides you with useful functionality to debug your copilot (e.g. see what state the copilot is aware of, actions it can perform, etc).
-
-<Frame description="CopilotKit Dev Console">
   <img
     src="https://cdn.copilotkit.ai/docs/copilotkit/images/contributing/copilotkit-dev-console.png"
     className="w-auto max-w-[420px]"

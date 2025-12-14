@@ -15,15 +15,13 @@ Copilot Runtime adapter for Anthropic.
 ## Example
  
 ```ts
-import { CopilotRuntime, AnthropicAdapter } from "@copilotkit/runtime";
+import { AnthropicAdapter } from "@copilotkit/runtime";
 import Anthropic from "@anthropic-ai/sdk";
- 
-const copilotKit = new CopilotRuntime();
- 
+
 const anthropic = new Anthropic({
   apiKey: "<your-api-key>",
 });
- 
+
 return new AnthropicAdapter({
   anthropic,
   promptCaching: {

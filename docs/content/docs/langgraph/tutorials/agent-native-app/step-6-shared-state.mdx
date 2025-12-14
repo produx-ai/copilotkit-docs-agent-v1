@@ -111,11 +111,8 @@ If you are going to specify a type, you should be very careful that the type has
 It is not recommended, but you can ditch the type parameter and instead get an `any` type.
 </Callout>
 
-In this example, we use the `useCoAgent` hook to wire up the application's state to the LangGraph agent's state.
 - For the generic type, we pass the `AgentState` type that was already defined for the application in `@/lib/types.ts`.
 - For the `name` parameter, we pass the name of the graph as defined in `agent/langgraph.json`.
-- For the `initialState` parameter, we pass the initial state of the LangGraph agent which is already defined in `@/lib/trips.ts`.
-</Step>
 </Steps>
 
 

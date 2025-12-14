@@ -25,10 +25,59 @@ CoAgents maintain a shared state that seamlessly connects your UI with the agent
 
 The foundation of this system is built on LlamaIndex's AG-UI protocol integration, which provides `initial_state` support in the workflow router.
 
+Below is an example of defining `initial_state` in your Python agent using LlamaIndex's AG-UI workflow router:
+
+```python title="agent.py"
+from llama_index.protocols.ag_ui.router import get_ag_ui_workflow_router
+
+# Define initial state with keys for shared data
+initial_state = {
+    "question": "",  # Input from UI
+    "answer": ""     # Output to UI
+}
+
+# Integrate into the router
+agentic_chat_router = get_ag_ui_workflow_router(
+    llm=llm,  # Assuming llm is defined elsewhere
+    system_prompt="Your system prompt here",
+    backend_tools=[],  # Add tools as needed
+    initial_state=initial_state
+)
+```
+
 ## When should I use this?
 
-State streaming is perfect when you want to facilitate collaboration between your agent and the user. Any state that your LlamaIndex Agent
-persists will be automatically shared by the UI. Similarly, any state that the user updates in the UI will be automatically reflected.
+On the frontend, use the `useCoAgent` hook to provide the initial state and react to updates:
 
-This allows for a consistent experience where both the agent and the user are on the same page.
+```tsx title="app/page.tsx"
+"use client";
 
+import { useCoAgent } from "@copilotkit/react-core";
+
+type AgentState = {
+  question: string;
+  answer: string;
+};
+
+function MyComponent() {
+  const { state, setState } = useCoAgent<AgentState>({
+    name: "your-agent-name",
+    initialState: {
+      question: "",
+      answer: ""
+    }
+  });
+
+  return (
+    <div>
+      <p>Question: {state.question}</p>
+      <p>Answer: {state.answer}</p>
+      <button onClick={() => setState({ ...state, question: "New question" })}>
+        Update Question
+      </button>
+    </div>
+  );
+}
+```
+
+Ensure the `initialState` keys in React match the `initial_state` keys in Python for seamless sharing.

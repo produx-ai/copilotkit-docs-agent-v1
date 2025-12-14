@@ -9,8 +9,8 @@ import { IframeSwitcher } from "@/components/content"
 
 <IframeSwitcher
   id="shared-state-read-example"
-  exampleUrl="https://feature-viewer.copilotkit.ai/mastra-agent-local/feature/shared_state?sidebar=false&chatDefaultOpen=false"
-  codeUrl="https://feature-viewer.copilotkit.ai/mastra-agent-local/feature/shared_state?view=code&sidebar=false&codeLayout=tabs"
+  exampleUrl="https://feature-viewer.copilotkit.ai/mastra/feature/shared_state?sidebar=false&chatDefaultOpen=false"
+  codeUrl="https://feature-viewer.copilotkit.ai/mastra/feature/shared_state?view=code&sidebar=false&codeLayout=tabs"
   exampleLabel="Demo"
   codeLabel="Code"
   height="700px"
@@ -28,11 +28,15 @@ You can easily use the realtime agent state not only in the chat UI, but also in
   This guide assumes you are embedding your Mastra agent inside of Copilot Runtime, like so.
 
   ```ts
+  import { MastraAgent } from "@ag-ui/mastra";
+
   const runtime = new CopilotRuntime({
     agents: MastraAgent.getLocalAgents({ mastra }),
   });
   ```
 
+  This feature will **not work** if you are using a **remote Mastra agent**.
+</Callout>
   This feature will **not work** if you are using a **remote Mastra agent**.
 </Callout>
 

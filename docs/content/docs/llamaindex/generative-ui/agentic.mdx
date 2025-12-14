@@ -102,30 +102,34 @@ is a situation where a user and an agent are working together to solve a problem
         
         return "All searches completed!"
 
-    # Initialize the LLM
-    llm = OpenAI(model="gpt-4o")
+# Initialize the LLM
+llm = OpenAI(model="gpt-4o")
 
-    # Create the AG-UI workflow router
-    agentic_chat_router = get_ag_ui_workflow_router(
-        llm=llm,
-        system_prompt="""
-        You are a helpful assistant for storing searches.
+# Create the AG-UI workflow router
+agentic_chat_router = get_ag_ui_workflow_router(
+    llm=llm,
+    system_prompt="""
+    You are a helpful assistant for storing searches.
 
-        IMPORTANT:
-        - Use the addSearch tool to add a search to the agent's state
-        - After using the addSearch tool, YOU MUST ALWAYS use the runSearches tool to run the searches
-        - ONLY USE THE addSearch TOOL ONCE FOR A GIVEN QUERY
-        
-        When adding searches, update the state to track:
-        - query: the search query
-        - done: whether the search is complete (false initially, true after running)
-        """,
-        backend_tools=[addSearch, runSearches],
-        initial_state={
-            "searches": []
-        },
-    )
+    IMPORTANT:
+    - Use the addSearch tool to add a search to the agent's state
+    - After using the addSearch tool, YOU MUST ALWAYS use the runSearches tool to run the searches
+    - ONLY USE THE addSearch TOOL ONCE FOR A GIVEN QUERY
+    
+    When adding searches, update the state to track:
+    - query: the search query
+    - done: whether the search is complete (false initially, true after running)
+    """,
+    backend_tools=[addSearch, runSearches],
+    initial_state={
+        "searches": []
+    },
+)
 
+# In your frontend (e.g., CopilotRuntime config), define the agent name to match your renders, e.g.:
+# agents: [{ name: "my_agent", ... }]
+
+# Create FastAPI app
     # Create FastAPI app
     app = FastAPI(
         title="LlamaIndex Agent",

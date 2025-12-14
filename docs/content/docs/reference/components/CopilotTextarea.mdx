@@ -30,7 +30,11 @@ import "@copilotkit/react-textarea/styles.css";
   autosuggestionsConfig={{
     textareaPurpose:
      "the body of an email message",
-    chatApiConfigs: {},
+    chatApiConfigs: {
+      suggestionsApiConfig: {
+        maxTokens: 20,
+      },
+    },
   }}
 />
 ```
@@ -140,7 +144,7 @@ Configuration settings for the autosuggestions feature.
  
     Example: "The body of the email response"
   </PropertyReference>
- 
+    <strong>NOTE:</strong> You must specify at least one of `suggestionsApiConfig` or `insertionApiConfig`.
   <PropertyReference name="chatApiConfigs" type="ChatApiConfigs" >
     The chat API configurations.
  

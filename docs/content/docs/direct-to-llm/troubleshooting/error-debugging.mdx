@@ -1,9 +1,42 @@
 ---
-title: "Error Debugging & Observability"
-description: "Learn how to debug errors in CopilotKit with dev console and set up error observability for monitoring services."
+title: "Direct-to-LLM Error Debugging"
+description: "Debug direct-to-LLM integrations (CopilotTextarea, runtime endpoints, backend actions) without relying on UI dev consoles."
 icon: "lucide/TriangleAlert"
 ---
 
-import ErrorDebugging from "@/snippets/shared/troubleshooting/error-debugging.mdx";
+### Direct-to-LLM Error Debugging
 
-<ErrorDebugging components={props.components} />
+For direct LLM integrations (e.g., using `@copilotkit/react-textarea` or runtime endpoints without chat UI), debugging focuses on headless execution, API calls, and backend actions. Errors usually surface in your application logs or runtime service—`showDevConsole` is less applicable without chat components.
+
+**Common Issues and Fixes**
+- **API call failures**: Verify your LLM adapter configuration and `runtimeUrl` target (e.g., OpenAI/Anthropic adapters in the runtime service). Ensure API keys stay server-side and that the endpoint is reachable.
+- **Textarea integration errors**: With `CopilotTextarea`, check your app and browser console for LLM response/parsing errors. Confirm the `runtimeUrl` points to a live endpoint and returns valid JSON.
+- **Backend action errors**: Wrap action calls in `try/catch` and inspect runtime logs (e.g., service adapter output). Surface meaningful errors in your own logging/monitoring.
+
+```tsx
+// Example: basic error logging in a direct LLM setup
+import { CopilotTextarea } from "@copilotkit/react-textarea";
+
+export default function DirectLLMComponent() {
+  const handleAction = () => {
+    try {
+      // Perform backend action or fetch
+      performBackendAction();
+    } catch (error) {
+      console.error("Direct LLM action error:", error);
+    }
+  };
+
+  return (
+    <CopilotTextarea
+      className="custom-styles"
+      runtimeUrl="/api/copilotkit"
+      onChange={(e) => handleAction(e)}
+    />
+  );
+}
+```
+
+<Callout type="info">
+For monitoring and alerting, use CopilotKit provider-level error observability (e.g., a provider `onError` handler) to track runtime/LLM failures alongside your application logs.
+</Callout>

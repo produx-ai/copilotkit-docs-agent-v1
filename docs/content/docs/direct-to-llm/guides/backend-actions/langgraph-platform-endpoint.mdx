@@ -70,9 +70,12 @@ import { FaCloud, FaServer } from "react-icons/fa";
                     ```tsx
                     import {
                         CopilotRuntime,
+                    import {
+                        CopilotRuntime,
+                        // Deprecated: LangGraphAgent import from "@copilotkit/runtime"; import from the langgraph entrypoint instead
                         LangGraphAgent  // [!code highlight]
                         // ...
-                    } from "@copilotkit/runtime";
+                    } from "@copilotkit/runtime/langgraph";
 
                     const runtime = new CopilotRuntime({
                         // ...existing configuration
@@ -86,8 +89,6 @@ import { FaCloud, FaServer } from "react-icons/fa";
                             }),
                         },
                     });
-                    ```
-                </Step>
             </Steps>
         </TailoredContentOption>
     </TailoredContent>

@@ -60,8 +60,8 @@ The LangGraph graph to use with the agent.
 The description of the agent.
 </PropertyReference>
 
-<PropertyReference name="langgraph_config" type="Optional[RunnableConfig]" > 
-The LangGraph/LangChain config to use with the agent.
+<PropertyReference name="langgraph_config" type="Optional[Union[RunnableConfig, dict]]" > 
+The LangGraph/LangChain config to use with the agent. Accepts either a RunnableConfig or a plain dict.
 </PropertyReference>
 
 <PropertyReference name="copilotkit_config" type="Optional[CopilotKitConfig]" > 
@@ -92,11 +92,12 @@ CopilotKit config for LangGraphAgent
 
 ### Parameters
 
-<PropertyReference name="merge_state" type="Callable" required> 
+<PropertyReference name="merge_state" type="Callable" > 
 This function lets you customize how CopilotKit merges the agent state.
 </PropertyReference>
 
-<PropertyReference name="convert_messages" type="Callable" required> 
+<PropertyReference name="convert_messages" type="Callable" > 
 Use this function to customize how CopilotKit converts its messages to LangChain messages.`
+</PropertyReference>
 </PropertyReference>
 

@@ -4,6 +4,75 @@ description: Common issues you may encounter when using Copilots.
 icon: "lucide/LifeBuoy"
 ---
 
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 import CommonIssues from "@/snippets/shared/troubleshooting/common-issues.mdx";
 
 <CommonIssues components={props.components} />
+
+## AWS-Specific Issues
+
+Welcome to troubleshooting for AWS deployments! Below are common issues when using CopilotKit with AWS Strands, including permission errors and timeout limits.
+
+<Accordions>
+    <Accordion title="AWS IAM Permission Errors">
+        If you're encountering access denied errors, verify your IAM role has the required policies:
+
+        ```json
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "bedrock:InvokeModel",
+                "lambda:InvokeFunction",
+                "logs:CreateLogGroup"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
+        ```
+
+        Common fixes:
+        - Attach the managed policy `AmazonBedrockFullAccess` or equivalent custom policy.
+        - Ensure the role is assumed by your Lambda or EC2 instance.
+        - Check CloudTrail logs for specific denial reasons.
+    </Accordion>
+    <Accordion title="Lambda Timeout Limits">
+        CopilotKit actions may hit Lambda's 15-minute limit for long-running tasks. Troubleshoot by:
+
+        ```bash
+        # Check Lambda timeouts in CloudWatch Logs
+        aws logs filter-log-events --log-group-name /aws/lambda/your-function-name --filter-pattern "Task timed out"
+        ```
+
+        Common solutions:
+        - Increase the function timeout in the AWS Console or via AWS CLI: `aws lambda update-function-configuration --function-name your-function --timeout 900`.
+        - Use streaming responses for large data to avoid gateway timeouts.
+        - Offload heavy computations to Step Functions or ECS.
+    </Accordion>
+    <Accordion title="AWS Region and Connectivity Issues">
+        If deployments fail due to region mismatches:
+        
+        ```ts
+        // Ensure CopilotRuntime is configured with the correct Bedrock adapter region
+        import { CopilotRuntime } from "@copilotkit/runtime";
+        import { BedrockAdapter } from "@copilotkit/runtime/service-adapters/bedrock";
+        
+        const runtime = new CopilotRuntime({
+          agents,
+          serviceAdapter: new BedrockAdapter({
+            region: "us-east-1", // Match your deployed region
+          }),
+        });
+        ```
+
+        Common issues:
+        - Verify all resources (e.g., Bedrock models, S3 buckets) are in the same region as your app.
+        - Use VPC endpoints if running in a private subnet.
+        - Test with AWS CLI: `aws bedrock list-foundation-models --region your-region`.
+    </Accordion>
+</Accordions>
+
+<Callout type="info">Not seeing your issue? For AWS Strands help, visit our [AWS Strands Docs](https://docs.copilotkit.ai/aws-strands) or [open a GitHub issue](https://github.com/CopilotKit/CopilotKit/issues).</Callout>

@@ -53,7 +53,8 @@ For example, in the `tool_node` we update some state based on the tool result an
 
 ```python title="agent/graph.py"
 # ...
-from copilotkit.langchain import copilotkit_emit_state # [!code ++]
+- from copilotkit.langchain import copilotkit_emit_state # [!code ++]
++ from copilotkit.langgraph import copilotkit_emit_state # [!code ++]
 #...
 
 async def tool_node(self, state: ResearchState, config: RunnableConfig) -> Command[Literal["process_feedback_node", "call_model_node"]]:
@@ -74,6 +75,7 @@ async def tool_node(self, state: ResearchState, config: RunnableConfig) -> Comma
             await copilotkit_emit_state(config, tool_state) # [!code ++]
 
         return tool_state
+```
 ```
 
 As this loop is iterated through, the intermediate state that the tools write will be emitted to the frontend. Basically, any time that

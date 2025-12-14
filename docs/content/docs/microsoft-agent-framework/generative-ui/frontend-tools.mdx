@@ -7,15 +7,10 @@ import { IframeSwitcher } from "@/components/content"
 import { Tabs, Tab } from "fumadocs-ui/components/tabs"
 import RunAndConnect from "@/snippets/integrations/microsoft-agent-framework/run-and-connect.mdx"
 
-{/* TODO: Swap these links for Microsoft Agent Framework links once Microsoft Agent Framework is officially added to the feature viewer */}
-<IframeSwitcher
-  id="frontend-tools-example"
-  exampleUrl="https://feature-viewer.copilotkit.ai/microsoft-agent-framework-dotnet/feature/agentic_chat?sidebar=false&chatDefaultOpen=false"
-  codeUrl="https://feature-viewer.copilotkit.ai/microsoft-agent-framework-dotnet/feature/agentic_chat?view=code&sidebar=false&codeLayout=tabs"
-  exampleLabel="Demo"
-  codeLabel="Code"
-  height="700px"
-/>
+{/* Feature viewer links will be added once Microsoft Agent Framework is available there. */}
+<Callout type="warning">
+  Live demo and code previews will be linked here when the Microsoft Agent Framework examples are added to the CopilotKit feature viewer.
+</Callout>
 
 ## What is this?
 Frontend tools enable you to define client-side functions that your agent can invoke, with execution happening entirely in the user's browser. When your agent calls a frontend tool,
@@ -50,8 +45,13 @@ Use frontend tools when you need your agent to interact with client-side primiti
 
         export function Page() {
           // ...
+        ```tsx title="page.tsx"
+        import { useFrontendTool } from "@copilotkit/react-core" // [!code highlight]
 
-          // [!code highlight:25]
+        export function Page() {
+          // ...
+
+          // [!code highlight:28]
           useFrontendTool({
             name: "sayHello",
             description: "Say hello to the user",
@@ -67,12 +67,17 @@ Use frontend tools when you need your agent to interact with client-side primiti
               // Handler returns the result of the tool call
               return { currentURLPath: window.location.href, userName: name };
             },
-            render: ({ args }) => {
-              // Renders UI based on the data of the tool call
+            render: ({ result, args }) => {
+              // Renders UI based on the data of the tool call and shows the handler result
+              const { currentURLPath, userName } = result || {};
               return (
                 <div>
                   <h1>Hello, {args.name}!</h1>
-                  <h1>You're currently on {window.location.href}</h1>
+                  {result ? (
+                    <p>Tool called with result: User '{userName}' on page '{currentURLPath}'</p>
+                  ) : (
+                    <p>Tool not yet called or failed.</p>
+                  )}
                 </div>
               );
             },
@@ -81,7 +86,6 @@ Use frontend tools when you need your agent to interact with client-side primiti
           // ...
         }
         ```
-    </Step>
     <Step>
         ### Modify your server
         Ensure your AG-UI server receives the frontend tools and passes them to your agent logic as needed.

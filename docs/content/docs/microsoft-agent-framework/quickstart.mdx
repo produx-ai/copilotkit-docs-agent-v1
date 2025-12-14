@@ -70,11 +70,9 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install dependencies
 
-                The starter includes a `postinstall` script that automatically installs both your npm and agent dependencies.
-
                 ```npm
+                npm install
                 ```
-
                 <Callout type="info" title="Manual setup">
                   <Tabs groupId="language_microsoft-agent-framework_agent" items={['.NET', 'Python']} persist>
                     <Tab value=".NET">
@@ -183,9 +181,11 @@ Before you begin, you'll need the following:
                     <Tab value=".NET">
                         First, setup a new .NET project:
                         ```bash
+                        First, setup a new .NET project:
+                        ```bash
                         dotnet new web -n AGUIServer
                         cd AGUIServer
-                        dotnet add package Microsoft.Agents.AI.Hosting.AGUI.AspNetCore --version 1.0.0-preview.251110.1
+                        dotnet add package Microsoft.Agents.AI.Hosting.AGUI.AspNetCore
                         dotnet add package Microsoft.Extensions.AI.OpenAI --version 9.10.2-preview.1.25552.1
                         dotnet add package OpenAI --version 2.6.0
                         dotnet user-secrets init

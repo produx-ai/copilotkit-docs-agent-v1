@@ -1,7 +1,7 @@
 ---
 title: Interrupt Based
 icon: "lucide/CirclePause"
-description: Learn how to implement Human-in-the-Loop (HITL) using a interrupt-based flow.
+description: Learn how to implement Human-in-the-Loop (HITL) using an interrupt-based flow.
 ---
 import InstallSDKSnippet from "@/snippets/install-sdk.mdx"
 import {
@@ -133,37 +133,39 @@ We're going to have the agent ask us to name it, so we'll need a state property 
             ```
         </Tab>
         <Tab value="TypeScript">
-            ```typescript title="agent-js/src/agent.ts"
-            import { interrupt } from "@langchain/langgraph"; // [!code highlight]
-            import { SystemMessage } from "@langchain/core/messages";
-            import { ChatOpenAI } from "@langchain/openai";
+```typescript title="agent-js/src/agent.ts"
+import { interrupt } from "@langchain/langgraph"; // [!code highlight]
+import { SystemMessage } from "@langchain/core/messages";
+import { ChatOpenAI } from "@langchain/openai";
 
-            // add the agent state definition from the previous step
-            export const AgentStateAnnotation = Annotation.Root({
-                agentName: Annotation<string>,
-                ...CopilotKitStateAnnotation.spec,
-            });
-            export type AgentState = typeof AgentStateAnnotation.State;
+// add the agent state definition from the previous step
+export const AgentStateAnnotation = Annotation.Root({
+    agentName: Annotation<string>,
+    ...CopilotKitStateAnnotation.spec,
+});
+export type AgentState = typeof AgentStateAnnotation.State;
 
-            async function chat_node(state: AgentState, config: RunnableConfig) {
-                const agentName = state.agentName
-                ?? interrupt("Before we start, what would you like to call me?"); // [!code highlight]
+async function chat_node(state: AgentState, config: RunnableConfig) {
+    const agentName = state.agentName
+    ?? await interrupt("Before we start, what would you like to call me?"); // [!code highlight]
 
-                // Tell the agent its name
-                const systemMessage = new SystemMessage({
-                    content: `You are a helpful assistant named ${agentName}...`,
-                });
+    // Tell the agent its name
+    const systemMessage = new SystemMessage({
+        content: `You are a helpful assistant named ${agentName}...`,
+    });
 
-                const response = await new ChatOpenAI({ model: "gpt-4o" }).invoke(
-                    [systemMessage, ...state.messages],
-                    config
-                );
+    const response = await new ChatOpenAI({ model: "gpt-4o" }).invoke(
+        [systemMessage, ...state.messages],
+        config
+    );
 
-                return {
-                    ...state,
-                    agentName,
-                    messages: response,
-                };
+    return {
+        ...state,
+        agentName,
+        messages: response,
+    };
+}
+```
             }
             ```
         </Tab>
@@ -355,10 +357,6 @@ The return value of the handler will be passed to the `render` method as the `re
 // We will assume an interrupt event in the following shape
 type Department = 'finance' | 'engineering' | 'admin'
 interface AuthorizationInterruptEvent {
-    type: 'auth',
-    accessDepartment: Department,
-}
-
 import { useLangGraphInterrupt } from "@copilotkit/react-core";
 
 const YourMainContent = () => {
@@ -372,14 +370,14 @@ const YourMainContent = () => {
     // [!code highlight:28]
     useLangGraphInterrupt({
         handler: async ({ result, event, resolve }) => {
-            const { department } = await getUserByEmail(userEmail)
+            const { department, id } = await getUserByEmail(userEmail.email)
             if (event.value.accessDepartment === department || department === 'admin') {
                 // Following the resolution of the event, we will not proceed to the render method
                 resolve({ code: 'AUTH_BY_DEPARTMENT' })
                 return;
             }
 
-            return { department, userId }
+            return { department, userId: id }
         },
         render: ({ result, event, resolve }) => (
             <div>
@@ -394,6 +392,16 @@ const YourMainContent = () => {
                 <button
                     onClick={() => resolve({ code: 'CANCEL' })}
                 >
+                    Cancel
+                </button>
+            </div>
+        )
+    });
+    // ...
+
+    return <div>{/* ... */}</div>
+}
+```
                     Cancel
                 </button>
             </div>

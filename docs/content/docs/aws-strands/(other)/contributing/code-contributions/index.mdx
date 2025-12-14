@@ -9,9 +9,8 @@ This guide will help you get started as smoothly as possible.
 ## Step 1: Install Prerequisites
 
 - [Node.js](https://nodejs.org/en/) 20.x or later
-- [pnpm](https://pnpm.io/) v9.x installed globally (`npm i -g pnpm@^9`)
+- [pnpm](https://pnpm.io/) v10.x installed globally (`npm i -g pnpm@^10`)
 - [Turborepo v2.x](https://turborepo.org/) installed globally (`npm i -g turbo@2`)
-
 ## Step 2: Repository Setup
 
 <Steps>
@@ -39,11 +38,12 @@ This guide will help you get started as smoothly as possible.
   </Step>
   <Step>
   ### Build Packages
-  To make sure everything works, let's build all packages once:
-  ```bash
-  turbo run build
-  ```
-  </Step>
+To make sure everything works, let's build all packages once:
+```bash
+# Ensure you're using pnpm v10 to match the repo's package manager version
+# and Node.js 20.x or later, as older versions may fail the build.
+turbo run build
+```
 </Steps>
 
 ## Step 3: Development Mode
@@ -107,10 +107,13 @@ CopilotKit contains a ready-made script for starting a development environment b
 
 As a prerequisite, make sure you have GNU parallel and langgraph CLI installed.
 
-Next, go to the `CopilotKit/` directory and run the `example.sh` script for the example you want to work on:
+> **Note:** The script path has changed; use the `scripts/qa/lib/langserve` helper instead of `scripts/develop/example.sh`, which no longer exists.
+
+Next, go to the `CopilotKit/` directory and run the helper script for the example you want to work on:
 
 ```bash
-./scripts/develop/example.sh coagents-starter
+# Example: run the coagents-starter example locally with hot reload
+pnpm --filter @copilotkit/scripts-qa exec node scripts/qa/lib/langserve/index.js coagents-starter
 ```
 
 This will start a development environment with hot reload.
@@ -118,7 +121,7 @@ This will start a development environment with hot reload.
 You can optionally run the same example on LangGraph platform by running:
 
 ```bash
-./scripts/develop/example.sh coagents-starter langgraph-platform
+pnpm --filter @copilotkit/scripts-qa exec node scripts/qa/lib/langserve/index.js coagents-starter langgraph-platform
 ```
 
 ## Debugging

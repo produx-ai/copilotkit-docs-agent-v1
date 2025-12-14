@@ -46,15 +46,21 @@ const YourMainContent = () => {
 
 <PropertyReference name="action" type="Action" required>
   The action to perform when an Interrupt event is emitted. Either `handler` or `render` must be defined as arguments
+  <PropertyReference name="action" type="Action" required>
+  The action to perform when an Interrupt event is emitted. Either `handler` or `render` must be defined as arguments
 
-    <PropertyReference name="name" type="string" required>
-      The name of the action.
+    <PropertyReference name="handler" type="(props: LangGraphInterruptRenderHandlerProps<TEventValue>) => any | Promise<any>">
+      A handler to programmatically resolve the Interrupt, or perform operations whose result will be passed to the `render` method.
     </PropertyReference>
 
-    <PropertyReference name="handler" type="(args: LangGraphInterruptRenderProps<T>) => any | Promise<any>">
-      A handler to programmatically resolve the Interrupt, or perform operations which result will be passed to the `render` method
+    <PropertyReference name="render" type="(props: LangGraphInterruptRenderProps<T>) => string | React.ReactElement">
+        Render lets you define a custom component or string to render when an Interrupt event is emitted.
     </PropertyReference>
 
+    <PropertyReference name="enabled" type="(args: { eventValue: TEventValue; agentMetadata: AgentSession }) => boolean">
+        Method that returns a boolean, indicating if the interrupt action should run. Useful when using multiple interrupts
+    </PropertyReference>
+</PropertyReference>
     <PropertyReference name="render" type="(props: LangGraphInterruptRenderProps<T>) => string | React.ReactElement">
         Render lets you define a custom component or string to render when an Interrupt event is emitted.
     </PropertyReference>

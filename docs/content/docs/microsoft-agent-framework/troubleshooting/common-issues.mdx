@@ -4,6 +4,93 @@ description: Common issues you may encounter when using Copilots.
 icon: "lucide/LifeBuoy"
 ---
 
-import CommonIssues from "@/snippets/shared/troubleshooting/common-issues.mdx";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
-<CommonIssues components={props.components} />
+## Microsoft Agent Framework–specific troubleshooting
+
+These issues are specific to the Microsoft Agent Framework integrations described in the quickstart.
+
+<Accordions>
+  <Accordion title="Agent connection issues (.NET)">
+    - Make sure your AG-UI endpoint is running on port `8000` as shown in the quickstart example.
+    - Set the GitHub token the agent expects:
+      ```bash
+      dotnet user-secrets set GitHubToken "$(gh auth token)"
+      ```
+    - Verify the endpoint is reachable:
+      ```bash
+      curl -I http://localhost:8000/
+      ```
+    - If you changed the port, update both places:
+      - `app.MapAGUI("/", agent); app.Run("http://localhost:<your-port>");`
+      - The Copilot runtime agent URL (`new HttpAgent({ url: "http://localhost:<your-port>/" })`).
+  </Accordion>
+
+  <Accordion title="Agent connection issues (Python)">
+    - Ensure the FastAPI server is running on port `8000` per the quickstart.
+    - Confirm required environment variables are set before running the agent:
+      - OpenAI example:
+        ```bash
+        OPENAI_API_KEY=sk-...your-openai-key-here...
+        OPENAI_CHAT_MODEL_ID=gpt-4o-mini
+        ```
+      - Azure OpenAI example:
+        ```bash
+        AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+        AZURE_OPENAI_CHAT_DEPLOYMENT_NAME=gpt-4o-mini
+        # (optional) AZURE_OPENAI_API_KEY=...
+        ```
+    - Start the agent from the `agent` directory:
+      ```bash
+      uv run src/byo_agent.py
+      ```
+    - Verify the AG-UI endpoint responds:
+      ```bash
+      curl -I http://localhost:8000/
+      ```
+    - If you change the port, also update the Copilot runtime agent URL (`new HttpAgent({ url: "http://localhost:<your-port>/" })`).
+  </Accordion>
+
+  <Accordion title="Copilot runtime URL mismatch">
+    - The Next.js runtime route in the quickstart uses `/api/copilotkit`. Ensure your `CopilotKit` provider points to the same path:
+      ```tsx
+      <CopilotKit runtimeUrl="/api/copilotkit" agent="my_agent">
+        {children}
+      </CopilotKit>
+      ```
+    - If you rename the API route or change the path, update both the route definition and the `runtimeUrl` prop.
+    - If your agent runs on a different host/port, update the runtime agent URL:
+      ```tsx
+      const runtime = new CopilotRuntime({
+        agents: {
+          my_agent: new HttpAgent({ url: "http://localhost:8000/" }),
+        },
+      });
+      ```
+  </Accordion>
+
+  <Accordion title="GitHub token issues (.NET)">
+    - If the agent fails with `GitHubToken not found`:
+      ```bash
+      cd agent
+      dotnet user-secrets set GitHubToken "$(gh auth token)"
+      ```
+    - Verify the .NET SDK is installed and up to date:
+      ```bash
+      dotnet --version  # Should be 9.0.x or higher
+      ```
+    - Restore and run if dependencies failed to install automatically:
+      ```bash
+      cd agent
+      dotnet restore
+      dotnet run
+      ```
+  </Accordion>
+
+  <Accordion title="Port conflicts">
+    - If port `8000` is in use, pick a new port and update both:
+      - The agent server binding (e.g., `app.Run("http://localhost:9000")` in .NET or `uvicorn.run(..., port=9000)` in Python).
+      - The Copilot runtime agent URL (`new HttpAgent({ url: "http://localhost:9000/" })`).
+    - If the frontend API route path changes, also update the `runtimeUrl` in `<CopilotKit runtimeUrl="..." />`.
+  </Accordion>
+</Accordions>

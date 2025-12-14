@@ -80,9 +80,9 @@ This hooks enables you to dynamically generate UI elements and render them in th
       use the action.
     </PropertyReference>
 
-    <PropertyReference name="available" type="'enabled' | 'disabled' | 'remote'">
-      Use this property to control when the action is available to the Copilot. When set to `"remote"`, the action is 
-      available only for remote agents.
+    <PropertyReference name="available" type="'enabled' | 'disabled'">
+      Use this property to control when the action is available to the Copilot. The legacy "remote" value is not supported in replacement hooks and should be migrated to "enabled"/"disabled" semantics.
+    </PropertyReference>
     </PropertyReference>
 
     <PropertyReference name="followUp" type="boolean" default="true">
@@ -182,7 +182,8 @@ This hooks enables you to dynamically generate UI elements and render them in th
           - `"complete"`: The action handler has completed execution.
         </PropertyReference>
 
-        <PropertyReference name="args" type="T">
+
+**Migration note**: The `"remote"` value for `available` was removed in the newer hooks. Use `"enabled"` or `"disabled"` going forward; any legacy `"remote"` usage should be treated as `"enabled"` when migrating.
           The arguments passed to the action in real time. When the status is `"inProgress"`, they are
           possibly incomplete.
         </PropertyReference>

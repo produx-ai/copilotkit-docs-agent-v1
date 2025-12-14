@@ -79,16 +79,16 @@ The description of the information to be added to the Copilot context.
 </PropertyReference>
 
 <PropertyReference name="value" type="any" required > 
-The value to be added to the Copilot context. Object values are automatically stringified.
+The value to be added to the Copilot context. Object values are automatically stringified using `JSON.stringify`. Note: this does not handle circular references—provide a custom `convert` function for complex objects.
 </PropertyReference>
-
+</PropertyReference>
 <PropertyReference name="parentId" type="string"  > 
-The ID of the parent context, if any.
+The ID of the parent context, if any. Creates a hierarchical tree structure where child contexts are nested under parents. This hierarchy is formatted as indented, numbered text and provided to the LLM for better context understanding.
 </PropertyReference>
-
+</PropertyReference>
 <PropertyReference name="categories" type="string[]"  > 
-An array of categories to control which context are visible where. Particularly useful
-  with CopilotTextarea (see `useMakeAutosuggestionFunction`)
+An array of categories to control which context are visible where. Particularly useful with CopilotTextarea—see the [`useMakeAutosuggestionFunction`](/reference/hooks/useMakeAutosuggestionFunction) hook.
+</PropertyReference>
 </PropertyReference>
 
 <PropertyReference name="available" type="'enabled' | 'disabled'"  > 

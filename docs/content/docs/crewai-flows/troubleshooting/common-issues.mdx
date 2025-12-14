@@ -1,9 +1,39 @@
 ---
-title: Common Copilot Issues
-description: Common issues you may encounter when using Copilots.
+title: Common Issues with CrewAI Flows
+description: Common issues you may encounter when using CrewAI Flows, including orchestration.
 icon: "lucide/LifeBuoy"
 ---
 
 import CommonIssues from "@/snippets/shared/troubleshooting/common-issues.mdx";
 
 <CommonIssues components={props.components} />
+
+## CrewAI-Specific Issues
+
+### Handling Agent Timeouts
+If agents are timing out during tasks, this can interrupt flow progress.
+
+<Accordions>
+<Accordion title="Debugging Agent Timeouts">
+Check your CrewAI flow configuration for timeout settings:
+1. Verify the agent's task duration limits in your flow definition.
+2. Ensure underlying services (e.g., LLMs) are responsive.
+3. Add logging to monitor execution time.
+</Accordion>
+</Accordions>
+
+### Troubleshooting Flow Interruptions
+Flow interruptions can occur due to errors or external factors.
+
+<Accordions>
+<Accordion title="Resolving Flow Pauses">
+Inspect the flow state for unhandled exceptions or async task failures:
+1. Review agent logs for errors.
+2. Confirm agent dependencies are available.
+3. Restart the flow if needed.
+</Accordion>
+</Accordions>
+
+**Documentation References**:
+- [CrewAI Flows Guides](https://docs.copilotkit.ai/docs/crewai-flows/guides)
+- [CrewAI Flows Concepts](https://docs.copilotkit.ai/docs/crewai-flows/concepts)

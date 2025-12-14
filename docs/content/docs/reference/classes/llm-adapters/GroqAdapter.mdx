@@ -15,13 +15,11 @@ Copilot Runtime adapter for Groq.
 ## Example
  
 ```ts
-import { CopilotRuntime, GroqAdapter } from "@copilotkit/runtime";
+import { GroqAdapter } from "@copilotkit/runtime";
 import { Groq } from "groq-sdk";
- 
+
 const groq = new Groq({ apiKey: process.env["GROQ_API_KEY"] });
- 
-const copilotKit = new CopilotRuntime();
- 
+
 return new GroqAdapter({ groq, model: "<model-name>" });
 ```
 

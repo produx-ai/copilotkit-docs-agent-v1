@@ -117,7 +117,7 @@ v1.50 delivers support for threaded conversations, with built in thread storage 
     - **For development:** `InMemory` or `SQLite` out of the box
         
         ```tsx
-        import { CopilotRuntime } from "@copilotkit/runtime";
+        import { CopilotRuntime, InMemoryAgentRunner } from "@copilotkit/runtime";
         
         const runtime = new CopilotRuntime({
           agents: {
@@ -125,6 +125,7 @@ v1.50 delivers support for threaded conversations, with built in thread storage 
           },
           runner: new InMemoryAgentRunner(), // new abstraction for persistence
         });
+        ```
         ```
         
     - **For production**

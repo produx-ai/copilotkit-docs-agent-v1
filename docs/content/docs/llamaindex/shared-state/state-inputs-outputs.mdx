@@ -144,7 +144,9 @@ In addition, some state properties contain a lot of information. Syncing them ba
         import uvicorn
         uvicorn.run(app, host="localhost", port=8000)
     ```
-  </Step>
+    <Callout type="info">
+      The `initial_state` dict in Python should mirror the `initialState` object you pass to `useCoAgent` on the frontend for type-safe syncing.
+    </Callout>
   <Step>
     ### Use the state in your frontend
     Now that we know which state properties our agent uses, we can work with them in the UI:

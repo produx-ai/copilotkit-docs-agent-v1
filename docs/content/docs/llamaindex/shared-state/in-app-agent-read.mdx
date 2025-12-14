@@ -39,6 +39,10 @@ state updates, you can reflect these updates natively in your application.
   <Step>
     ### Define the Agent State
 
+    <Callout type="info">
+      This example requires the `llama-index-protocols-ag-ui` package, which is not part of the standard `llama-index` installation. Install it via: `pip install llama-index-protocols-ag-ui`.
+    </Callout>
+
     Create your LlamaIndex agent with a stateful structure using `initial_state`. Here's a complete example that tracks language:
 
     ```python title="agent.py"
@@ -64,6 +68,25 @@ state updates, you can reflect these updates natively in your application.
         },
     )
 
+    # Create FastAPI app
+    app = FastAPI(
+        title="LlamaIndex Agent",
+        description="A LlamaIndex agent integrated with CopilotKit",
+        version="1.0.0"
+    )
+
+    # Include the router
+    app.include_router(agentic_chat_router)
+
+    # Health check endpoint
+    @app.get("/health")
+    async def health_check():
+        return {"status": "healthy", "agent": "llamaindex"}
+
+    if __name__ == "__main__":
+        import uvicorn
+        uvicorn.run(app, host="localhost", port=8000)
+    ```
     # Create FastAPI app
     app = FastAPI(
         title="LlamaIndex Agent",
@@ -118,29 +141,6 @@ state updates, you can reflect these updates natively in your application.
         </div>
       );
     }
-    ```
-
-    <Callout type="warn" title="Important">
-      The `name` parameter must exactly match the agent name you defined in your CopilotRuntime configuration (e.g., `my_agent` from the quickstart).
-    </Callout>
-
-    <Callout type="info">
-      The `state` in `useCoAgent` is reactive and will automatically update when the agent's state changes.
-    </Callout>
-
-  </Step>
-  <Step>
-    ### Give it a try!
-    As the agent state updates, your `state` variable will automatically update with it! In this case, you'll see the
-    language set to "english" as that's the initial state we set.
-  </Step>
-</Steps>
-
-## Rendering agent state in the chat
-
-You can also render the agent's state in the chat UI. This is useful for informing the user about the agent's state in a
-more in-context way. To do this, you can use the [useCoAgentStateRender](/reference/hooks/useCoAgentStateRender) hook.
-
 ```tsx title="ui/app/page.tsx"
 import { useCoAgentStateRender } from "@copilotkit/react-core"; // [!code highlight]
 
@@ -148,6 +148,24 @@ import { useCoAgentStateRender } from "@copilotkit/react-core"; // [!code highli
 type AgentState = {
   language: "english" | "spanish";
 };
+
+function YourMainContent() {
+  // ...
+  // [!code highlight:7]
+  useCoAgentStateRender({
+    name: "my_agent", // MUST match the agent name in CopilotRuntime
+    render: ({ state, status, nodeName }) => {
+      if (!state.language) return null;
+      return <div>Language: {state.language} (Status: {status})</div>;
+    },
+  });
+  // ...
+}
+```
+
+<Callout type="info">
+  The `render` callback also receives `status` (e.g., `inProgress`, `completed`) and `nodeName` (workflow node). Use these for advanced UI logic like progress indicators.
+</Callout>
 
 function YourMainContent() {
   // ...

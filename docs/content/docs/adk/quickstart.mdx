@@ -67,8 +67,23 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install dependencies
 
-                ```npm
-                ```
+                <Tabs groupId="package-manager" items={['npm', 'pnpm', 'yarn']}>
+                    <Tab value="npm">
+                        ```bash
+                        npm install
+                        ```
+                    </Tab>
+                    <Tab value="pnpm">
+                        ```bash
+                        pnpm install
+                        ```
+                    </Tab>
+                    <Tab value="yarn">
+                        ```bash
+                        yarn install
+                        ```
+                    </Tab>
+                </Tabs>
             </Step>
             <Step>
                 ### Configure your environment
@@ -111,6 +126,8 @@ Before you begin, you'll need the following:
 
                 This will start both the UI and agent servers concurrently.
             </Step>
+                This will start both the UI and agent servers concurrently.
+            </Step>
             <Step>
                 ### 🎉 Start chatting!
 
@@ -126,23 +143,6 @@ Before you begin, you'll need the following:
 
                 ```
                 Get the weather in SF
-                ```
-
-                <Accordions className="mb-4">
-                    <Accordion title="Troubleshooting">
-                        - If you're having connection issues, try using `0.0.0.0` or `127.0.0.1` instead of `localhost`
-                        - Make sure your agent is running on port 8000
-                        - Check that your Google API key is correctly set
-                    </Accordion>
-                </Accordions>
-
-            </Step>
-        </TailoredContentOption>
-        <TailoredContentOption
-            id="bring-your-own"
-            title="Use an existing agent"
-            description="I already have an ADK agent and want to add CopilotKit."
-        >
             <Step>
                 ### Initialize your agent project
 
@@ -151,6 +151,30 @@ Before you begin, you'll need the following:
                 ```bash
                 uv init my-agent
                 cd my-agent
+                ```
+            </Step>
+            <Step>
+                ### Install ADK with AG-UI
+
+                Add ADK with AG-UI support and uvicorn to your project:
+
+                <Tabs groupId="python-package-manager" items={['uv', 'pip']}>
+                    <Tab value="uv">
+                        ```bash
+                        uv add ag-ui-adk google-adk uvicorn fastapi
+                        ```
+                    </Tab>
+                    <Tab value="pip">
+                        ```bash
+                        pip install ag-ui-adk google-adk uvicorn fastapi
+                        ```
+                    </Tab>
+                </Tabs>
+
+                <Callout type="info" title="What is AG-UI?">
+                  AG-UI is an open protocol for frontend-agent communication. The `ag-ui-adk` package provides ADK integration that CopilotKit can connect to.
+                </Callout>
+            </Step>
                 ```
             </Step>
             <Step>
@@ -207,36 +231,33 @@ Before you begin, you'll need the following:
                 add_adk_fastapi_endpoint(app, adk_agent, path="/")
 
                 if __name__ == "__main__":
-                    import uvicorn
-                    uvicorn.run(app, host="localhost", port=8000)
-                ```
-            </Step>
-            <Step>
-                ### Create your frontend
-
-                CopilotKit works with any React-based frontend. We'll use Next.js for this example.
-
-                ```bash
-                npx create-next-app@latest my-copilot-app
-                cd my-copilot-app
-                ```
-            </Step>
-            <Step>
-                ### Install CopilotKit packages
-
-                ```npm
-                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/client
-                ```
-            </Step>
-            <Step>
-                ### Setup Copilot Runtime
-
-                Create an API route to connect CopilotKit to your ADK agent:
-
                 ```tsx title="app/api/copilotkit/route.ts"
                 import {
                   CopilotRuntime,
-                  ExperimentalEmptyAdapter,
+                  EmptyAdapter,
+                  copilotRuntimeNextJSAppRouterEndpoint,
+                } from "@copilotkit/runtime";
+                import { HttpAgent } from "@ag-ui/client";
+                import { NextRequest } from "next/server";
+
+                const serviceAdapter = new EmptyAdapter();
+
+                const runtime = new CopilotRuntime({
+                  agents: {
+                    my_agent: new HttpAgent({ url: "http://localhost:8000/" }),
+                  }
+                });
+
+                export const POST = async (req: NextRequest) => {
+                  const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
+                    runtime,
+                    serviceAdapter,
+                    endpoint: "/api/copilotkit",
+                  });
+
+                  return handleRequest(req);
+                };
+               ```
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
                 import { HttpAgent } from "@ag-ui/client";

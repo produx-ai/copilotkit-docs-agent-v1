@@ -39,7 +39,7 @@ is a situation where a user and an agent are working together to solve a problem
     Configure your Strands agent to maintain state. Here's an example that tracks searches:
 
     ```python title="agent/my_agent.py"
-    from strands import Agent, Tool
+    from strands import Agent, tool
     from typing import TypedDict, List
 
     # Define the agent state schema
@@ -51,7 +51,7 @@ is a situation where a user and an agent are working together to solve a problem
         searches: List[SearchItem]
 
     # Create tool that updates state
-    @Tool
+    @tool
     def add_search(query: str) -> dict:
         """
         Add a search to the agent's list of searches.
@@ -66,13 +66,14 @@ is a situation where a user and an agent are working together to solve a problem
         return {"success": True, "query": query}
 
     # Create agent with state management
+    # Create agent with state management
     agent = Agent(
         name="searchAgent",
         description="A helpful assistant for storing searches",
         tools=[add_search],
         state_schema=AgentState,
         initial_state={"searches": []},
-        instructions="""
+        system_prompt="""
         You are a helpful assistant for storing searches.
 
         IMPORTANT:

@@ -37,3 +37,25 @@ export default function App() {
   - Confirm `showDevConsole={true}`
   - Check for JavaScript errors in the browser console
   - Ensure no CSS is hiding the error banner
+
+## Setting Up Error Observability
+
+CopilotKit Premium provides production-grade error observability with the `onError` hook. Use your `publicApiKey` (Copilot Cloud) or `publicLicenseKey` (self-hosted) and forward structured events to your monitoring service.
+
+```tsx
+import { CopilotKit } from "@copilotkit/react-core";
+
+<CopilotKit
+  runtimeUrl="<your-runtime-url>"
+  publicApiKey="ck_pub_your_key" // or publicLicenseKey for self-hosted
+  onError={(errorEvent) => {
+    console.error("CopilotKit Error:", errorEvent);
+    // Forward to your monitoring/analytics service, e.g. Sentry or Datadog
+  }}
+  showDevConsole={false}
+>
+  {/* Your app */}
+</CopilotKit>
+```
+
+> For full observability options and event structure, see [Observability](/premium/observability).

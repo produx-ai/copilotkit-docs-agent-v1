@@ -165,42 +165,74 @@ The `onError` handler receives detailed error events with rich context:
 
 ```typescript
 interface CopilotErrorEvent {
-  type:
-    | "error"
-    | "request"
-    | "response"
-    | "agent_state"
-    | "action"
-    | "message"
-    | "performance";
+  type: "error" | "request" | "response" | "agent_state" | "action" | "message" | "performance";
   timestamp: number;
-  context: {
-    source: "ui" | "runtime" | "agent";
-    request?: {
-      operation: string;
-      method?: string;
-      url?: string;
-      startTime: number;
-    };
-    response?: {
-      endTime: number;
-      latency: number;
-    };
-    agent?: {
-      name: string;
-      nodeName?: string;
-    };
-    messages?: {
-      input: any[];
-      messageCount: number;
-    };
-    technical?: {
-      environment: string;
-      stackTrace?: string;
-    };
-  };
-  error?: any; // Present for error events
+  context: CopilotRequestContext;
+  error?: any; // Present when type is 'error'
 }
+
+interface CopilotRequestContext {
+  // Basic identifiers
+  threadId?: string;
+  runId?: string;
+  source: "runtime" | "ui" | "agent" | "network";
+
+  // Request details
+  request?: {
+    operation: string;
+    method?: string;
+    url?: string;
+    path?: string;
+    headers?: Record<string, string>;
+    body?: any;
+    startTime: number;
+  };
+
+  // Response details
+  response?: {
+    status?: number;
+    statusText?: string;
+    headers?: Record<string, string>;
+    body?: any;
+    endTime: number;
+    latency: number;
+  };
+
+  // Agent context
+  agent?: {
+    name?: string;
+    nodeName?: string;
+    state?: any;
+  };
+
+  // Message flow context
+  messages?: {
+    input?: any[];
+    output?: any[];
+    messageCount?: number;
+  };
+
+  // Technical context
+  technical?: {
+    userAgent?: string;
+    host?: string;
+    environment?: string;
+    version?: string;
+    stackTrace?: string;
+  };
+
+  // Performance metrics
+  performance?: {
+    requestDuration?: number;
+    streamingDuration?: number;
+    actionExecutionTime?: number;
+    memoryUsage?: number;
+  };
+
+  // Extensible metadata
+  metadata?: Record<string, any>;
+}
+```
 ```
 
 ## Common Error Observability Patterns
@@ -344,10 +376,8 @@ To use error observability hooks, you'll need a Copilot Cloud account:
 ### ✅ Do
 
 - **Use `showDevConsole={true}` during development** for immediate feedback
-- **Set `showDevConsole={false}` in production** to hide errors from users
-- **Implement proper error observability** with the `onError` hook for monitoring
-- **Monitor error patterns** to identify and fix issues proactively
-- **Use structured logging** to make error analysis easier
+- Explore the [CopilotKit reference documentation](/reference/components/CopilotKit)
+- Check out [troubleshooting guides](/langgraph/coagent-troubleshooting/common-coagent-issues) for common issues
 
 ### ❌ Don't
 

@@ -120,8 +120,10 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
                             ]
                             
                             for step in steps:
-                                self.state["observed_steps"] = self.state.get("observed_steps", []) + [step]
+                            for step in steps:
+                                state["observed_steps"] = state.get("observed_steps", []) + [step]
                                 await copilotkit_emit_state(config, state) # [!code highlight]
+                                await asyncio.sleep(1)
                                 await asyncio.sleep(1)
 
                             # ...
@@ -172,7 +174,9 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
                         from langchain_core.messages import SystemMessage, AIMessage
                         from langchain_core.runnables import RunnableConfig
 
-                        # Define a step progress tool for the llm to report the steps
+                        @tool
+                        def step_progress_tool(steps: list[str]):
+                            """Reads and reports steps"""
                         @tool
                         def step_progress_tool(steps: list[str])
                             """Reads and reports steps"""
@@ -254,9 +258,12 @@ When a node in your LangGraph finishes executing, **its returned state becomes t
 
                             const system_message = new SystemMessage("You are a task performer. Pretend doing tasks you are given, report the steps using StepProgressTool.")
                             const response = await model.invoke([system_message, ...state.messages], modifiedConfig);
+                                return {
+                                    messages: response,
+                                    observed_steps: response.tool_calls[0].args.steps,
+                                }
 
-
-                            if (response.tool_calls?.length) {
+                            return { messages: response };
                                 return {
                                     messages: response;
                                     observed_steps: response.tool_calls[0].args.steps,
