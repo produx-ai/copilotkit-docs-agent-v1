@@ -48,60 +48,21 @@ In addition, some state properties contain a lot of information. Syncing them ba
     from llama_index.protocols.ag_ui.router import get_ag_ui_workflow_router
     from llama_index.protocols.ag_ui.events import StateSnapshotWorkflowEvent
 
-    async def answerQuestion(
+    async def add_proverb(
         ctx: Context,
-        answer: Annotated[str, "The answer to store in state."]
+        proverb: Annotated[str, "The proverb to add."]
     ) -> str:
-        """Stores the answer to the user's question in shared state.
+        """Add a proverb to the list of proverbs."""
+        state = await ctx.get("state", default={})
 
-        Args:
-            ctx: The workflow context for state management.
-            answer: The answer to store in state.
+        if "proverbs" not in state:
+            state["proverbs"] = []
 
-        Returns:
-            str: A message indicating the answer was stored.
-        """
-        async with ctx.store.edit_state() as global_state:
-            state = global_state.get("state", {})
-            if state is None:
-                state = {}
-            
-            state["answer"] = answer
-            
-            # Emit state update to frontend
-            ctx.write_event_to_stream(
-                StateSnapshotWorkflowEvent(snapshot=state)
-            )
-            
-            global_state["state"] = state
-        
-        return f"Answer stored: {answer}"
+        state["proverbs"].append(proverb)
+        ctx.write_event_to_stream(StateSnapshotWorkflowEvent(snapshot=state))
 
-    async def addResource(
-        ctx: Context,
-        resource: Annotated[str, "The resource URL or reference to add."]
-    ) -> str:
-        """Adds a resource to the internal resources list in shared state.
-
-        Args:
-            ctx: The workflow context for state management.
-            resource: The resource URL or reference to add.
-
-        Returns:
-            str: A message indicating the resource was added.
-        """
-        async with ctx.store.edit_state() as global_state:
-            state = global_state.get("state", {})
-            if state is None:
-                state = {}
-            
-            resources = state.get("resources", [])
-            resources.append(resource)
-            state["resources"] = resources
-            
-            global_state["state"] = state
-        
-        return f"Resource added: {resource}"
+        await ctx.set(state)
+        return f"Added proverb: {proverb}"
 
     # Initialize the LLM
     llm = OpenAI(model="gpt-4o")
@@ -110,18 +71,12 @@ In addition, some state properties contain a lot of information. Syncing them ba
     agentic_chat_router = get_ag_ui_workflow_router(
         llm=llm,
         system_prompt="""
-        You are a helpful assistant. When the user asks a question:
-        1. Think through your answer
-        2. Optionally use addResource to track any sources you reference
-        3. Use answerQuestion to provide your final answer - this stores it in state for the user to see
-        
-        Always use the answerQuestion tool to provide your response so it appears in the UI.
+        You are a helpful assistant for tracking proverbs.
+        Always append new proverbs to the state using add_proverb.
         """,
-        backend_tools=[answerQuestion, addResource],
+        backend_tools=[add_proverb],
         initial_state={
-            "question": "",       # Input: received from frontend
-            "answer": "",         # Output: sent to frontend
-            "resources": []       # Internal: tracking resources
+            "proverbs": []
         },
     )
 
@@ -191,6 +146,43 @@ In addition, some state properties contain a lot of information. Syncing them ba
             content: newQuestion,
           }));
         } catch (error) {
+    ```tsx title="ui/app/page.tsx"
+    "use client";
+
+    import { useState } from "react";
+    import { useCoAgent } from "@copilotkit/react-core";
+
+    // Define the agent state type, should match the actual state of your agent
+    type AgentState = {
+      proverbs: string[];
+    }
+
+    /* Example usage in a pseudo React component */
+    function YourMainContent() { // [!code highlight]
+      const [inputProverb, setInputProverb] = useState("A stitch in time saves nine.");
+      const [isLoading, setIsLoading] = useState(false);
+      
+      const { state, setState, run } = useCoAgent<AgentState>({
+        name: "my_agent",
+        initialState: {
+          proverbs: [],
+        }
+      });
+
+      const addProverb = async (newProverb: string) => {
+        setIsLoading(true);
+        
+        // Update the state with the new proverb
+        setState({ ...state, proverbs: [...(state.proverbs || []), newProverb] });
+        
+        try {
+          // Trigger the agent to run with a hint message that includes the proverb
+          await run(() => ({
+            id: crypto.randomUUID(),
+            role: "user" as const,
+            content: newProverb,
+          }));
+        } catch (error) {
           console.error("Error running agent:", error);
         } finally {
           setIsLoading(false);
@@ -199,14 +191,14 @@ In addition, some state properties contain a lot of information. Syncing them ba
 
       return (
         <div style={{ padding: "2rem", fontFamily: "system-ui, sans-serif" }}>
-          <h1>Q&A Assistant</h1>
+          <h1>Proverb Collector</h1>
           
           <div style={{ marginBottom: "1rem" }}>
             <input
               type="text"
-              value={inputQuestion}
-              onChange={(e) => setInputQuestion(e.target.value)}
-              placeholder="Enter your question..."
+              value={inputProverb}
+              onChange={(e) => setInputProverb(e.target.value)}
+              placeholder="Enter a proverb..."
               style={{ 
                 padding: "0.5rem", 
                 width: "300px", 
@@ -216,8 +208,8 @@ In addition, some state properties contain a lot of information. Syncing them ba
               }}
             />
             <button 
-              onClick={() => askQuestion(inputQuestion)}
-              disabled={isLoading || !inputQuestion.trim()}
+              onClick={() => addProverb(inputProverb)}
+              disabled={isLoading || !inputProverb.trim()}
               style={{
                 padding: "0.5rem 1rem",
                 borderRadius: "4px",
@@ -227,29 +219,19 @@ In addition, some state properties contain a lot of information. Syncing them ba
                 cursor: isLoading ? "not-allowed" : "pointer"
               }}
             >
-              {isLoading ? "Thinking..." : "Ask Question"}
+              {isLoading ? "Adding..." : "Add Proverb"}
             </button>
           </div>
 
           <div style={{ marginTop: "1.5rem" }}>
-            <p><strong>Question:</strong> {state.question || "(none yet)"}</p>
-            <p><strong>Answer:</strong> {state.answer || (isLoading ? "Thinking..." : "Waiting for question...")}</p>
+            <p><strong>Proverbs:</strong></p>
+            <ul>
+              {(state.proverbs || []).map((p, i) => (
+                <li key={i}>{p}</li>
+              ))}
+            </ul>
           </div>
         </div>
       );
     }
     ```
-
-    <Callout type="warn" title="Important">
-      The `name` parameter must exactly match the agent name you defined in your CopilotRuntime configuration (e.g., `my_agent` from the quickstart).
-    </Callout>
-  </Step>
-  <Step>
-    ### Give it a try!
-    Now that we've organized state by purpose:
-    - The UI can set `question` and read `answer`
-    - The agent uses `resources` internally without exposing it to the frontend
-    - State updates flow efficiently between frontend and backend
-  </Step>
-</Steps>
-

@@ -3,6 +3,23 @@ title: Migrate to 1.10.X
 description: Migration guide for CopilotKit 1.10.X
 icon: "lucide/RefreshCw"
 ---
+
+## LlamaIndex-specific migration steps
+
+- Update your agent backend to the latest AG-UI protocol packages:
+
+```bash
+pip install --upgrade llama-index llama-index-protocols-ag-ui
+```
+
+- Update your frontend AG-UI adapter to stay compatible with the 1.10.X message format:
+
+```bash
+npm install @ag-ui/llamaindex@^1.10.0
+```
+
+- If you have custom message parsing for AG-UI responses, ensure it expects plain-object messages (no class instances) per the 1.10.X format change.
+
 import MigrateTo1100 from "@/snippets/shared/troubleshooting/migrate-to-1.10.X.mdx";
 
 <MigrateTo1100 components={props.components} />

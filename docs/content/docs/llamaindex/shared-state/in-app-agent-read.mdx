@@ -17,7 +17,7 @@ import { IframeSwitcher } from "@/components/content"
 />
 
 <Callout type="info">
-  This example demonstrates reading from shared state in the [CopilotKit Feature Viewer](https://feature-viewer.copilotkit.ai/llama-index/feature/shared_state).
+  This example demonstrates reading from shared state in the [CopilotKit Feature Viewer](https://feature-viewer.copilotkit.ai/llama-index/feature/shared_state). This is an external demo service and may not always reflect the exact code shown here.
 </Callout>
 
 ## What is this?
@@ -45,6 +45,8 @@ state updates, you can reflect these updates natively in your application.
     from fastapi import FastAPI
     from llama_index.llms.openai import OpenAI
     from llama_index.protocols.ag_ui.router import get_ag_ui_workflow_router
+
+    # Note: These imports come from the LlamaIndex package. Check LlamaIndex docs for API stability.
 
     # Initialize the LLM
     llm = OpenAI(model="gpt-4o")

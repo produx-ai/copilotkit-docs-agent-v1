@@ -65,10 +65,11 @@ Before you begin, you'll need the following:
                 ```
             </Step>
             <Step>
+            <Step>
                 ### Install dependencies
 
-
                 ```npm
+                npm install
                 ```
             </Step>
             <Step>
@@ -143,7 +144,6 @@ Before you begin, you'll need the following:
             id="bring-your-own"
             title="Use an existing agent"
             description="I already have a LlamaIndex agent and want to add CopilotKit."
-        >
             <Step>
                 ### Initialize your agent project
 
@@ -153,6 +153,10 @@ Before you begin, you'll need the following:
                 uv init my-agent
                 cd my-agent
                 ```
+
+                **Note**: If you don't have `uv` installed, use standard Python tools instead:
+                - Instead of `uv init my-agent`, use: `mkdir my-agent && cd my-agent && python -m venv venv`
+                - Instead of `uv add <packages>`, use: `pip install <packages>`
             </Step>
             <Step>
                 ### Install LlamaIndex with AG-UI
@@ -162,7 +166,6 @@ Before you begin, you'll need the following:
                 ```bash
                 uv add llama-index llama-index-llms-openai llama-index-protocols-ag-ui fastapi uvicorn
                 ```
-
                 <Callout type="info" title="What is AG-UI?">
                   AG-UI is an open protocol for frontend-agent communication. The `llama-index-protocols-ag-ui` package provides LlamaIndex integration that CopilotKit can connect to.
                 </Callout>
@@ -238,17 +241,33 @@ Before you begin, you'll need the following:
             </Step>
             <Step>
                 ### Setup Copilot Runtime
-
-                Create an API route to connect CopilotKit to your LlamaIndex agent:
-
                 ```tsx title="app/api/copilotkit/route.ts"
                 import {
                   CopilotRuntime,
-                  ExperimentalEmptyAdapter,
+                  EmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
                 import { LlamaIndexAgent } from "@ag-ui/llamaindex";
                 import { NextRequest } from "next/server";
+
+                const serviceAdapter = new EmptyAdapter();
+
+                const runtime = new CopilotRuntime({
+                  agents: {
+                    my_agent: new LlamaIndexAgent({ url: "http://localhost:8000/run" }),
+                  }   
+                });
+
+                export const POST = async (req: NextRequest) => {
+                  const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
+                    runtime,
+                    serviceAdapter,
+                    endpoint: "/api/copilotkit",
+                  });
+
+                  return handleRequest(req);
+                };
+               ```
 
                 const serviceAdapter = new ExperimentalEmptyAdapter();
 
