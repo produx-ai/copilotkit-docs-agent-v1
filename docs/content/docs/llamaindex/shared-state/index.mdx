@@ -24,6 +24,26 @@ CoAgents maintain a shared state that seamlessly connects your UI with the agent
 - React to state changes in real-time across your application
 
 The foundation of this system is built on LlamaIndex's AG-UI protocol integration, which provides `initial_state` support in the workflow router.
+The foundation of this system is built on LlamaIndex's AG-UI protocol integration, which provides `initial_state` support in the workflow router.
+
+### Defining Your Initial State
+
+To enable shared state, define your agent's `initial_state` as a dictionary in the Python backend and pass it to the AG-UI workflow router as shown here:
+
+```python
+# Create the AG-UI workflow router
+agentic_chat_router = get_ag_ui_workflow_router(
+    llm=llm,
+    backend_tools=[your_tools],
+    initial_state={
+        "key1": "default_value",  # Define your state keys here
+        "key2": [],              # Arrays or objects as needed
+    },
+    # ... other params
+)
+```
+
+For detailed examples and state input/output management, see [State Inputs and Outputs](/docs/llamaindex/shared-state/state-inputs-outputs).
 
 ## When should I use this?
 
@@ -31,4 +51,3 @@ State streaming is perfect when you want to facilitate collaboration between you
 persists will be automatically shared by the UI. Similarly, any state that the user updates in the UI will be automatically reflected.
 
 This allows for a consistent experience where both the agent and the user are on the same page.
-
