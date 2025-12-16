@@ -67,10 +67,11 @@ Before you begin, you'll need the following:
             <Step>
                 ### Install dependencies
 
-
-                ```npm
+                ```bash
+                # NOTE: The CLI-generated template includes its own package manifests.
+                # Run your package manager install in the generated project directories.
+                npm install
                 ```
-            </Step>
             <Step>
                 ### Configure your environment
 
@@ -229,34 +230,45 @@ Before you begin, you'll need the following:
                 cd my-copilot-app
                 ```
             </Step>
-            <Step>
                 ### Install CopilotKit packages
 
-                ```npm
-                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/llamaindex
+                ```bash
+                # NOTE: Install the CopilotKit + AG-UI client packages used below.
+                npm install @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/client
                 ```
             </Step>
             <Step>
                 ### Setup Copilot Runtime
 
                 Create an API route to connect CopilotKit to your LlamaIndex agent:
-
                 ```tsx title="app/api/copilotkit/route.ts"
                 import {
                   CopilotRuntime,
                   ExperimentalEmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
-                import { LlamaIndexAgent } from "@ag-ui/llamaindex";
+                import { HttpAgent } from "@ag-ui/client"; // NOTE: LlamaIndex connects via the generic AG-UI HttpAgent
                 import { NextRequest } from "next/server";
 
                 const serviceAdapter = new ExperimentalEmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {
-                    my_agent: new LlamaIndexAgent({ url: "http://localhost:8000/run" }),
-                  }   
+                    // NOTE: Agent name must match the `agent` prop on <CopilotKit />
+                    my_agent: new HttpAgent({ url: "http://localhost:8000/run" }),
+                  },
                 });
+
+                export const POST = async (req: NextRequest) => {
+                  const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
+                    runtime,
+                    serviceAdapter,
+                    endpoint: "/api/copilotkit",
+                  });
+
+                  return handleRequest(req);
+                };
+               ```
 
                 export const POST = async (req: NextRequest) => {
                   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
@@ -273,9 +285,9 @@ Before you begin, you'll need the following:
                 ### Configure CopilotKit Provider
 
                 Wrap your application with the CopilotKit provider:
-
-                ```tsx title="app/layout.tsx"
-                import { CopilotKit } from "@copilotkit/react-core"; // [!code highlight]
+                        <CopilotKit runtimeUrl="/api/copilotkit" agent="my_agent"> {/* NOTE: `agent` selects the default agent key from runtime.agents */}
+                          {children}
+                        </CopilotKit>
                 import "@copilotkit/react-ui/styles.css";
 
                 // ...

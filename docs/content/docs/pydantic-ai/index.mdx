@@ -14,7 +14,8 @@ import { FrameworkOverview } from "@/components/content/landing-pages/framework-
   subheader="Give your Pydantic AI agents real user-interactivity using CopilotKit and AG-UI. Build rich, interactive, agent-powered applications."
   bannerVideo="https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/overview.mp4"
   guideLink="/pydantic-ai/quickstart"
-  initCommand="npx copilotkit@latest init"
+  // Pydantic AI's starter template is created via the CLI framework flag (see /pydantic-ai/quickstart).
+  initCommand="npx copilotkit@latest create -f pydantic-ai"
   featuresLink="https://feature-viewer.copilotkit.ai/pydantic-ai/feature/agentic_chat"
   supportedFeatures={[
     {

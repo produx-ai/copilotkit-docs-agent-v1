@@ -40,8 +40,7 @@ you can ensure that the agent is always making the right decisions and ultimatel
 
 Interrupt-based flows are a very intuitive way to implement HITL. Instead of having a node await user input before or after its execution,
 nodes can be interrupted in the middle of their execution to allow for user input. The trade-off is that the agent is not aware of the
-interaction, however [CopilotKit's SDKs provide helpers to alleviate this](#make-your-agent-aware-of-interruptions).
-
+interaction, however [CopilotKit's SDKs provide helpers to alleviate this](/langgraph/human-in-the-loop/node-flow). <!-- PATCH: Fix broken in-page anchor link (no matching header); point readers to the existing node-based doc that covers agent-aware HITL. -->
 ## Implementation
 
 <Steps>
@@ -95,10 +94,9 @@ We're going to have the agent ask us to name it, so we'll need a state property 
 
     <Callout type="info">
         Your agent will not be aware of the `interrupt` interaction by default in LangGraph.
+        Your agent will not be aware of the `interrupt` interaction by default in LangGraph.
 
-        If you want this behavior, see the [section on it below](#make-your-agent-aware-of-interruptions).
-    </Callout>
-
+        If you want this behavior, see the [node-based human-in-the-loop guide](/langgraph/human-in-the-loop/node-flow). <!-- PATCH: Fix broken in-page anchor link (no matching header); route to existing doc describing agent-aware HITL. -->
     <Tabs groupId="language_langgraph_agent" items={['Python', 'TypeScript']} default="Python" persist>
         <Tab value="Python">
             ```python title="agent.py"
@@ -364,6 +362,9 @@ import { useLangGraphInterrupt } from "@copilotkit/react-core";
 const YourMainContent = () => {
     const [userEmail, setUserEmail] = useState({ email: 'example@user.com' })
     function getUserByEmail(email: string): { id: string; department: Department } {
+const YourMainContent = () => {
+    const [userEmail, setUserEmail] = useState({ email: 'example@user.com' })
+    function getUserByEmail(email: string): { id: string; department: Department } {
         // ... an implementation of user fetching
     }
 
@@ -372,17 +373,15 @@ const YourMainContent = () => {
     // [!code highlight:28]
     useLangGraphInterrupt({
         handler: async ({ result, event, resolve }) => {
-            const { department } = await getUserByEmail(userEmail)
+            const { id: userId, department } = await getUserByEmail(userEmail.email) // PATCH: Fix undefined `userId` and pass the correct email string into lookup.
             if (event.value.accessDepartment === department || department === 'admin') {
                 // Following the resolution of the event, we will not proceed to the render method
                 resolve({ code: 'AUTH_BY_DEPARTMENT' })
                 return;
             }
 
-            return { department, userId }
+            return { department, userId } // PATCH: `userId` now comes from getUserByEmail, matching the shape used later in `result.userId`.
         },
-        render: ({ result, event, resolve }) => (
-            <div>
                 <h1>Request for {event.value.type}</h1>
                 <p>Members from {result.department} department cannot access this information</p>
                 <p>You can request access from an administrator to continue.</p>

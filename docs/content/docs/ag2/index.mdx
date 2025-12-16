@@ -15,13 +15,15 @@ import { FrameworkOverview } from "@/components/content/landing-pages/framework-
   bannerVideo="https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/overview.mp4"
   guideLink="/ag2/quickstart"
   initCommand="npx copilotkit@latest init"
-  featuresLink="https://feature-viewer.copilotkit.ai"
+  // Deep-link to the AG2 feature viewer instead of the feature viewer homepage.
+  featuresLink="https://feature-viewer.copilotkit.ai/ag2/feature/agentic_chat"
   supportedFeatures={[
     {
       title: "Generative UI",
       description: "Render your agent's state, progress, outputs, and tool calls with custom UI components in real-time. Bridges the gap between AI agents and user interfaces.",
       documentationLink: "/ag2/agentic-chat-ui",
-      demoLink: "https://feature-viewer.copilotkit.ai/",
+      // Point directly to an AG2 generative UI example in the feature viewer (matches the deep-link pattern used by other frameworks).
+      demoLink: "https://feature-viewer.copilotkit.ai/ag2/feature/tool_based_generative_ui",
       videoUrl: "https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/haiku.mp4"
     },
     {

@@ -19,7 +19,7 @@ import RunAndConnect from "@/snippets/integrations/llamaindex/run-and-connect.md
 Frontend tools enable you to define client-side functions that your LlamaIndex agent can invoke, with execution happening entirely in the user's browser. When your agent calls a frontend tool,
 the logic runs on the client side, giving you direct access to the frontend environment.
 
-This can be utilized to let [your agent control the UI](/llamaindex/frontend-actions), [generative UI](/llamaindex/generative-ui/frontend-tools), or for Human-in-the-loop interactions.
+This can be utilized to let [your agent control the UI](/llamaindex/frontend-actions), [generative UI](/llamaindex/generative-ui), or for Human-in-the-loop interactions. <!-- Patch: avoid circular self-link; point to the Generative UI overview page instead of the current page. -->
 
 In this guide, we cover the use of frontend tools for generative UI.
 
@@ -63,7 +63,8 @@ Use frontend tools when you need your agent to interact with client-side primiti
                 required: true,
               },
             ],
-            handler({ name }) {
+            handler(args) { <!-- Patch: match the current `useFrontendTool` handler signature (single `args` object). -->
+              const { name } = args;
               // Handler returns the result of the tool call
               return `Hello, ${name}!`;
             },

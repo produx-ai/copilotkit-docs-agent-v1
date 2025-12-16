@@ -62,6 +62,7 @@ In addition, some state properties contain a lot of information. Syncing them ba
             str: A message indicating the answer was stored.
         """
         async with ctx.store.edit_state() as global_state:
+            # Doc fix: LlamaIndex examples in this repo store the agent's shared state directly under the "state" key (see examples/llamaindex/starter/agent-py/agent/agent.py).
             state = global_state.get("state", {})
             if state is None:
                 state = {}
@@ -74,7 +75,6 @@ In addition, some state properties contain a lot of information. Syncing them ba
             )
             
             global_state["state"] = state
-        
         return f"Answer stored: {answer}"
 
     async def addResource(
