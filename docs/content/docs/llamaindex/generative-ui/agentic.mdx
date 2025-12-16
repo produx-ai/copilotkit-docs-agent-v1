@@ -52,26 +52,23 @@ is a situation where a user and an agent are working together to solve a problem
         query: Annotated[str, "The search query to add."]
     ) -> str:
         """Add a search to the agent's list of searches."""
-        async with ctx.store.edit_state() as global_state:
-            state = global_state.get("state", {})
-            if state is None:
-                state = {}
-            
-            if "searches" not in state:
-                state["searches"] = []
-            
-            # Add new search
-            new_search = {"query": query, "done": False}
-            state["searches"].append(new_search)
-            
-            # Emit state snapshot to frontend
-            ctx.write_event_to_stream(
-                StateSnapshotWorkflowEvent(
-                    snapshot=state
-                )
+        state = await ctx.get("state", default={})
+        
+        if "searches" not in state:
+            state["searches"] = []
+        
+        # Add new search
+        new_search = {"query": query, "done": False}
+        state["searches"].append(new_search)
+        
+        # Emit state snapshot to frontend
+        ctx.write_event_to_stream(
+            StateSnapshotWorkflowEvent(
+                snapshot=state
             )
-            
-            global_state["state"] = state
+        )
+        
+        await ctx.set(state)
         
         return f"Added search: {query}"
 

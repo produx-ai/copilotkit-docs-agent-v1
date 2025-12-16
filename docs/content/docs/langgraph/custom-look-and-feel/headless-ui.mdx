@@ -21,7 +21,7 @@ export const Chat = () => {
   const { messages, sendMessage, interrupt } = useCopilotChatHeadless_c();
 
   useLangGraphInterrupt({
-    render: ({ event, resolve, result }) => {
+    render: ({ event, resolve }) => {
       return (
         <div>
           <p>LangGraph Interrupt</p>
