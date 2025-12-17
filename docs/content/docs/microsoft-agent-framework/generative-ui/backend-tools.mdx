@@ -114,23 +114,22 @@ Define a tool function that your agent can call. Microsoft Agent Framework will 
 <Step>
 ### Render the tool call in your frontend
 At this point, your agent will be able to call the `get_weather` tool. Now
-we just need to add a `useCopilotAction` hook to render the tool call in
+we just need to add a `useRenderToolCall` hook to render the tool call in
 the UI.
 
 <Callout type="info" title="Important">
-  In order to render a tool call in the UI, the name of the action must match the name of the tool.
+  In order to render a tool call in the UI, the name must match the name of the tool.
 </Callout>
 
 ```tsx title="app/page.tsx"
-import { useCopilotAction } from "@copilotkit/react-core"; // [!code highlight]
+import { useRenderToolCall } from "@copilotkit/react-core"; // [!code highlight]
 // ...
 
 const YourMainContent = () => {
   // ...
-  // [!code highlight:12]
-  useCopilotAction({
+  // [!code highlight:11]
+  useRenderToolCall({
     name: "get_weather",
-    available: "disabled", // Don't allow the agent or UI to call this tool as its only for rendering
     render: ({status, args}) => {
       return (
         <p className="text-gray-500 mt-2">
@@ -143,6 +142,8 @@ const YourMainContent = () => {
   // ...
 }
 ```
+
+</Step>
 
 </Step>
 <Step>

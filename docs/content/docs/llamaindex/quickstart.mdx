@@ -160,7 +160,7 @@ Before you begin, you'll need the following:
                 Add LlamaIndex with AG-UI support and uvicorn to your project:
 
                 ```bash
-                uv add llama-index llama-index-llms-openai llama-index-protocols-ag-ui fastapi uvicorn
+                uv add llama-index-core llama-index-agent-openai llama-index-protocols-ag-ui fastapi uvicorn
                 ```
 
                 <Callout type="info" title="What is AG-UI?">
@@ -233,7 +233,7 @@ Before you begin, you'll need the following:
                 ### Install CopilotKit packages
 
                 ```npm
-                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/llamaindex
+                @copilotkit/react-ui @copilotkit/react-core @copilotkit/runtime @ag-ui/client
                 ```
             </Step>
             <Step>
@@ -247,14 +247,14 @@ Before you begin, you'll need the following:
                   ExperimentalEmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
-                import { LlamaIndexAgent } from "@ag-ui/llamaindex";
+                import { HttpAgent } from "@ag-ui/client";
                 import { NextRequest } from "next/server";
 
                 const serviceAdapter = new ExperimentalEmptyAdapter();
 
                 const runtime = new CopilotRuntime({
                   agents: {
-                    my_agent: new LlamaIndexAgent({ url: "http://localhost:8000/run" }),
+                    my_agent: new HttpAgent({ url: "http://localhost:8000/run" }),
                   }   
                 });
 
@@ -378,7 +378,7 @@ Before you begin, you'll need the following:
                         - If you're having connection issues, try using `0.0.0.0` or `127.0.0.1` instead of `localhost`
                         - Make sure your agent is running on port 8000
                         - Check that your OpenAI API key is correctly set
-                        - Verify that the `@ag-ui/llamaindex` package is installed in your frontend
+                        - Verify that the `@ag-ui/client` package is installed in your frontend
                     </Accordion>
                 </Accordions>
 

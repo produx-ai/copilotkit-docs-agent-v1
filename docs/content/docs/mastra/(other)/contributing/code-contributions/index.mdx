@@ -9,7 +9,7 @@ This guide will help you get started as smoothly as possible.
 ## Step 1: Install Prerequisites
 
 - [Node.js](https://nodejs.org/en/) 20.x or later
-- [pnpm](https://pnpm.io/) v9.x installed globally (`npm i -g pnpm@^9`)
+- [pnpm](https://pnpm.io/) v10.x installed globally (`npm i -g pnpm@^10`)
 - [Turborepo v2.x](https://turborepo.org/) installed globally (`npm i -g turbo@2`)
 
 ## Step 2: Repository Setup
@@ -68,22 +68,6 @@ You can find all `@copilotkit/*` packages under the `packages` folder of the mon
 In most cases, you want to seamlessly be able to test your changes in real-time as you develop.
 
 We have an `examples` folder in the monorepo with a few different examples using CopilotKit. You can run these examples to test your changes, as they are linked to the `@copilotkit/*` packages in the monorepo.
-
-For this tutorial, we'll use the `next-openai` example, specifically the Presentation Demo (`/presentation`).
-
-In a separate terminal, run the following command to start the example:
-
-```bash
-cd examples/next-openai
-export OPENAI_API_KEY=<your-openai-api-key>
-pnpm run example-dev
-```
-
-<Callout type="info">
-We use the `pnpm run example-dev` command to run examples, which is different from the `turbo run dev` command we use to work on the individual packages.
-</Callout>
-
-Now navigate to http://localhost:3000/presentation and you should see the example running. Any changes you make to the CopilotKit packages will immediately be reflected here.
 
 ## Step 5: Formatting and Linting
 

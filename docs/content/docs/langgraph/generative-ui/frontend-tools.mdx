@@ -142,10 +142,12 @@ Use frontend tools when you need your agent to interact with client-side primiti
             </Tab>
             <Tab value="TypeScript">
                 ```typescript title="agent-js/src/agent.ts"
+                import { convertActionsToDynamicStructuredTools } from "@copilotkit/sdk-js/langgraph";
+
                 async function agentNode(state: YourAgentState, config: RunnableConfig): Promise<YourAgentState> {
                     // Access the tools from the copilotkit property
 
-                    const tools = state.copilotkit?.actions; // [!code highlight]
+                    const tools = convertActionsToDynamicStructuredTools(state.copilotkit.actions); // [!code highlight]
                     const model = ChatOpenAI({ model: 'gpt-4o' }).bindTools(tools);
 
                     // ...
