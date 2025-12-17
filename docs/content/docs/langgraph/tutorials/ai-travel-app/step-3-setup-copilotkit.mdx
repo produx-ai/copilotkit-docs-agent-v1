@@ -84,10 +84,11 @@ Now we're ready to configure the CopilotKit provider in our application.
 import { CopilotKit } from "@copilotkit/react-core"; // [!code ++]
 
 export default function Home() {
-  // [!code ++:5]
+  // [!code ++:6]
   return (
     <CopilotKit
       publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}
+      runtimeUrl="https://api.cloud.copilotkit.ai/copilotkit/v1"
     >
       <TooltipProvider>
         <TripsProvider>
@@ -121,6 +122,7 @@ export default function Home() {
   return (
     <CopilotKit
       publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}
+      runtimeUrl="https://api.cloud.copilotkit.ai/copilotkit/v1"
     >
       /* [!code ++:9] */
       <CopilotSidebar
@@ -204,9 +206,7 @@ import "@copilotkit/react-ui/styles.css"; // [!code ++]
 
 export default function Home() {
   return (
-    <CopilotKit
-      publicApiKey={process.env.NEXT_PUBLIC_CPK_PUBLIC_API_KEY}
-    >
+    <CopilotKit runtimeUrl="/api/copilotkit">
       /* [!code ++:9] */
       <CopilotSidebar
         defaultOpen={true}

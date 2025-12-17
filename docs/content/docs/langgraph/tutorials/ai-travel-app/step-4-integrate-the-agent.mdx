@@ -70,21 +70,26 @@ In our previously setup `/api/copilotkit` route, we're going to add the followin
 ```tsx title="ui/app/api/copilotkit/route.ts"
 // ...
 
-import { CopilotRuntime, LangGraphAgent } from '@copilotkit/runtime'; // [!code ++]
+import { CopilotRuntime, langGraphPlatformEndpoint } from '@copilotkit/runtime'; // [!code ++]
 
 // ...
 
 const runtime = new CopilotRuntime();// [!code --]
-// [!code ++:10]
+// [!code ++:15]
 const runtime = new CopilotRuntime({
-  // [!code highlight:7]
-  agents: {
-    'travel': new LangGraphAgent({
+  // [!code highlight:12]
+  remoteEndpoints: [
+    langGraphPlatformEndpoint({
       deploymentUrl: "http://localhost:<port_number>",
-      graphId: 'travel',
-      langsmithApiKey: "your-langsmith-api-key" // Optional
+      langsmithApiKey: "your-langsmith-api-key", // Optional
+      agents: [
+        {
+          name: 'travel',
+          description: 'Travel planning agent',
+        },
+      ],
     }),
-  },
+  ],
 });
 
 // ...

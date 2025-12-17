@@ -63,8 +63,7 @@ The v2 hook useAgent is a proper superset of `useCoAgent` which gives more contr
     
     const { agent } = useAgent({ agentId: "my-agent" });
     
-    agent.state
-    agent.setState
+    const { state, setState } = agent;
     ```
     
 ### Time travel
@@ -74,7 +73,7 @@ The v2 hook useAgent is a proper superset of `useCoAgent` which gives more contr
     
     const { agent } = useAgent({ agentId: "my-agent" });
     
-    agent.setMessages()
+    agent.setMessages(messages)
     ```
     
 ### Multi-agent execution

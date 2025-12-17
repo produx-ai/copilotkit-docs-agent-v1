@@ -145,7 +145,7 @@ included in the function's final returned state. Otherwise, they will be overwri
                                 # Tell CopilotKit to treat step progress tool calls as predictive of the final state
                                 copilotkit_predict_state({
                                     "observed_steps": {
-                                        "tool": "StepProgressTool",
+                                        "tool_name": "StepProgressTool",
                                         "tool_argument": "steps"
                                     }
                                 })

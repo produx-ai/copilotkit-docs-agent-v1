@@ -105,7 +105,7 @@ In order for the front-end to recieve the breakpoint and take the user's decisio
 To do this, we'll be editing the `chat_node` in the `chat.py` file.
 ```python title="agent/travel/chat.py"
 # ...
-from copilotkit.langchain import copilotkit_customize_config # [!code ++]
+from copilotkit.langgraph import copilotkit_customize_config # [!code ++]
 async def chat_node(state: AgentState, config: RunnableConfig):
     """Handle chat operations"""
     # [!code ++:5]

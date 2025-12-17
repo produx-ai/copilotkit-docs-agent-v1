@@ -203,25 +203,30 @@ Before you begin, you'll need the following:
                 Create an API route to connect CopilotKit to your Mastra agent:
 
                 ```ts title="app/api/copilotkit/route.ts"
+                import { MastraClient } from "@mastra/client-js";
                 import {
                   CopilotRuntime,
                   ExperimentalEmptyAdapter,
                   copilotRuntimeNextJSAppRouterEndpoint,
                 } from "@copilotkit/runtime";
+                import { MastraAgent } from "@ag-ui/mastra";
                 import { NextRequest } from "next/server";
-                import { MastraAgent } from "@ag-ui/mastra"
-                import { mastra } from "@/mastra"; // the path to your Mastra instance
-
-                const serviceAdapter = new ExperimentalEmptyAdapter();
-
-                const runtime = new CopilotRuntime({
-                  agents: MastraAgent.getLocalAgents({ mastra }),
-                });
 
                 export const POST = async (req: NextRequest) => {
+                  const baseUrl = process.env.MASTRA_BASE_URL || "http://localhost:4111";
+                  const mastraClient = new MastraClient({
+                    baseUrl,
+                  });
+
+                  const mastraAgents = await MastraAgent.getRemoteAgents({ mastraClient });
+
+                  const runtime = new CopilotRuntime({
+                    agents: mastraAgents,
+                  });
+
                   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
                     runtime,
-                    serviceAdapter,
+                    serviceAdapter: new ExperimentalEmptyAdapter(),
                     endpoint: "/api/copilotkit",
                   });
 
